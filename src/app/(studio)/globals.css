@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 33% 98%;
+    --foreground: 215 25% 20%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 20%;
+    --primary: 150 38% 17%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 20% 96%;
+    --secondary-foreground: 215 25% 25%;
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 14% 47%;
+    --accent: 122 39% 94%;
+    --accent-foreground: 150 38% 17%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 210 20% 92%;
+    --input: 210 20% 92%;
+    --ring: 122 39% 49%;
+    --radius: 8px;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-studio-page text-studio-body font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .title-cell {
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .filters-row {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .filters-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .studio-filter-pill {
+    @apply inline-flex h-9 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full border px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50;
+  }
+
+  .studio-filter-pill-active {
+    @apply border-lime bg-lime text-forest-dark;
+  }
+
+  .studio-filter-pill-inactive {
+    @apply border-studio-border bg-white text-gray-600 hover:border-lime/60 hover:bg-lime/10 hover:text-forest-dark;
+  }
+
+  .studio-card {
+    @apply rounded-xl bg-white p-6 shadow-studio transition-shadow hover:shadow-studio-hover;
+  }
+
+  .studio-btn {
+    @apply bg-lime text-forest-dark hover:bg-lime-dark focus-visible:ring-lime/50;
+  }
+}

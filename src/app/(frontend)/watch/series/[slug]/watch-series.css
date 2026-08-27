@@ -1,0 +1,181 @@
+.watch-series-mobile {
+  padding-bottom: 1rem;
+}
+
+.watch-series-mobile__head {
+  margin-bottom: 0.75rem;
+}
+
+.watch-series-mobile__head h2 {
+  margin: 0;
+  font-size: clamp(22px, 2.8vw, 32px);
+}
+
+.watch-series-detail {
+  min-height: 100vh;
+  background: #fff;
+  color: #0c1400;
+}
+
+.watch-series-detail__banner {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #0c1400;
+}
+
+.watch-series-detail__banner-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7, 20, 5, 0.35) 0%, rgba(7, 20, 5, 0.82) 100%);
+}
+
+.watch-series-detail__back {
+  position: absolute;
+  top: max(12px, env(safe-area-inset-top));
+  left: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: rgba(12, 20, 0, 0.55);
+  color: #fff;
+  text-decoration: none;
+}
+
+.watch-series-detail__banner-copy {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  padding: 1rem 1rem 1.25rem;
+}
+
+.watch-series-detail__eyebrow {
+  margin: 0;
+  font-size: 9pt;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #b6f101;
+}
+
+.watch-series-detail__title {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-display, 'Sora', system-ui, sans-serif);
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.watch-series-detail__count {
+  margin: 0.35rem 0 0;
+  font-size: 11pt;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.watch-series-detail__body {
+  padding: 1rem 1rem 2rem;
+}
+
+.watch-series-detail__description {
+  margin: 0;
+  font-size: 11pt;
+  line-height: 1.55;
+  color: #5a6b5e;
+}
+
+.watch-series-detail__play-btn {
+  display: inline-flex;
+  margin-top: 1rem;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #b6f101;
+  padding: 0.625rem 1.25rem;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0c1400;
+  text-decoration: none;
+}
+
+.watch-series-detail__episodes {
+  margin-top: 1.5rem;
+}
+
+.watch-series-detail__episodes-title {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0c1400;
+}
+
+.watch-series-detail__episode-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.watch-series-detail__episode-list li + li {
+  border-top: 1px solid #e9ece5;
+}
+
+.watch-series-episode-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 12px;
+  padding: 0.625rem 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.watch-series-episode-row__thumb {
+  position: relative;
+  width: 112px;
+  aspect-ratio: 16 / 9;
+  flex: none;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #e9ece5;
+}
+
+.watch-series-episode-row__copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.watch-series-episode-row__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #0c1400;
+}
+
+.watch-series-episode-row__duration {
+  margin: 0.2rem 0 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: #0e3a1d;
+}
+
+.watch-series-desktop-fallback {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .watch-series-desktop-fallback {
+    display: block;
+    padding: 4rem 1.5rem;
+    text-align: center;
+    color: #5a6b5e;
+  }
+}
