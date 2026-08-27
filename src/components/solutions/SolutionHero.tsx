@@ -23,7 +23,7 @@ export function SolutionHero({ solutions, defaultQuery }: SolutionHeroProps) {
         <SiteNav variant="light" activeLink="/solutions" />
         <div className="mx-auto max-w-6xl px-4 pb-16 pt-8 sm:px-6 sm:pb-20 sm:pt-10">
           <p className="text-sm font-semibold uppercase tracking-[0.12em] text-white/70">Solutions Atlas</p>
-          <h1 className="mt-4 max-w-3xl text-4xl font-bold leading-tight sm:text-5xl" style={{ fontFamily: 'var(--font-serif), Georgia, serif', fontWeight: 600 }}>
+          <h1 className="mt-4 max-w-3xl text-4xl font-bold leading-tight sm:text-5xl">
             Climate Solutions Across Africa
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-white/80">

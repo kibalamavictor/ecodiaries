@@ -65,7 +65,7 @@ test.describe('EcoDiaries critical paths', () => {
     await page.locator('.cta-form button[type="submit"]').click()
     await expect(page.getByText(/confirm your subscription/i)).toBeVisible({ timeout: 15000 })
     await page.getByRole('button', { name: 'Confirm subscription' }).click()
-    await expect(page.getByText(/confirm|Check your email/i)).toBeVisible({ timeout: 15000 })
+    await expect(page.getByText(/Check your email/i).first()).toBeVisible({ timeout: 15000 })
 
     const token = await getNewsletterConfirmToken(email, adminToken)
     expect(token).toBeTruthy()

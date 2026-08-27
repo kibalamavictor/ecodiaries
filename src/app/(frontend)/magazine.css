@@ -8,7 +8,7 @@
   --mag-line: #ececec;
   --mag-accent: #0b3e1f;
   --mag-chip: #0b3e1f;
-  --mag-serif: var(--font-serif), Georgia, 'Times New Roman', serif;
+  --mag-serif: var(--font-inter), system-ui, sans-serif;
   --mag-sans: var(--font-inter), system-ui, sans-serif;
   --mag-wrap: 1180px;
   --mag-radius: 12px;
