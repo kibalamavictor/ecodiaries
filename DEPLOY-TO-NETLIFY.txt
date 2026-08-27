@@ -1,0 +1,62 @@
+EcoDiaries — Netlify deploy package
+===================================
+
+IMPORTANT
+---------
+This is a Next.js + Payload CMS app (server-rendered). 
+Netlify's "Drag & drop" Drop zone ONLY works for static HTML sites.
+Use one of the methods below instead.
+
+SECURITY
+--------
+This package contains NO secrets (.env files were excluded).
+Add environment variables in the Netlify UI before the first deploy.
+
+REQUIRED ENV VARS (Site settings → Environment variables)
+---------------------------------------------------------
+DATABASE_URL                 Neon / Postgres connection string
+PAYLOAD_SECRET               random string, min 32 characters
+NEXT_PUBLIC_SERVER_URL       https://YOUR-SITE.netlify.app
+
+RECOMMENDED
+-----------
+BLOB_READ_WRITE_TOKEN        OR S3_BUCKET + S3_ACCESS_KEY_ID + S3_SECRET_ACCESS_KEY + S3_ENDPOINT + S3_REGION
+RESEND_API_KEY
+EDITORIAL_EMAIL
+EMAIL_FROM
+TURNSTILE_SECRET_KEY
+NEXT_PUBLIC_TURNSTILE_SITE_KEY
+UPSTASH_REDIS_REST_URL
+UPSTASH_REDIS_REST_TOKEN
+NEXT_PUBLIC_PLAUSIBLE_DOMAIN
+
+METHOD A — Netlify CLI (recommended)
+------------------------------------
+1. Install: npm i -g netlify-cli
+2. cd into this folder
+3. npm install
+4. netlify login
+5. netlify init   (or netlify link)
+6. Add env vars: netlify env:set DATABASE_URL "..."  (or use the UI)
+7. Deploy: netlify deploy --build --prod
+
+METHOD B — Netlify UI + Git
+---------------------------
+1. Push this folder to a GitHub repo
+2. Netlify → Add new site → Import from Git
+3. Base directory: (leave empty — this folder IS the site root)
+4. Build command: npm run build
+5. Publish directory: .next
+6. Add the env vars listed above
+7. Deploy
+
+METHOD C — Manual folder deploy (CLI, not browser Drop)
+-------------------------------------------------------
+From this folder:
+  npm install
+  netlify deploy --build --prod --dir=.
+
+After deploy, seed content if the database is empty:
+  npm run seed:realistic:api
+  (set SEED_API_BASE to your Netlify URL)
+
