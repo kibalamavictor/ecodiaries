@@ -95,9 +95,9 @@ export async function saveStory(formData: FormData) {
   }
 
   if (id) {
-    await payload.update({ collection: 'stories', id, data, overrideAccess: false })
+    await payload.update({ collection: 'stories', id, data, overrideAccess: false, user })
   } else {
-    await payload.create({ collection: 'stories', data, overrideAccess: false })
+    await payload.create({ collection: 'stories', data, overrideAccess: false, user })
   }
 
   revalidateStories(slug)
