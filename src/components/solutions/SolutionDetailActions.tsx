@@ -19,19 +19,22 @@ export function SolutionDetailActions({
         <button
           type="button"
           onClick={() => setSupportOpen(true)}
-          className="w-full rounded-full bg-brand-lime px-5 py-3 text-sm font-semibold text-brand-forest transition hover:brightness-95"
+          className="mag-btn"
+          style={{ width: '100%', height: 44 }}
         >
           Support this work
         </button>
         <Link
           href={`/solutions/${slug}/brief`}
-          className="w-full rounded-full border border-brand-green px-5 py-3 text-center text-sm font-semibold text-brand-green transition hover:bg-brand-green/10"
+          className="mag-tag"
+          style={{ width: '100%', height: 44, justifyContent: 'center' }}
         >
           Download one-pager
         </Link>
         <Link
           href="/contact?reason=partnership"
-          className="w-full text-center text-sm font-medium text-brand-green underline"
+          className="mag-link"
+          style={{ textAlign: 'center' }}
         >
           Partnership inquiry
         </Link>
