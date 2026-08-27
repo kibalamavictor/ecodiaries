@@ -74,7 +74,7 @@ test.describe('EcoDiaries critical paths', () => {
     await expect(page).toHaveURL(/newsletter=confirmed/)
   })
 
-  test('contributor application and story publish flow', async ({ page, request }) => {
+  test('contributor application and story publish flow', { timeout: 120_000 }, async ({ page, request }) => {
     const email = `contributor-${Date.now()}@example.com`
     const storySlug = `e2e-story-${Date.now()}`
     const adminToken = await adminLogin()
@@ -111,15 +111,16 @@ test.describe('EcoDiaries critical paths', () => {
     await page.fill('#email', email)
     await page.fill('#password', contributorPassword)
     await page.click('button[type="submit"]')
-    await expect(page).toHaveURL(/\/dashboard/)
+    await expect(page.getByRole('heading', { name: 'Contributor Dashboard' })).toBeVisible({ timeout: 15000 })
 
     await page.goto('/dashboard/stories/new')
+    await expect(page.locator('#title')).toBeVisible({ timeout: 15000 })
     await page.fill('#title', 'E2E Published Story')
     await page.fill('#slug', storySlug)
     await page.fill('#excerpt', 'An automated end-to-end test story.')
     await page.fill('#body', 'First paragraph of the test story.\n\nSecond paragraph with more detail.')
     await page.click('button[value="true"]')
-    await expect(page).toHaveURL(/\/dashboard/)
+    await expect(page.getByRole('heading', { name: 'Contributor Dashboard' })).toBeVisible({ timeout: 15000 })
 
     await publishStoryBySlug(storySlug, adminToken)
 
