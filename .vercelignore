@@ -1,0 +1,6 @@
+.env
+.env.*
+!.env.example
+src/media/
+media/
+node_modules/.cache/

@@ -1,0 +1,224 @@
+.legal-page {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  background: #f4f6f2;
+  color: #46544a;
+}
+
+.legal-page *,
+.legal-page *::before,
+.legal-page *::after {
+  box-sizing: border-box;
+}
+
+.legal-page__nav {
+  padding: 0 20px;
+}
+
+.legal-page__nav .site-nav {
+  padding-top: 12px;
+}
+
+.legal-page__nav .site-nav > .wrap {
+  margin-inline: 0;
+  width: 100%;
+  max-width: none;
+  padding: 10px 14px 10px 22px;
+  border-radius: var(--r-pill);
+  background: rgba(7, 13, 2, 0.05);
+}
+
+@media (max-width: 720px) {
+  .legal-page__nav {
+    padding: max(10px, env(safe-area-inset-top)) 20px 0;
+  }
+
+  .legal-page__nav .site-nav {
+    padding-top: 0;
+  }
+
+  .legal-page__nav .site-nav > .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 10px 8px 14px;
+    background: #fff;
+    border: 1px solid #e6e9e3;
+    box-shadow: 0 1px 4px rgba(14, 58, 29, 0.06);
+  }
+
+  .legal-page__nav .brand {
+    flex: 1;
+    min-width: 0;
+    gap: 8px;
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .legal-page__nav .brand-mark {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+  }
+
+  .legal-page__nav .nav-cta {
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0;
+  }
+
+  .legal-page__nav .nav-cta .btn-sm {
+    display: none;
+  }
+
+  .legal-page__nav .nav-toggle {
+    display: flex;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    background: #f4f6f2;
+    color: #0e3a1d;
+    border: 1px solid #e6e9e3;
+  }
+}
+
+@media (max-width: 380px) {
+  .legal-page__nav .brand {
+    font-size: 15px;
+  }
+
+  .legal-page__nav .brand-mark {
+    width: 26px;
+    height: 26px;
+  }
+
+  .legal-page__nav .nav-toggle {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.legal-page__inner {
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+  padding: 28px 20px 56px;
+}
+
+.legal-page__eyebrow {
+  margin: 0;
+  font-family: var(--font-body, 'Inter', system-ui, sans-serif);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #2f9e44;
+}
+
+.legal-page__title {
+  margin: 10px 0 0;
+  font-family: var(--font-display, 'Sora', system-ui, sans-serif);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #0e3a1d;
+  overflow-wrap: break-word;
+}
+
+.legal-page__updated {
+  margin: 10px 0 0;
+  font-family: var(--font-body, 'Inter', system-ui, sans-serif);
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: #69736b;
+}
+
+.legal-page__divider {
+  height: 1px;
+  margin-top: 20px;
+  background: #e6e9e3;
+}
+
+.legal-page__section {
+  margin-top: 32px;
+}
+
+.legal-page__section:first-of-type {
+  margin-top: 24px;
+}
+
+.legal-page__section-title {
+  margin: 0 0 10px;
+  font-family: var(--font-display, 'Sora', system-ui, sans-serif);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #0e3a1d;
+  overflow-wrap: break-word;
+}
+
+.legal-page__prose {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.legal-page__prose p {
+  margin: 0;
+  font-family: var(--font-body, 'Inter', system-ui, sans-serif);
+  font-size: 15.5px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: #46544a;
+}
+
+.legal-page__prose p + p {
+  margin-top: 14px;
+}
+
+.legal-page__prose ul,
+.legal-page__prose ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-family: var(--font-body, 'Inter', system-ui, sans-serif);
+  font-size: 15.5px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: #46544a;
+}
+
+.legal-page__prose ul + p,
+.legal-page__prose ol + p,
+.legal-page__prose p + ul,
+.legal-page__prose p + ol {
+  margin-top: 14px;
+}
+
+.legal-page__prose li + li {
+  margin-top: 8px;
+}
+
+.legal-page__prose a {
+  color: #2f9e44;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.legal-page__prose a:hover {
+  color: #0e3a1d;
+}
+
+@media (min-width: 768px) {
+  .legal-page__inner {
+    padding: 40px 20px 72px;
+  }
+
+  .legal-page__title {
+    font-size: 40px;
+  }
+}

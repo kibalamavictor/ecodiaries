@@ -1,0 +1,552 @@
+/* ── Mobile org profile header (LinkedIn-style) ── */
+
+@media (max-width: 767px) {
+  .changemaker-profile-mobile {
+    background: #fff;
+    color: #0e3a1d;
+  }
+
+  .changemaker-profile-mobile__nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: max(10px, env(safe-area-inset-top)) 20px 10px;
+    background: #fff;
+  }
+
+  .changemaker-profile-mobile__back {
+    display: inline-flex;
+    width: 36px;
+    height: 36px;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #f3f5f0;
+    color: #0e3a1d;
+    text-decoration: none;
+  }
+
+  .changemaker-profile-mobile__back svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .changemaker-profile-mobile__nav .site-nav {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .changemaker-profile-mobile__nav .site-nav > .wrap {
+    margin-inline: 0;
+    width: 100%;
+    max-width: none;
+  }
+
+  .changemaker-profile-mobile__cover {
+    position: relative;
+    height: 112px;
+    overflow: hidden;
+    background: #3f6f4a;
+  }
+
+  .changemaker-profile-mobile__cover-image {
+    object-fit: cover;
+  }
+
+  .changemaker-profile-mobile__body {
+    padding: 0 20px 20px;
+  }
+
+  .changemaker-profile-mobile__logo {
+    position: relative;
+    width: 74px;
+    height: 74px;
+    margin-top: -37px;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 4px solid #fff;
+    background: #0e3a1d;
+    box-shadow: 0 4px 14px rgba(14, 58, 29, 0.12);
+  }
+
+  .changemaker-profile-mobile__logo-image {
+    object-fit: cover;
+  }
+
+  .changemaker-profile-mobile__logo-initial {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display, 'Sora', system-ui, sans-serif);
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1;
+    color: #c2e812;
+  }
+
+  .changemaker-profile-mobile__name {
+    margin: 12px 0 0;
+    font-family: var(--font-display, 'Sora', system-ui, sans-serif);
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: #0e3a1d;
+  }
+
+  .changemaker-profile-mobile__identity {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .changemaker-profile-mobile__verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 999px;
+    padding: 4px 10px;
+    background: #e7f1e9;
+    font-family: var(--font-body, 'Inter', system-ui, sans-serif);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #2f6d11;
+  }
+
+  .changemaker-profile-mobile__verified-icon {
+    width: 14px;
+    height: 14px;
+    flex: none;
+  }
+
+  .changemaker-profile-mobile__meta {
+    font-family: var(--font-body, 'Inter', system-ui, sans-serif);
+    font-size: 12.5px;
+    font-weight: 400;
+    line-height: 1.35;
+    color: #69736b;
+  }
+
+  .changemaker-profile-mobile__bio {
+    margin: 13px 0 0;
+    font-family: var(--font-body, 'Inter', system-ui, sans-serif);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: #5a6b5e;
+    white-space: pre-line;
+  }
+
+  .changemaker-profile-mobile__cta {
+    display: flex;
+    width: 100%;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 18px;
+    padding: 13px 20px;
+    border-radius: 999px;
+    background: #c2e812;
+    font-family: var(--font-display, 'Sora', system-ui, sans-serif);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #0e3a1d;
+    text-decoration: none;
+  }
+
+  /* Org profile — impact across projects band */
+  .org-impact-band-wrap {
+    padding: 0 20px 0;
+    background: #fff;
+  }
+
+  .org-impact-band {
+    display: grid;
+    align-items: stretch;
+    border-radius: 22px;
+    background: #0c2a17;
+    padding: 22px 12px;
+    color: #fff;
+  }
+
+  .org-impact-band--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .org-impact-band--three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .org-impact-band__cell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    padding: 0 8px;
+    text-align: center;
+  }
+
+  .org-impact-band__cell:not(:last-child) .org-impact-band__divider {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .org-impact-band__value {
+    margin: 0;
+    font-family: var(--font-display, 'Sora', system-ui, sans-serif);
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  .org-impact-band__label {
+    margin: 5px 0 0;
+    font-family: var(--font-body, 'Inter', system-ui, sans-serif);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.25;
+    color: #c2e812;
+  }
+
+  .changemaker-profile__body {
+    padding-top: 8px;
+  }
+
+  .changemaker-profile__portfolio h2 {
+    margin-top: 0;
+  }
+}
+
+/* ── Desktop org profile header (unchanged) ── */
+
+@media (min-width: 768px) {
+  .changemaker-profile__hero {
+    position: relative;
+    background: #0e3a1d;
+    color: #fff;
+  }
+
+  .changemaker-profile__toolbar {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: 'back crumb nav';
+    align-items: center;
+    gap: 16px;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding: 16px 24px 12px;
+  }
+
+  .changemaker-profile__back {
+    grid-area: back;
+    display: none;
+  }
+
+  .changemaker-profile__breadcrumb {
+    grid-area: crumb;
+    display: inline-flex;
+    align-self: center;
+    padding-left: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(194, 232, 18, 0.92);
+    text-decoration: none;
+  }
+
+  .changemaker-profile__breadcrumb:hover {
+    color: #c2e812;
+  }
+
+  .changemaker-profile__toolbar .site-nav {
+    grid-area: nav;
+    justify-self: end;
+    padding: 0;
+  }
+
+  .changemaker-profile__toolbar .site-nav > .wrap {
+    margin-inline: 0;
+    width: auto;
+    max-width: none;
+    padding: 4px 4px 4px 10px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: none;
+  }
+
+  .changemaker-profile__cover-wrap {
+    position: relative;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  .changemaker-profile__cover {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    border-radius: 18px;
+  }
+
+  .changemaker-profile__cover-image {
+    object-fit: cover;
+  }
+
+  .changemaker-profile__cover-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(7, 20, 5, 0.12) 0%,
+      rgba(7, 20, 5, 0.38) 62%,
+      rgba(14, 58, 29, 0.94) 100%
+    );
+  }
+
+  .changemaker-profile__panel {
+    position: relative;
+    z-index: 1;
+    max-width: 72rem;
+    margin: -36px auto 0;
+    padding: 0 24px 24px;
+  }
+
+  .changemaker-profile__identity {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: 'logo details cta';
+    gap: 20px;
+    align-items: end;
+  }
+
+  .changemaker-profile__logo {
+    grid-area: logo;
+    position: relative;
+    width: 112px;
+    height: 112px;
+    flex: none;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 4px solid rgba(255, 255, 255, 0.9);
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+  }
+
+  .changemaker-profile__logo-image {
+    object-fit: cover;
+  }
+
+  .changemaker-profile__details {
+    grid-area: details;
+    min-width: 0;
+    padding-top: 2px;
+  }
+
+  .changemaker-profile__title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .changemaker-profile__name {
+    margin: 0;
+    font-family: var(--font-display, 'Sora', system-ui, sans-serif);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  .changemaker-profile__verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 999px;
+    padding: 4px 10px;
+    background: rgba(194, 232, 18, 0.18);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    color: #c2e812;
+  }
+
+  .changemaker-profile__verified svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .changemaker-profile__meta {
+    margin: 8px 0 0;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.62);
+  }
+
+  .changemaker-profile__tagline {
+    margin: 10px 0 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 36rem;
+  }
+
+  .changemaker-profile__bio-rich {
+    display: block;
+    margin-top: 18px;
+    max-width: 52rem;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .changemaker-profile__bio-prose {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .changemaker-profile__bio-prose p {
+    margin: 0;
+  }
+
+  .changemaker-profile__bio-prose p + p {
+    margin-top: 10px;
+  }
+
+  .changemaker-profile__cta {
+    grid-area: cta;
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    justify-content: center;
+    align-self: end;
+    min-height: 44px;
+    padding: 0 22px;
+    border-radius: 999px;
+    background: #c2e812;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0e3a1d;
+    text-decoration: none;
+  }
+
+  .changemaker-profile__stats {
+    display: grid;
+    border-block: 1px solid #ececea;
+    background: #fff;
+  }
+
+  .changemaker-profile__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+
+  .changemaker-profile__stat--divider {
+    border-right: 1px solid #ececea;
+  }
+
+  .changemaker-profile__stat-value {
+    margin: 0;
+    font-family: var(--font-display, 'Sora', system-ui, sans-serif);
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: #0e3a1d;
+  }
+
+  .changemaker-profile__stat-label {
+    margin: 0;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #4ba62b;
+  }
+
+  .org-impact-band-wrap {
+    max-width: 72rem;
+    margin-inline: auto;
+    padding: 0 24px 20px;
+    background: #fff;
+  }
+
+  .org-impact-band {
+    display: grid;
+    align-items: stretch;
+    border-radius: 22px;
+    background: #0c2a17;
+    padding: 22px 16px;
+    color: #fff;
+  }
+
+  .org-impact-band--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .org-impact-band--three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .org-impact-band__cell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    padding: 0 12px;
+    text-align: center;
+  }
+
+  .org-impact-band__cell:not(:last-child) .org-impact-band__divider {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .org-impact-band__value {
+    margin: 0;
+    font-family: var(--font-display, 'Sora', system-ui, sans-serif);
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  .org-impact-band__label {
+    margin: 5px 0 0;
+    font-family: var(--font-body, 'Inter', system-ui, sans-serif);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.25;
+    color: #c2e812;
+  }
+}

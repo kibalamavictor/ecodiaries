@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+
+# env
+.env
+.env.local
+.env.*.local
+.env.vercel.*
+
+# next.js
+.next/
+out/
+
+# build / cache
+tsconfig.tsbuildinfo
+
+# os
+.DS_Store
+
+# uploads (local dev media)
+src/media/
+media/
+
+# archives
+*.zip
+.vercel
+.env*
