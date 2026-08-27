@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { ArrowRight } from 'lucide-react'
 import { ContributorsApplyLink } from '@/components/contributors/ContributorsApplyLink'
 import type { Contributor } from '@/lib/contributors/types'
 
@@ -34,55 +33,29 @@ export function ContributorCtaBanner({ contributors }: ContributorCtaBannerProps
   const count = contributors.length
 
   return (
-    <section className="contributor-cta-banner bg-brand-green text-white">
-      {/* Mobile — compact proof-driven card */}
-      <div className="contributor-cta-banner__mobile mx-auto max-w-6xl px-4 sm:px-6 md:hidden">
-        <p className="contributor-cta-banner__eyebrow">Voices from the ground</p>
-        <h2 className="contributor-cta-banner__headline">Want to be featured here?</h2>
-
-        {count > 0 ? (
-          <div className="contributor-cta-banner__proof">
-            {sample.length ? (
-              <ul className="contributor-cta-banner__avatars" aria-hidden>
-                {sample.map((contributor) => (
-                  <li key={contributor.id} className="contributor-cta-banner__avatar">
-                    {contributor.avatarUrl ? (
-                      <Image
-                        src={contributor.avatarUrl}
-                        alt=""
-                        width={36}
-                        height={36}
-                        className="contributor-cta-banner__avatar-image"
-                      />
-                    ) : (
-                      <span className="contributor-cta-banner__avatar-initials">{initials(contributor.name)}</span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-            <p className="contributor-cta-banner__proof-text">{proofLine(count)}</p>
-          </div>
-        ) : null}
-
-        <ContributorsApplyLink className="contributor-cta-banner__btn">
-          Apply now
-          <ArrowRight className="contributor-cta-banner__btn-icon" aria-hidden />
-        </ContributorsApplyLink>
-      </div>
-
-      {/* Desktop — unchanged */}
-      <div className="mx-auto hidden max-w-6xl flex-col items-start justify-between gap-6 px-4 py-14 md:flex md:flex-row md:items-center md:px-6">
+    <section className="mag-cta-band">
+      <div className="mag-wrap mag-two mag-two--center">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.12em] text-brand-lime">Voices from the ground</p>
-          <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Want to be featured here? Apply to contribute.</h2>
-          <p className="mt-2 max-w-xl text-white/85">
-            EcoDiaries amplifies young storytellers, community reporters, and environmental advocates.
-          </p>
+          <p className="mag-news__eyebrow mag-cta-band__eyebrow">Voices from the ground</p>
+          <h2>Want to be featured here?</h2>
+          {count > 0 ? <p>{proofLine(count)}</p> : (
+            <p>EcoDiaries amplifies young storytellers, community reporters, and environmental advocates.</p>
+          )}
+          <ContributorsApplyLink className="mag-btn mag-cta-band__btn">Apply now</ContributorsApplyLink>
         </div>
-        <ContributorsApplyLink className="inline-flex items-center gap-2 rounded-full bg-brand-lime px-6 py-3 text-sm font-semibold text-brand-forest transition hover:brightness-95">
-          Apply now <span aria-hidden>→</span>
-        </ContributorsApplyLink>
+        {sample.length ? (
+          <ul className="mag-tag-row" aria-hidden style={{ justifyContent: 'flex-end' }}>
+            {sample.map((contributor) => (
+              <li key={contributor.id} className="mag-profile-logo" style={{ width: 64, height: 64, borderRadius: 999 }}>
+                {contributor.avatarUrl ? (
+                  <Image src={contributor.avatarUrl} alt="" fill sizes="64px" />
+                ) : (
+                  <span>{initials(contributor.name)}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </div>
     </section>
   )

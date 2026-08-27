@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { SiteFooter } from '@/components/layout/SiteFooter'
+import { MagPageShell } from '@/components/magazine/MagPageShell'
 import { ProgrammeDetail } from '@/components/programmes/ProgrammeDetail'
 import { getProgrammeBySlug, getProgrammesForPage } from '@/lib/cms/programmes-page'
 import { opportunityDetailPath } from '@/lib/programmes/routes'
@@ -31,9 +31,8 @@ export default async function OpportunityDetailPage({ params }: Props) {
   if (!programme) notFound()
 
   return (
-    <div className="programmes-page">
+    <MagPageShell>
       <ProgrammeDetail programme={programme} />
-      <SiteFooter />
-    </div>
+    </MagPageShell>
   )
 }

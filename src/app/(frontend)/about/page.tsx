@@ -1,20 +1,23 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { SiteNav } from '@/components/layout/SiteNav'
-import { SiteFooter } from '@/components/layout/SiteFooter'
-import { NewsletterBanner } from '@/components/layout/NewsletterBanner'
+import { MagCard } from '@/components/magazine/MagCard'
+import { MagMedia } from '@/components/magazine/MagMedia'
+import { MagNewsletter } from '@/components/magazine/MagNewsletter'
+import { MagPageIntro } from '@/components/magazine/MagPageIntro'
+import { MagPageShell } from '@/components/magazine/MagPageShell'
 import { getProgrammes } from '@/lib/cms/community'
 import { OPPORTUNITIES_PATH, opportunityDetailPath } from '@/lib/programmes/routes'
+import { getProgrammeImageUrl } from '@/lib/programmes/images'
 import { getSiteSettings } from '@/lib/cms/site-settings'
-import { PlayIcon } from '@/components/icons'
-import { AboutMobile } from '@/components/about/AboutMobile'
 import { getAboutPageVideos } from '@/lib/about/about-page-media'
+import { ABOUT_HERO_HEADLINE, ABOUT_INTRO_PARAGRAPHS } from '@/lib/about/about-page-content'
 
 export const metadata: Metadata = {
   title: 'About',
   description: 'EcoDiaries is a climate storytelling platform documenting stories of environmental action, resilience, and innovation across Africa.',
 }
+
+const FALLBACK_STILL = 'https://picsum.photos/seed/about-hero/1400/620'
 
 export default async function AboutPage() {
   const [settings, programmes, videos] = await Promise.all([
@@ -23,76 +26,59 @@ export default async function AboutPage() {
     getAboutPageVideos(),
   ])
 
+  const heroStill = videos.hero.kind === 'ready' ? videos.hero.src : FALLBACK_STILL
+  const whoStill = videos['who-we-are'].kind === 'ready' ? videos['who-we-are'].src : 'https://picsum.photos/seed/who-we-are/1400/620'
+  const impactStill = videos.impact.kind === 'ready' ? videos.impact.src : 'https://picsum.photos/seed/impact/900/700'
+  const newsletterImage = programmes[0] ? getProgrammeImageUrl(programmes[0].slug, 900, 700) : heroStill
+
   return (
-    <>
-      <div className="hidden md:block magazine">
-        <SiteNav />
-        <div className="mag-wrap" style={{ paddingTop: 48, paddingBottom: 56 }}>
-          <div className="two-col" style={{ gridTemplateColumns: '.85fr 1.15fr' }}>
-            <div>
-              <h1 className="about-hero-title mag-title">
-                A climate storytelling platform documenting stories that matter
-              </h1>
-            </div>
-            <div>
-              <span className="mag-news__eyebrow">Turning awareness into action</span>
-              <p className="mt-16 mag-excerpt mag-excerpt--full">
-                Across Africa, communities are already responding to climate challenges with creativity, innovation, and resilience. Many of these solutions remain invisible beyond the communities where they originate.
+    <MagPageShell>
+      <div className="mag-section" style={{ paddingTop: 12 }}>
+        <MagPageIntro eyebrow="About EcoDiaries" title={ABOUT_HERO_HEADLINE}>
+          <div className="mag-two" style={{ marginTop: 12 }}>
+            {ABOUT_INTRO_PARAGRAPHS.map((paragraph) => (
+              <p key={paragraph} className="mag-excerpt mag-excerpt--full">
+                {paragraph}
               </p>
-              <p className="mt-16 mag-excerpt mag-excerpt--full">
-                EcoDiaries exists to identify, document, and amplify these stories so others can learn, adapt, and act — connecting communities and promoting the spread of proven environmental solutions.
-              </p>
-            </div>
+            ))}
           </div>
+        </MagPageIntro>
+        <div className="mag-wrap" style={{ marginTop: 32 }}>
+          <MagMedia src={heroStill} alt={videos.hero.kind === 'ready' ? videos.hero.alt : ''} priority />
+        </div>
+      </div>
 
-          <div className="feature-media mt-48" style={{ aspectRatio: '16/7' }}>
-            <Image src="https://picsum.photos/seed/about-hero/1200/520" alt="A storyteller being interviewed on location" width={1200} height={520} sizes="100vw" />
-            <button className="play-btn" aria-label="Play" type="button">
-              <PlayIcon />
-            </button>
+      <section className="mag-section" id="mission">
+        <div className="mag-wrap mag-two">
+          <div>
+            <p className="mag-news__eyebrow">Our mission</p>
+            <h2 style={{ fontSize: 'clamp(26px, 3vw, 36px)', marginTop: 12 }}>{settings.missionCopy}</h2>
+          </div>
+          <div>
+            <p className="mag-news__eyebrow">Our vision</p>
+            <h2 style={{ fontSize: 'clamp(26px, 3vw, 36px)', marginTop: 12 }}>{settings.visionCopy}</h2>
           </div>
         </div>
+      </section>
 
-        <div className="wrap section">
-          <div className="two-col" id="mission">
-            <div>
-              <span className="eyebrow">Our Mission</span>
-              <h2 className="mt-16 about-section-title">
-                {settings.missionCopy}
-              </h2>
-            </div>
-            <div>
-              <span className="eyebrow">Our Vision</span>
-              <h2 className="mt-16 about-section-title">
-                {settings.visionCopy}
-              </h2>
-            </div>
-          </div>
+      <section className="mag-section">
+        <div className="mag-wrap">
+          <p className="mag-news__eyebrow">Who we are</p>
+          <h2 style={{ margin: '8px 0 28px' }}>A platform built for climate stories</h2>
+          <MagMedia src={whoStill} alt={videos['who-we-are'].kind === 'ready' ? videos['who-we-are'].alt : ''} />
         </div>
+      </section>
 
-        <div className="divider" />
-
-        <div className="wrap section" style={{ paddingTop: 0 }}>
-          <span className="eyebrow">Who We Are</span>
-          <h2 className="mt-16">A platform built for climate stories</h2>
-          <div className="feature-media mt-32" style={{ aspectRatio: '16/7.4' }}>
-            <Image src="https://picsum.photos/seed/who-we-are/1200/520" alt="Behind the scenes of a documentary interview" width={1200} height={520} sizes="100vw" />
-            <button className="play-btn" aria-label="Play" type="button">
-              <PlayIcon />
-            </button>
-          </div>
-        </div>
-
-        <div className="wrap section" style={{ paddingTop: 0 }}>
-          <span className="eyebrow">Our Impact</span>
-          <div className="two-col mt-24" style={{ gridTemplateColumns: '1fr 1fr', alignItems: 'center' }}>
-            <div className="feature-media" style={{ aspectRatio: '4/3' }}>
-              <Image src="https://picsum.photos/seed/impact/700/560" alt="A young reporter speaking into a microphone" width={700} height={560} sizes="50vw" />
-              <button className="play-btn" aria-label="Play" type="button">
-                <PlayIcon />
-              </button>
-            </div>
-            <div className="stat-block">
+      <section className="mag-section">
+        <div className="mag-wrap mag-two mag-two--center">
+          <MagMedia
+            src={impactStill}
+            alt={videos.impact.kind === 'ready' ? videos.impact.alt : ''}
+            ratio="4 / 3"
+          />
+          <div>
+            <p className="mag-news__eyebrow">Our impact</p>
+            <div className="mag-stat-row" style={{ marginTop: 20, border: 0, padding: 0, gridTemplateColumns: '1fr 1fr' }}>
               {settings.impactStats.map((stat) => (
                 <div key={stat.label}>
                   <div className="num">{stat.num}</div>
@@ -102,28 +88,32 @@ export default async function AboutPage() {
             </div>
           </div>
         </div>
+      </section>
 
-        <div className="wrap section" style={{ paddingTop: 0 }}>
-          <div className="section-head">
+      <section className="mag-section">
+        <div className="mag-wrap">
+          <div className="mag-section-head">
             <h2>Six ways to get involved</h2>
-            <Link href={OPPORTUNITIES_PATH} className="btn btn-outline btn-sm">
-              View all opportunities
-            </Link>
+            <Link href={OPPORTUNITIES_PATH} className="mag-link">View all opportunities →</Link>
           </div>
-          <div className="card-grid grid-3">
-            {programmes.map((p) => (
-              <Link key={p.slug} href={opportunityDetailPath(p.slug)} className={`programme-card ${p.bgClass}`}>
-                <h3>{p.title}</h3>
-              </Link>
+          <div className="mag-latest__grid">
+            {programmes.map((programme) => (
+              <MagCard
+                key={programme.slug}
+                item={{
+                  href: opportunityDetailPath(programme.slug),
+                  image: getProgrammeImageUrl(programme.slug),
+                  category: programme.eyebrow || 'Opportunity',
+                  title: programme.title,
+                  excerpt: programme.description,
+                }}
+              />
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      <AboutMobile settings={settings} programmes={programmes} videos={videos} />
-
-      <NewsletterBanner />
-      <SiteFooter />
-    </>
+      <MagNewsletter image={newsletterImage} />
+    </MagPageShell>
   )
 }

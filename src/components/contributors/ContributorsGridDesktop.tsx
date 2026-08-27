@@ -31,8 +31,8 @@ export function ContributorsGridDesktop({ contributors }: { contributors: Contri
   )
 
   return (
-    <section className="bg-white py-14">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+    <section className="mag-section" style={{ paddingTop: 8 }}>
+      <div className="mag-wrap">
         <FilterPills
           filters={contributorFilters}
           paramKey="category"

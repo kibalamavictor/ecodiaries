@@ -79,7 +79,7 @@ export function NewsletterForm({ variant = 'banner' }: NewsletterFormProps) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 8 }}
               transition={{ duration: 0.2 }}
-              className="mag-news__row"
+              className="mag-news__row cta-form"
             >
               <FormInput
                 type="email"
@@ -89,7 +89,7 @@ export function NewsletterForm({ variant = 'banner' }: NewsletterFormProps) {
                 placeholder="Email address"
                 className="mag-news__input"
               />
-              <button type="button" onClick={goNext} className="mag-btn">
+              <button type="submit" onClick={goNext} className="mag-btn">
                 Subscribe
               </button>
             </motion.div>

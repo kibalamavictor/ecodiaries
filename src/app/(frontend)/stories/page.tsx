@@ -1,12 +1,11 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
-import { SiteNav } from '@/components/layout/SiteNav'
-import { SiteFooter } from '@/components/layout/SiteFooter'
-import { NewsletterBanner } from '@/components/layout/NewsletterBanner'
 import { HeroSearch } from '@/components/forms/HeroSearch'
 import { FilterPills } from '@/components/ui/FilterPills'
 import { MagCard } from '@/components/magazine/MagCard'
+import { MagNewsletter } from '@/components/magazine/MagNewsletter'
 import { MagPageIntro } from '@/components/magazine/MagPageIntro'
+import { MagPageShell } from '@/components/magazine/MagPageShell'
 import { PageWrapper } from '@/components/motion/PageWrapper'
 import { getCategories, getLatestStories } from '@/lib/cms/stories'
 import { byline, formatMagDate } from '@/lib/magazine'
@@ -33,8 +32,7 @@ export default async function StoriesPage({ searchParams }: Props) {
 
   return (
     <PageWrapper>
-      <SiteNav activeLink="/stories" />
-      <main className="magazine">
+      <MagPageShell>
         <div className="mag-section" style={{ paddingTop: 12 }}>
           <MagPageIntro
             eyebrow="Stories"
@@ -76,9 +74,8 @@ export default async function StoriesPage({ searchParams }: Props) {
             ) : null}
           </div>
         </div>
-      </main>
-      <NewsletterBanner />
-      <SiteFooter />
+        <MagNewsletter image={stories[0]?.image || 'https://picsum.photos/seed/eco-stories/900/700'} />
+      </MagPageShell>
     </PageWrapper>
   )
 }

@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic'
 import type { Metadata } from 'next'
-import { SiteFooter } from '@/components/layout/SiteFooter'
+import { MagNewsletter } from '@/components/magazine/MagNewsletter'
+import { MagPageShell } from '@/components/magazine/MagPageShell'
 import { CredibilityStrip } from '@/components/solutions/CredibilityStrip'
 import { FundingCtaBand } from '@/components/solutions/FundingCtaBand'
 import { SolutionHero } from '@/components/solutions/SolutionHero'
@@ -22,18 +23,15 @@ type Props = { searchParams: Promise<{ q?: string }> }
 export default async function SolutionsPage({ searchParams }: Props) {
   const { q } = await searchParams
   const solutions = await getAtlasProjects()
+  const newsletterImage = solutions[0]?.coverImageUrl || 'https://picsum.photos/seed/eco-atlas/900/700'
 
   return (
-    <div className="solutions-page">
+    <MagPageShell>
       <SolutionHero solutions={solutions} defaultQuery={q} />
-      <div className="hidden md:block">
-        <CredibilityStrip solutions={solutions} />
-      </div>
+      <CredibilityStrip solutions={solutions} />
       <SolutionsAtlasExplorer projects={solutions} />
-      <div className="hidden md:block">
-        <FundingCtaBand />
-      </div>
-      <SiteFooter />
-    </div>
+      <FundingCtaBand />
+      <MagNewsletter image={newsletterImage} />
+    </MagPageShell>
   )
 }

@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { SiteNav } from '@/components/layout/SiteNav'
-import { SiteFooter } from '@/components/layout/SiteFooter'
+import { MagPageShell } from '@/components/magazine/MagPageShell'
 import { ProjectPortfolio } from '@/components/solutions/ProjectPortfolio'
 import { getAtlasProjectBySlug, getRelatedAtlasProjects } from '@/lib/cms/solutions-page'
 import { getPayloadClient } from '@/lib/payload'
@@ -55,12 +54,12 @@ export default async function SolutionDetailPage({ params }: Props) {
   ])
 
   return (
-    <div className="solutions-tailwind solution-detail-page min-h-screen bg-white">
-      <div className="solution-detail-page__stage">
-        <SiteNav variant="light" activeLink="/solutions" />
-        <ProjectPortfolio project={project} related={related} impactUpdates={impactUpdates} />
+    <MagPageShell>
+      <div className="solutions-tailwind solution-detail-page">
+        <div className="solution-detail-page__stage">
+          <ProjectPortfolio project={project} related={related} impactUpdates={impactUpdates} />
+        </div>
       </div>
-      <SiteFooter />
-    </div>
+    </MagPageShell>
   )
 }

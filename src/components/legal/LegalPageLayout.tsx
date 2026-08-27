@@ -1,7 +1,5 @@
-import type { ReactNode } from 'react'
-import { SiteNav } from '@/components/layout/SiteNav'
-import { SiteFooter } from '@/components/layout/SiteFooter'
-import './legal.css'
+import { MagPageIntro } from '@/components/magazine/MagPageIntro'
+import { MagPageShell } from '@/components/magazine/MagPageShell'
 
 export type LegalSection = {
   heading: string
@@ -17,7 +15,7 @@ type LegalPageLayoutProps = {
 const EMAIL_PATTERN = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g
 const EMAIL_TEST = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
-function linkifyText(text: string): ReactNode[] {
+function linkifyText(text: string) {
   const parts = text.split(EMAIL_PATTERN)
   return parts.map((part, index) =>
     EMAIL_TEST.test(part) ? (
@@ -65,33 +63,25 @@ function renderBodyBlocks(body: string) {
 
 export function LegalPageLayout({ title, sections, lastUpdated }: LegalPageLayoutProps) {
   return (
-    <>
-      <div className="legal-page">
-        <div className="legal-page__nav">
-          <SiteNav variant="dark" />
-        </div>
-        <article className="legal-page__inner">
-          <header className="legal-page__header">
-            <p className="legal-page__eyebrow">Legal</p>
-            <h1 className="legal-page__title">{title}</h1>
-            {lastUpdated ? <p className="legal-page__updated">Last updated: {lastUpdated}</p> : null}
-            <div className="legal-page__divider" role="presentation" />
-          </header>
-
+    <MagPageShell>
+      <div className="mag-section" style={{ paddingTop: 12 }}>
+        <MagPageIntro
+          eyebrow="Legal"
+          title={title}
+          lede={lastUpdated ? `Last updated ${lastUpdated}` : undefined}
+        />
+        <div className="mag-wrap mag-legal">
           {sections.map((section, index) => {
             const sectionId = `legal-section-${index}`
             return (
-            <section key={section.heading} className="legal-page__section" aria-labelledby={sectionId}>
-              <h2 className="legal-page__section-title" id={sectionId}>
-                {section.heading}
-              </h2>
-              <div className="legal-page__prose">{renderBodyBlocks(section.body)}</div>
-            </section>
+              <section key={section.heading} aria-labelledby={sectionId}>
+                <h2 id={sectionId}>{section.heading}</h2>
+                <div>{renderBodyBlocks(section.body)}</div>
+              </section>
             )
           })}
-        </article>
+        </div>
       </div>
-      <SiteFooter />
-    </>
+    </MagPageShell>
   )
 }

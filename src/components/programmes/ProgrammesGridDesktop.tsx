@@ -23,8 +23,8 @@ export function ProgrammesGridDesktop({ programmes }: { programmes: Programme[] 
   const isSearchActive = Boolean(query.trim())
 
   return (
-    <section className="section programmes-section bg-white" id="opportunities">
-      <div className="wrap">
+    <section className="mag-section" id="opportunities">
+      <div className="mag-wrap">
         <ProgrammeFilters />
         <p className="mt-4 text-sm text-muted-foreground">
           Showing {filteredProgrammes.length} opportunit{filteredProgrammes.length === 1 ? 'y' : 'ies'}

@@ -2,10 +2,9 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { SiteNav } from '@/components/layout/SiteNav'
-import { SiteFooter } from '@/components/layout/SiteFooter'
-import { NewsletterBanner } from '@/components/layout/NewsletterBanner'
 import { MagCard } from '@/components/magazine/MagCard'
+import { MagNewsletter } from '@/components/magazine/MagNewsletter'
+import { MagPageShell } from '@/components/magazine/MagPageShell'
 import { StorySidebar } from '@/components/story/StorySidebar'
 import { StoryShareBar } from '@/components/story/StoryShareBar'
 import { StoryReadTracker } from '@/components/analytics/StoryReadTracker'
@@ -109,8 +108,7 @@ export default async function StoryPage({ params }: Props) {
       />
       <StoryReadTracker slug={slug} title={doc.title} />
       <PageWrapper>
-      <SiteNav activeLink="/stories" />
-      <main className="magazine">
+      <MagPageShell>
         <section className="mag-article-hero">
           <Image
             src={heroUrl}
@@ -168,10 +166,8 @@ export default async function StoryPage({ params }: Props) {
             </div>
           </div>
         </section>
-      </main>
-
-      <NewsletterBanner />
-      <SiteFooter />
+        <MagNewsletter image={heroUrl || related[0]?.image || 'https://picsum.photos/seed/eco-stories/900/700'} />
+      </MagPageShell>
       </PageWrapper>
     </>
   )

@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { SiteFooter } from '@/components/layout/SiteFooter'
-import { SiteNav } from '@/components/layout/SiteNav'
+import { MagPageIntro } from '@/components/magazine/MagPageIntro'
+import { MagPageShell } from '@/components/magazine/MagPageShell'
 
 type ErrorPageProps = {
   error: Error & { digest?: string }
@@ -11,28 +11,23 @@ type ErrorPageProps = {
 
 export default function ErrorPage({ reset }: ErrorPageProps) {
   return (
-    <>
-      <div className="on-dark">
-        <SiteNav variant="light" />
-        <div className="wrap section" style={{ paddingTop: 72, paddingBottom: 72, minHeight: '52vh' }}>
-          <span className="eyebrow">Something went wrong</span>
-          <h1 className="mt-16" style={{ fontSize: 'clamp(30px, 4vw, 46px)', maxWidth: 640 }}>
-            We hit a snag loading this page
-          </h1>
-          <p className="lede text-muted">
-            It&apos;s not you — please try again, or head home while we sort things out.
-          </p>
-          <div style={{ display: 'flex', gap: 16, marginTop: 32, flexWrap: 'wrap' }}>
-            <button type="button" className="btn btn-primary" onClick={() => reset()}>
+    <MagPageShell>
+      <div className="mag-empty">
+        <MagPageIntro
+          eyebrow="Something went wrong"
+          title="We hit a snag loading this page"
+          lede="It’s not you — please try again, or head home while we sort things out."
+        >
+          <div className="mag-actions">
+            <button type="button" className="mag-btn" onClick={() => reset()}>
               Try again
             </button>
-            <Link href="/" className="btn btn-outline">
+            <Link href="/" className="mag-tag">
               Home
             </Link>
           </div>
-        </div>
+        </MagPageIntro>
       </div>
-      <SiteFooter />
-    </>
+    </MagPageShell>
   )
 }

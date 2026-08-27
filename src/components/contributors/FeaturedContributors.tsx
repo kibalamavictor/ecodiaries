@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { ContributorCard } from '@/components/contributors/ContributorCard'
 import type { Contributor } from '@/lib/contributors/types'
 
@@ -11,14 +10,6 @@ export function FeaturedContributors({ contributors }: { contributors: Contribut
         {contributors.map((contributor) => (
           <ContributorCard key={contributor.id} contributor={contributor} />
         ))}
-      </div>
-      <div className="mt-10 text-center">
-        <Link
-          href="/contributors"
-          className="inline-flex items-center rounded-full border border-brand-forest px-5 py-2.5 text-sm font-semibold text-brand-forest transition hover:bg-brand-lime/10"
-        >
-          View all contributors
-        </Link>
       </div>
     </div>
   )
