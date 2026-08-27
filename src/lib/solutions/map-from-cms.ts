@@ -1,4 +1,4 @@
-import { resolveCategoryName, resolveMediaUrl } from '@/lib/cms/mappers'
+import { resolveCategoryName, resolveEditorialUrl, resolveMediaUrl } from '@/lib/cms/mappers'
 import { coordinatesForRegion } from '@/lib/solutions/coordinates'
 import type {
   AtlasOrganization,
@@ -168,7 +168,7 @@ export function mapSolutionFromCms(doc: {
     thesis: doc.thesis || undefined,
     summary: doc.summary || '',
     body: doc.body,
-    coverImageUrl: resolveMediaUrl(doc.heroImage as never),
+    coverImageUrl: resolveEditorialUrl(doc.heroImage as never, `solution:${doc.slug}`),
     sectors: inferSectors(categoryName, doc.sectors),
     status: inferStatus(doc.slug, doc.solutionStatus),
     verificationTier: inferVerification(doc.verificationTier, doc.verifiedBy),

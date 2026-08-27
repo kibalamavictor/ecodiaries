@@ -6,6 +6,7 @@ import { CredibilityStrip } from '@/components/solutions/CredibilityStrip'
 import { FundingCtaBand } from '@/components/solutions/FundingCtaBand'
 import { SolutionHero } from '@/components/solutions/SolutionHero'
 import { getAtlasProjects } from '@/lib/cms/solutions-page'
+import { environmentImageForKey } from '@/lib/unsplash-environment'
 
 const SolutionsAtlasExplorer = dynamic(
   () => import('@/components/solutions/SolutionsAtlasExplorer').then((module) => module.SolutionsAtlasExplorer),
@@ -23,7 +24,7 @@ type Props = { searchParams: Promise<{ q?: string }> }
 export default async function SolutionsPage({ searchParams }: Props) {
   const { q } = await searchParams
   const solutions = await getAtlasProjects()
-  const newsletterImage = solutions[0]?.coverImageUrl || 'https://picsum.photos/seed/eco-atlas/900/700'
+  const newsletterImage = solutions[0]?.coverImageUrl || environmentImageForKey('solutions-newsletter')
 
   return (
     <MagPageShell>

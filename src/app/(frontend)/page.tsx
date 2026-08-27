@@ -8,7 +8,8 @@ import { MagHero } from '@/components/magazine/MagHero'
 import { MagNewsletter } from '@/components/magazine/MagNewsletter'
 import { MagSpread, MagTrending } from '@/components/magazine/MagTrending'
 import { getHomepagePageData } from '@/lib/cms/homepage'
-import { byline, formatMagDate, sectorLabel } from '@/lib/magazine'
+import { byline, formatMagDate, sectorLabel, uniquifyMagCards } from '@/lib/magazine'
+import { environmentImageForKey } from '@/lib/unsplash-environment'
 import type { AtlasProject } from '@/lib/solutions/types'
 import type { StoryPreview } from '@/lib/types'
 
@@ -47,8 +48,10 @@ export default async function HomePage() {
   const solutions = data.solutions
   const stories = data.latestStories.length ? data.latestStories : data.featuredStories
 
-  const solutionCards = solutions.map(fromSolution)
-  const storyCards = stories.map(fromStory)
+  const mixedCards = uniquifyMagCards([...solutions.map(fromSolution), ...stories.map(fromStory)])
+  const solutionHrefs = new Set(solutions.map((project) => `/solutions/${project.slug}`))
+  const solutionCards = mixedCards.filter((card) => solutionHrefs.has(card.href))
+  const storyCards = mixedCards.filter((card) => !solutionHrefs.has(card.href))
 
   const heroSlides = (solutionCards.length ? solutionCards : storyCards).slice(0, 4)
 
@@ -59,7 +62,7 @@ export default async function HomePage() {
   const spread = storyCards[1] || storyCards[0] || solutionCards[0]
   const inspiration = solutionCards.slice(0, 5)
   const latest = storyCards.slice(0, 9)
-  const newsletterImage = solutionCards[0]?.image || storyCards[0]?.image || 'https://picsum.photos/seed/eco-field/900/700'
+  const newsletterImage = solutionCards[0]?.image || storyCards[0]?.image || environmentImageForKey('home-newsletter')
 
   return (
     <>

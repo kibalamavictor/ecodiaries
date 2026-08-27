@@ -12,7 +12,8 @@ import { ArticleJsonLd } from '@/components/seo/ArticleJsonLd'
 import { AnimatedArticle } from '@/components/motion/AnimatedArticle'
 import { PageWrapper } from '@/components/motion/PageWrapper'
 import { getPayloadClient } from '@/lib/payload'
-import { mapStoryCard, resolveAuthor, resolveCategoryName, resolveMediaAlt, resolveMediaUrl } from '@/lib/cms/mappers'
+import { mapStoryCard, resolveAuthor, resolveCategoryName, resolveEditorialUrl, resolveMediaAlt } from '@/lib/cms/mappers'
+import { uniquifyEditorialImages, environmentImageForKey } from '@/lib/unsplash-environment'
 import { getStoryBySlug } from '@/lib/cms/stories'
 import { buildPageMetadata, resolveOgImage } from '@/lib/seo'
 import { byline, formatMagDate } from '@/lib/magazine'
@@ -87,9 +88,14 @@ export default async function StoryPage({ params }: Props) {
       depth: 2,
     }),
   )
-  const related = relatedResult.docs.map((d) => mapStoryCard(d))
+  const related = uniquifyEditorialImages(
+    relatedResult.docs.map((d) => mapStoryCard(d)),
+    (item) => item.slug,
+    (item) => item.image,
+    (item, image) => ({ ...item, image }),
+  )
 
-  const heroUrl = resolveMediaUrl(doc.heroImage as never, story.image)
+  const heroUrl = resolveEditorialUrl(doc.heroImage as never, `story:${slug}`)
   const heroCaption = resolveMediaAlt(doc.heroImage as never)
 
   const publishedDate = doc.publishedAt
@@ -166,7 +172,7 @@ export default async function StoryPage({ params }: Props) {
             </div>
           </div>
         </section>
-        <MagNewsletter image={heroUrl || related[0]?.image || 'https://picsum.photos/seed/eco-stories/900/700'} />
+        <MagNewsletter image={heroUrl || related[0]?.image || environmentImageForKey('story-newsletter')} />
       </MagPageShell>
       </PageWrapper>
     </>

@@ -1,3 +1,5 @@
+import { environmentImageForKey, isGenericPlaceholder } from '@/lib/unsplash-environment'
+
 const PLACEHOLDER = 'https://picsum.photos/seed/eco-placeholder/600/450'
 const AVATAR_PLACEHOLDER = 'https://picsum.photos/seed/avatar/64/64'
 
@@ -24,6 +26,16 @@ export { lexicalToPlainText }
 export function resolveMediaUrl(media: number | MediaDoc | null | undefined, fallback = PLACEHOLDER): string {
   if (!media || typeof media === 'number') return fallback
   return media.url || fallback
+}
+
+export function resolveEditorialUrl(
+  media: number | MediaDoc | null | undefined,
+  key: string,
+  width = 1600,
+): string {
+  const url = resolveMediaUrl(media, '')
+  if (url && !isGenericPlaceholder(url)) return url
+  return environmentImageForKey(key, width)
 }
 
 export function resolveMediaAlt(media: number | MediaDoc | null | undefined): string | undefined {
@@ -64,7 +76,7 @@ export function mapStoryCard(story: StoryDoc | Record<string, unknown>) {
     excerpt: s.excerpt || undefined,
     category: resolveCategoryName(s.category),
     categorySlug: resolveCategorySlug(s.category),
-    image: resolveMediaUrl(s.heroImage),
+    image: resolveEditorialUrl(s.heroImage, `story:${s.slug}`),
     author: resolveAuthor(s.author),
     readTime: formatReadTime(s.readingTime),
     featured: s.featured || false,

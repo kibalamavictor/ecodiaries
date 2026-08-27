@@ -8,7 +8,8 @@ import { MagPageIntro } from '@/components/magazine/MagPageIntro'
 import { MagPageShell } from '@/components/magazine/MagPageShell'
 import { PageWrapper } from '@/components/motion/PageWrapper'
 import { getCategories, getLatestStories } from '@/lib/cms/stories'
-import { byline, formatMagDate } from '@/lib/magazine'
+import { byline, formatMagDate, uniquifyMagCards } from '@/lib/magazine'
+import { environmentImageForKey } from '@/lib/unsplash-environment'
 
 export const metadata: Metadata = {
   title: 'Stories',
@@ -53,18 +54,17 @@ export default async function StoriesPage({ searchParams }: Props) {
           </MagPageIntro>
           <div className="mag-wrap">
             <div className="mag-latest__grid" style={{ marginTop: 32 }}>
-              {stories.map((story) => (
-                <MagCard
-                  key={story.slug}
-                  item={{
-                    href: `/stories/${story.slug}`,
-                    image: story.image,
-                    category: story.category,
-                    title: story.title,
-                    excerpt: story.excerpt,
-                    byline: byline(story.author?.name, formatMagDate(story.publishedAt)),
-                  }}
-                />
+              {uniquifyMagCards(
+                stories.map((story) => ({
+                  href: `/stories/${story.slug}`,
+                  image: story.image,
+                  category: story.category,
+                  title: story.title,
+                  excerpt: story.excerpt,
+                  byline: byline(story.author?.name, formatMagDate(story.publishedAt)),
+                })),
+              ).map((item) => (
+                <MagCard key={item.href} item={item} />
               ))}
             </div>
             {stories.length === 0 ? (
@@ -74,7 +74,7 @@ export default async function StoriesPage({ searchParams }: Props) {
             ) : null}
           </div>
         </div>
-        <MagNewsletter image={stories[0]?.image || 'https://picsum.photos/seed/eco-stories/900/700'} />
+        <MagNewsletter image={stories[0]?.image || environmentImageForKey('stories-newsletter')} />
       </MagPageShell>
     </PageWrapper>
   )

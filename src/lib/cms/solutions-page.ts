@@ -2,6 +2,7 @@ import { unstable_cache } from 'next/cache'
 import { getPayloadClient } from '@/lib/payload'
 import { CACHE_TAGS } from '@/lib/cache-tags'
 import { mapSolutionFromCms } from '@/lib/solutions/map-from-cms'
+import { uniquifyEditorialImages } from '@/lib/unsplash-environment'
 import type { AtlasProject } from '@/lib/solutions/types'
 
 async function fetchPublishedProjects(): Promise<AtlasProject[]> {
@@ -14,14 +15,19 @@ async function fetchPublishedProjects(): Promise<AtlasProject[]> {
       limit: 200,
       depth: 2,
     })
-    return result.docs.map((doc) => mapSolutionFromCms(doc as never))
+    return uniquifyEditorialImages(
+      result.docs.map((doc) => mapSolutionFromCms(doc as never)),
+      (project) => project.slug,
+      (project) => project.coverImageUrl,
+      (project, coverImageUrl) => ({ ...project, coverImageUrl }),
+    )
   } catch {
     return []
   }
 }
 
 export function getAtlasProjects() {
-  return unstable_cache(fetchPublishedProjects, ['atlas-projects'], {
+  return unstable_cache(fetchPublishedProjects, ['atlas-projects', 'editorial-v2'], {
     tags: [CACHE_TAGS.solutions],
     revalidate: 60,
   })()

@@ -1,4 +1,15 @@
+import { uniquifyEditorialImages } from '@/lib/unsplash-environment'
+import type { MagCardItem } from '@/components/magazine/MagCard'
 import { SECTOR_FILTER_OPTIONS, type Sector } from '@/lib/solutions/types'
+
+export function uniquifyMagCards(items: MagCardItem[]): MagCardItem[] {
+  return uniquifyEditorialImages(
+    items,
+    (item) => item.href,
+    (item) => item.image,
+    (item, image) => ({ ...item, image }),
+  )
+}
 
 export function formatMagDate(iso?: string | null): string {
   if (!iso) return ''

@@ -3,6 +3,7 @@ import { getPayloadClient } from '@/lib/payload'
 import { CACHE_TAGS } from '@/lib/cache-tags'
 import { CMS_REVALIDATE_SECONDS } from '@/lib/cms/cache-config'
 import { mapStoryCard } from '@/lib/cms/mappers'
+import { uniquifyEditorialImages } from '@/lib/unsplash-environment'
 import { unstable_cache } from 'next/cache'
 
 const publishedWhere: Where = { status: { equals: 'published' } }
@@ -41,7 +42,12 @@ async function fetchLatestStories(limit: number, categorySlug?: string, query?: 
     depth: 2,
   })
 
-  return result.docs.map((doc) => mapStoryCard(doc))
+  return uniquifyEditorialImages(
+    result.docs.map((doc) => mapStoryCard(doc)),
+    (story) => story.slug,
+    (story) => story.image,
+    (story, image) => ({ ...story, image }),
+  )
   } catch {
     return []
   }
@@ -63,7 +69,12 @@ async function fetchFeaturedStories(limit: number, fillWithLatest = true) {
       depth: 2,
     })
 
-    const stories = featured.docs.map((doc) => mapStoryCard(doc))
+    const stories = uniquifyEditorialImages(
+      featured.docs.map((doc) => mapStoryCard(doc)),
+      (story) => story.slug,
+      (story) => story.image,
+      (story, image) => ({ ...story, image }),
+    )
     if (!fillWithLatest || stories.length >= limit) return stories
 
     const latest = await payload.find({
@@ -83,7 +94,12 @@ async function fetchFeaturedStories(limit: number, fillWithLatest = true) {
       if (stories.length >= limit) break
     }
 
-    return stories
+    return uniquifyEditorialImages(
+      stories,
+      (story) => story.slug,
+      (story) => story.image,
+      (story, image) => ({ ...story, image }),
+    )
   } catch {
     return []
   }
@@ -148,7 +164,7 @@ export function getFeaturedStory() {
 export function getFeaturedStories(limit = 4, fillWithLatest = true) {
   return unstable_cache(
     () => fetchFeaturedStories(limit, fillWithLatest),
-    ['featured-stories', String(limit), String(fillWithLatest)],
+    ['featured-stories', 'editorial-v2', String(limit), String(fillWithLatest)],
     {
       tags: [CACHE_TAGS.homepage, CACHE_TAGS.stories],
       revalidate: CMS_REVALIDATE_SECONDS,
@@ -159,7 +175,7 @@ export function getFeaturedStories(limit = 4, fillWithLatest = true) {
 export function getLatestStories(limit: number, categorySlug?: string, query?: string) {
   return unstable_cache(
     () => fetchLatestStories(limit, categorySlug, query),
-    ['latest-stories', String(limit), categorySlug || 'all', query || ''],
+    ['latest-stories', 'editorial-v2', String(limit), categorySlug || 'all', query || ''],
     { tags: [CACHE_TAGS.stories], revalidate: 60 },
   )()
 }

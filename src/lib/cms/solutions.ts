@@ -2,7 +2,8 @@ import { unstable_cache } from 'next/cache'
 import type { Where } from 'payload'
 import { getPayloadClient } from '@/lib/payload'
 import { CACHE_TAGS } from '@/lib/cache-tags'
-import { resolveCategoryName, resolveMediaUrl } from '@/lib/cms/mappers'
+import { resolveCategoryName, resolveEditorialUrl } from '@/lib/cms/mappers'
+import { uniquifyEditorialImages } from '@/lib/unsplash-environment'
 
 async function fetchSolutions(categorySlug?: string, query?: string) {
   try {
@@ -33,15 +34,20 @@ async function fetchSolutions(categorySlug?: string, query?: string) {
       depth: 2,
     })
 
-    return result.docs.map((s) => ({
-      slug: s.slug,
-      category: resolveCategoryName(s.category as never),
-      title: s.title,
-      description: s.summary || '',
-      stat: s.statHighlight || '',
-      image: resolveMediaUrl(s.heroImage as never),
-      verified: s.verified ?? true,
-    }))
+    return uniquifyEditorialImages(
+      result.docs.map((s) => ({
+        slug: s.slug,
+        category: resolveCategoryName(s.category as never),
+        title: s.title,
+        description: s.summary || '',
+        stat: s.statHighlight || '',
+        image: resolveEditorialUrl(s.heroImage as never, `solution:${s.slug}`),
+        verified: s.verified ?? true,
+      })),
+      (solution) => solution.slug,
+      (solution) => solution.image,
+      (solution, image) => ({ ...solution, image }),
+    )
   } catch {
     return []
   }
@@ -65,7 +71,7 @@ async function fetchSolutionBySlug(slug: string) {
 export function getSolutions(categorySlug?: string, query?: string) {
   return unstable_cache(
     () => fetchSolutions(categorySlug, query),
-    ['solutions', categorySlug || 'all', query || ''],
+    ['solutions', 'editorial-v2', categorySlug || 'all', query || ''],
     { tags: [CACHE_TAGS.solutions], revalidate: 60 },
   )()
 }

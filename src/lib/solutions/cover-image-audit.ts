@@ -1,5 +1,5 @@
 /** Heuristic flags for cover images that are likely stock placeholders, not field photos. */
-const STOCK_IMAGE_HOSTS = ['images.unsplash.com', 'source.unsplash.com', 'plus.unsplash.com', 'picsum.photos']
+const STOCK_IMAGE_HOSTS = ['picsum.photos']
 
 export function isLikelyStockCoverImage(url?: string | null): boolean {
   if (!url?.trim()) return false

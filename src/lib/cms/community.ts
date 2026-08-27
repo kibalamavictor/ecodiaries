@@ -1,7 +1,8 @@
 import { unstable_cache } from 'next/cache'
 import { getPayloadClient } from '@/lib/payload'
 import { CACHE_TAGS } from '@/lib/cache-tags'
-import { resolveMediaUrl } from '@/lib/cms/mappers'
+import { resolveEditorialUrl, resolveMediaUrl } from '@/lib/cms/mappers'
+import { uniquifyEditorialImages } from '@/lib/unsplash-environment'
 
 async function fetchContributors() {
   try {
@@ -48,11 +49,16 @@ async function fetchCommunityProjects() {
   try {
     const payload = await getPayloadClient()
     const result = await payload.find({ collection: 'community-projects', limit: 20, depth: 1 })
-    return result.docs.map((p) => ({
-      title: p.title,
-      excerpt: p.description || '',
-      image: resolveMediaUrl(p.image as never),
-    }))
+    return uniquifyEditorialImages(
+      result.docs.map((p) => ({
+        title: p.title,
+        excerpt: p.description || '',
+        image: resolveEditorialUrl(p.image as never, `community:${p.title}`),
+      })),
+      (project) => project.title,
+      (project) => project.image,
+      (project, image) => ({ ...project, image }),
+    )
   } catch {
     return []
   }
@@ -83,7 +89,7 @@ export function getProgrammes() {
 }
 
 export function getCommunityProjects() {
-  return unstable_cache(fetchCommunityProjects, ['community-projects'], {
+  return unstable_cache(fetchCommunityProjects, ['community-projects', 'editorial-v2'], {
     tags: [CACHE_TAGS.community],
     revalidate: 60,
   })()
