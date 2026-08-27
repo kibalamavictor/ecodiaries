@@ -22,8 +22,8 @@ export function SolutionHero({ solutions, defaultQuery }: SolutionHeroProps) {
       <header className="hidden bg-brand-forest text-white md:block">
         <SiteNav variant="light" activeLink="/solutions" />
         <div className="mx-auto max-w-6xl px-4 pb-16 pt-8 sm:px-6 sm:pb-20 sm:pt-10">
-          <p className="text-sm font-semibold uppercase tracking-[0.12em] text-brand-lime">Solutions Atlas</p>
-          <h1 className="mt-4 max-w-3xl text-4xl font-bold leading-tight sm:text-5xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.12em] text-white/70">Solutions Atlas</p>
+          <h1 className="mt-4 max-w-3xl text-4xl font-bold leading-tight sm:text-5xl" style={{ fontFamily: 'var(--font-serif), Georgia, serif', fontWeight: 600 }}>
             Climate Solutions Across Africa
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-white/80">
@@ -31,7 +31,7 @@ export function SolutionHero({ solutions, defaultQuery }: SolutionHeroProps) {
             learn from, fund, and scale.
           </p>
           {count > 0 ? (
-            <p className="mt-6 inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-brand-lime">
+            <p className="mt-6 inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/85">
               {count} solution{count === 1 ? '' : 's'} tracked across {countries}{' '}
               {countries === 1 ? 'country' : 'countries'}
             </p>
@@ -54,7 +54,7 @@ export function SolutionHero({ solutions, defaultQuery }: SolutionHeroProps) {
           </Link>
           <Link
             href="#explore"
-            className="mt-8 inline-flex items-center rounded-full bg-brand-lime px-6 py-3 text-sm font-semibold text-brand-forest transition hover:brightness-95"
+            className="mag-btn mt-8"
           >
             Explore the atlas
           </Link>
