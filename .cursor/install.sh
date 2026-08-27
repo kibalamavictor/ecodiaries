@@ -33,7 +33,8 @@ if [ ! -s "$PGDATA/PG_VERSION" ]; then
 fi
 
 # 4. Start the cluster (temporarily) so we can create the DB and seed it.
-if ! "$PGBIN/pg_ctl" -D "$PGDATA" status >/dev/null 2>&1; then
+if ! "$PGBIN/pg_isready" -q -h 127.0.0.1 -p "$PGPORT"; then
+  rm -f "$PGDATA/postmaster.pid"  # clear any stale pid carried in from a snapshot
   "$PGBIN/pg_ctl" -D "$PGDATA" -o "-p ${PGPORT} -k /tmp" -l "$PGLOG" -w start
 fi
 

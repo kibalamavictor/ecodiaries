@@ -9,13 +9,16 @@ export PGDATA="${PGDATA:-$HOME/pgdata}"
 PGPORT=5432
 PGLOG="$HOME/pg.log"
 
-if "$PGBIN/pg_ctl" -D "$PGDATA" status >/dev/null 2>&1; then
-  echo "[start] Postgres already running."
+if "$PGBIN/pg_isready" -q -h 127.0.0.1 -p "$PGPORT"; then
+  echo "[start] Postgres already accepting connections."
 else
+  # A snapshot may carry a stale postmaster.pid from when it was captured. If the
+  # server is not actually accepting connections, that pid is stale — clear it so
+  # the daemon starts cleanly.
+  rm -f "$PGDATA/postmaster.pid"
   echo "[start] Starting Postgres..."
   "$PGBIN/pg_ctl" -D "$PGDATA" -o "-p ${PGPORT} -k /tmp" -l "$PGLOG" -w start
 fi
 
-# Readiness check.
 "$PGBIN/pg_isready" -h 127.0.0.1 -p "$PGPORT" -U postgres
 echo "[start] Postgres is ready on port ${PGPORT}."
