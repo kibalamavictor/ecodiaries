@@ -31,12 +31,15 @@ test.describe('EcoDiaries critical paths', () => {
   test('contact form submits', async ({ page, request }) => {
     const adminToken = await adminLogin()
     await page.goto('/contact')
-    await page.fill('#fname', 'Test User')
-    await page.fill('#femail', 'test-contact@example.com')
-    await page.fill('#fmsg', 'This is a test message from Playwright.')
+    await page.fill('#contact-name', 'Test User')
+    await page.fill('#contact-email', 'test-contact@example.com')
+    await page.getByTestId('contributor-continue').click()
+    await page.getByTestId('contributor-continue').click()
+    await page.fill('#contact-message', 'This is a test message from Playwright.')
+    await page.getByTestId('contributor-continue').click()
     const [response] = await Promise.all([
       page.waitForResponse((r) => r.url().includes('/api/contact') && r.request().method() === 'POST'),
-      page.click('button[type="submit"]'),
+      page.getByRole('button', { name: 'Send message' }).click(),
     ])
     expect(response.ok()).toBeTruthy()
     const body = await response.json()
@@ -60,6 +63,8 @@ test.describe('EcoDiaries critical paths', () => {
     await page.goto('/contact')
     await page.locator('.cta-form input[name="email"]').fill(email)
     await page.locator('.cta-form button[type="submit"]').click()
+    await expect(page.getByText(/confirm your subscription/i)).toBeVisible({ timeout: 15000 })
+    await page.getByRole('button', { name: 'Confirm subscription' }).click()
     await expect(page.getByText(/confirm|Check your email/i)).toBeVisible({ timeout: 15000 })
 
     const token = await getNewsletterConfirmToken(email, adminToken)

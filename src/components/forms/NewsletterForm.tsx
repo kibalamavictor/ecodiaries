@@ -83,6 +83,7 @@ export function NewsletterForm({ variant = 'banner' }: NewsletterFormProps) {
             >
               <FormInput
                 type="email"
+                name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email address"
@@ -117,17 +118,18 @@ export function NewsletterForm({ variant = 'banner' }: NewsletterFormProps) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 8 }}
               transition={{ duration: 0.2 }}
-              className="flex flex-row items-center gap-2"
+              className="cta-form flex flex-row items-center gap-2"
             >
               <FormInput
                 type="email"
+                name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 className="min-w-0 flex-1 rounded-full border-0 bg-white px-3 py-2 text-sm shadow-sm"
               />
               <button
-                type="button"
+                type="submit"
                 onClick={goNext}
                 className="shrink-0 rounded-full bg-brand-lime px-3 py-2 text-xs font-semibold text-brand-forest"
               >
@@ -157,6 +159,7 @@ export function NewsletterForm({ variant = 'banner' }: NewsletterFormProps) {
             <FormLabel htmlFor="newsletter-email">Email address</FormLabel>
             <FormInput
               id="newsletter-email"
+              name="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
