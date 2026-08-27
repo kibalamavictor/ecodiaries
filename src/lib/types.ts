@@ -14,6 +14,7 @@ export type StoryPreview = {
   author?: AuthorPreview
   readTime?: string
   featured?: boolean
+  publishedAt?: string
 }
 
 export type SolutionPreview = {

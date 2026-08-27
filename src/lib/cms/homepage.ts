@@ -56,7 +56,7 @@ async function fetchCounts(): Promise<HomepageCounts> {
 async function fetchHomepageMobileData(): Promise<HomepageMobileData> {
   const [featuredStories, latestStories, allProgrammes, allSolutions, counts] = await Promise.all([
     getFeaturedStories(4),
-    getLatestStories(8),
+    getLatestStories(12),
     getProgrammes(),
     getAtlasProjects(),
     fetchCounts(),
@@ -74,7 +74,7 @@ async function fetchHomepageMobileData(): Promise<HomepageMobileData> {
     featuredStories,
     latestStories,
     programmes,
-    solutions: allSolutions.slice(0, 8),
+    solutions: allSolutions,
     counts,
   }
 }

@@ -9,9 +9,11 @@ import {
 const contributorPassword = process.env.E2E_CONTRIBUTOR_PASSWORD || 'E2eContributorPass123!'
 
 test.describe('EcoDiaries critical paths', () => {
-  test('homepage loads with hero', async ({ page }) => {
+  test('homepage loads magazine layout', async ({ page }) => {
     await page.goto('/')
-    await expect(page.locator('h1')).toContainText('Climate Stories')
+    await expect(page.getByRole('navigation', { name: 'Main navigation' }).first()).toBeVisible()
+    const nav = page.getByRole('navigation', { name: 'Main navigation' }).first()
+    await expect(nav.getByRole('link', { name: 'Solutions' })).toBeVisible()
   })
 
   test('stories archive loads', async ({ page }) => {

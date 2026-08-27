@@ -13,6 +13,7 @@ type StoryDoc = {
   author?: number | ContributorDoc | null
   readingTime?: number | null
   featured?: boolean | null
+  publishedAt?: string | null
   body?: unknown
 }
 
@@ -67,5 +68,6 @@ export function mapStoryCard(story: StoryDoc | Record<string, unknown>) {
     author: resolveAuthor(s.author),
     readTime: formatReadTime(s.readingTime),
     featured: s.featured || false,
+    publishedAt: s.publishedAt || undefined,
   }
 }

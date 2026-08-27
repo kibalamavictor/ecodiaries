@@ -25,21 +25,21 @@ export default async function AboutPage() {
 
   return (
     <>
-      <div className="hidden md:block on-dark">
-        <SiteNav variant="light" />
-        <div className="wrap" style={{ paddingTop: 54 }}>
+      <div className="hidden md:block magazine">
+        <SiteNav />
+        <div className="mag-wrap" style={{ paddingTop: 48, paddingBottom: 56 }}>
           <div className="two-col" style={{ gridTemplateColumns: '.85fr 1.15fr' }}>
             <div>
-              <h1 className="about-hero-title">
+              <h1 className="about-hero-title mag-title">
                 A climate storytelling platform documenting stories that matter
               </h1>
             </div>
             <div>
-              <span className="eyebrow">Turning Awareness into Action</span>
-              <p className="mt-16 text-muted" style={{ fontSize: '15.5px', maxWidth: 480 }}>
+              <span className="mag-news__eyebrow">Turning awareness into action</span>
+              <p className="mt-16 mag-excerpt mag-excerpt--full">
                 Across Africa, communities are already responding to climate challenges with creativity, innovation, and resilience. Many of these solutions remain invisible beyond the communities where they originate.
               </p>
-              <p className="mt-16 text-muted" style={{ fontSize: '15.5px', maxWidth: 480 }}>
+              <p className="mt-16 mag-excerpt mag-excerpt--full">
                 EcoDiaries exists to identify, document, and amplify these stories so others can learn, adapt, and act — connecting communities and promoting the spread of proven environmental solutions.
               </p>
             </div>

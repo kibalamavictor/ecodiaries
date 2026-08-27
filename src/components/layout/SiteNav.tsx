@@ -1,14 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { createPortal } from 'react-dom'
-import { motion, useReducedMotion } from 'framer-motion'
-import { MenuIcon } from '@/components/icons'
+import { usePathname, useRouter } from 'next/navigation'
+import { useEffect, useState, type FormEvent } from 'react'
+import { MenuIcon, SearchIcon } from '@/components/icons'
 import { BrandMark } from '@/components/brand/BrandMark'
-
-let hasPlayedNavEntrance = false
 
 const navLinks = [
   { href: '/solutions', label: 'Solutions' },
@@ -16,24 +12,17 @@ const navLinks = [
   { href: '/community', label: 'Community' },
 ] as const
 
-type NavVariant = 'light' | 'dark'
-
 type SiteNavProps = {
-  variant?: NavVariant
+  variant?: 'light' | 'dark'
   activeLink?: string
 }
 
-export function SiteNav({ variant = 'light', activeLink }: SiteNavProps) {
+export function SiteNav({ activeLink }: SiteNavProps) {
   const pathname = usePathname()
-  const reduce = useReducedMotion()
+  const router = useRouter()
   const [menuOpen, setMenuOpen] = useState(false)
-  const [menuTop, setMenuTop] = useState<number | null>(null)
-  const wrapRef = useRef<HTMLDivElement>(null)
-  const [playEntrance] = useState(() => {
-    if (hasPlayedNavEntrance) return false
-    hasPlayedNavEntrance = true
-    return true
-  })
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [query, setQuery] = useState('')
 
   const isActive = (href: string) => {
     if (activeLink) return activeLink === href
@@ -41,22 +30,6 @@ export function SiteNav({ variant = 'light', activeLink }: SiteNavProps) {
   }
 
   const closeMenu = () => setMenuOpen(false)
-
-  const navLinkItems = navLinks.map(({ href, label }) => (
-    <Link
-      key={href}
-      href={href}
-      className={isActive(href) ? 'active' : undefined}
-      onClick={closeMenu}
-    >
-      {label}
-    </Link>
-  ))
-
-  const menuStyle =
-    menuOpen && menuTop != null
-      ? ({ '--nav-menu-top': `${menuTop}px` } as CSSProperties)
-      : undefined
 
   useEffect(() => {
     if (!menuOpen) return
@@ -67,78 +40,71 @@ export function SiteNav({ variant = 'light', activeLink }: SiteNavProps) {
     }
   }, [menuOpen])
 
-  useEffect(() => {
-    if (!menuOpen) {
-      setMenuTop(null)
-      return
-    }
+  function onSearch(event: FormEvent) {
+    event.preventDefault()
+    const next = query.trim()
+    router.push(next ? `/stories?q=${encodeURIComponent(next)}` : '/stories')
+    setSearchOpen(false)
+  }
 
-    const updateMenuTop = () => {
-      const el = wrapRef.current
-      if (!el) return
-      setMenuTop(el.getBoundingClientRect().bottom + 10)
-    }
-
-    updateMenuTop()
-    window.addEventListener('resize', updateMenuTop)
-    window.addEventListener('scroll', updateMenuTop, { passive: true })
-    return () => {
-      window.removeEventListener('resize', updateMenuTop)
-      window.removeEventListener('scroll', updateMenuTop)
-    }
-  }, [menuOpen])
+  const navLinkItems = navLinks.map(({ href, label }) => (
+    <Link key={href} href={href} className={isActive(href) ? 'active' : undefined} onClick={closeMenu}>
+      {label}
+    </Link>
+  ))
 
   return (
-    <>
-      {menuOpen && typeof document !== 'undefined'
-        ? createPortal(
-            <>
-              <button
-                type="button"
-                className="nav-backdrop"
-                aria-label="Close menu"
-                onClick={closeMenu}
-              />
-              <nav
-                className={`nav-links nav-links-drawer nav-${variant}`}
-                aria-label="Main navigation"
-                style={menuStyle}
-              >
-                {navLinkItems}
-              </nav>
-            </>,
-            document.body,
-          )
-        : null}
-      <motion.header
-        className={`site-nav nav-${variant}${menuOpen ? ' nav-open' : ''}`}
-        initial={playEntrance && !reduce ? { opacity: 0, y: -8 } : false}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
-      >
-        <div className="wrap" ref={wrapRef}>
-          <Link href="/" className="brand">
-            <BrandMark /> EcoDiaries
+    <header className={`mag-nav${searchOpen ? ' is-searching' : ''}${menuOpen ? ' nav-open' : ''}`}>
+      <div className="mag-wrap mag-nav__inner">
+        <Link href="/" className="mag-brand" onClick={closeMenu}>
+          <BrandMark /> EcoDiaries
+        </Link>
+        <nav className="nav-links" aria-label="Main navigation">
+          {navLinkItems}
+        </nav>
+        <div className="mag-nav__actions">
+          <Link href="/#subscribe" className="mag-btn" onClick={closeMenu}>
+            Subscribe
           </Link>
-          <nav className="nav-links" aria-label="Main navigation">
-            {navLinkItems}
-          </nav>
-          <div className="nav-cta">
-            <Link href="/contact" className="btn btn-primary btn-sm" onClick={closeMenu}>
-              Newsletter
-            </Link>
-            <button
-              className="nav-toggle"
-              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={menuOpen}
-              type="button"
-              onClick={() => setMenuOpen((open) => !open)}
-            >
-              <MenuIcon />
-            </button>
-          </div>
+          <button
+            type="button"
+            className="mag-search-btn"
+            aria-label={searchOpen ? 'Close search' : 'Search'}
+            aria-expanded={searchOpen}
+            onClick={() => setSearchOpen((open) => !open)}
+          >
+            <SearchIcon />
+          </button>
+          <button
+            className="nav-toggle"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <MenuIcon />
+          </button>
         </div>
-      </motion.header>
-    </>
+      </div>
+      {menuOpen ? (
+        <nav className="mag-nav-drawer mag-wrap" aria-label="Main navigation">
+          {navLinkItems}
+        </nav>
+      ) : null}
+      <div className="mag-search-panel">
+        <form className="mag-wrap" onSubmit={onSearch}>
+          <input
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search stories, topics, solutions, or places…"
+            aria-label="Search"
+          />
+          <button type="submit" className="mag-btn">
+            Search
+          </button>
+        </form>
+      </div>
+    </header>
   )
 }

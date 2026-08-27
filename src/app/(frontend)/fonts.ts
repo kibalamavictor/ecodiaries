@@ -1,4 +1,4 @@
-import { Baloo_2, Inter } from 'next/font/google'
+import { Baloo_2, Inter, Playfair_Display } from 'next/font/google'
 
 export const baloo = Baloo_2({
   subsets: ['latin'],
@@ -10,8 +10,16 @@ export const baloo = Baloo_2({
 
 export const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '600', '700'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-inter',
+  display: 'swap',
+  preload: true,
+})
+
+export const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  variable: '--font-serif',
   display: 'swap',
   preload: true,
 })

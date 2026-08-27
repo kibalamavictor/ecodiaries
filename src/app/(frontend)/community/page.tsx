@@ -4,6 +4,7 @@ import { SiteFooter } from '@/components/layout/SiteFooter'
 import { NewsletterBanner } from '@/components/layout/NewsletterBanner'
 import { FeaturedContributors } from '@/components/contributors/FeaturedContributors'
 import { ContributorsApplyLink } from '@/components/contributors/ContributorsApplyLink'
+import { MagPageIntro } from '@/components/magazine/MagPageIntro'
 import { CommunityMobileHero } from '@/components/community/CommunityMobileHero'
 import { CommunityMobileContributors } from '@/components/community/CommunityMobileContributors'
 import { CommunityMobileProjects } from '@/components/community/CommunityMobileProjects'
@@ -34,27 +35,22 @@ export default async function CommunityPage() {
 
   return (
     <>
-      <div className="hidden md:block">
-        <div className="page-head">
-          <SiteNav variant="dark" activeLink="/community" />
-          <div className="wrap mt-32">
-            <span className="eyebrow">Community</span>
-            <div className="page-head-row mt-16">
-              <h1>The people and projects behind every story</h1>
-            </div>
-            <p className="lede">
-              EcoDiaries is built by a growing network of contributors, partner organisations, and community-led projects across the continent.
-            </p>
-            <nav className="mobile-section-nav" aria-label="Explore community">
-              <Link href="/contributors">Contributors</Link>
-              <Link href="/opportunities">Opportunities</Link>
-              <Link href="/solutions">Solutions</Link>
-              <Link href="/about">About</Link>
-              <Link href="/contact">Contact</Link>
-              <ContributorsApplyLink>Apply</ContributorsApplyLink>
-            </nav>
-          </div>
-        </div>
+      <div className="hidden md:block magazine">
+        <SiteNav activeLink="/community" />
+        <MagPageIntro
+          eyebrow="Community"
+          title="The people and projects behind every story"
+          lede="EcoDiaries is built by a growing network of contributors, partner organisations, and community-led projects across the continent."
+        >
+          <nav className="mobile-section-nav" aria-label="Explore community" style={{ marginTop: 20 }}>
+            <Link href="/contributors">Contributors</Link>
+            <Link href="/opportunities">Opportunities</Link>
+            <Link href="/solutions">Solutions</Link>
+            <Link href="/about">About</Link>
+            <Link href="/contact">Contact</Link>
+            <ContributorsApplyLink>Apply</ContributorsApplyLink>
+          </nav>
+        </MagPageIntro>
 
         <section className="section">
           <div className="wrap">

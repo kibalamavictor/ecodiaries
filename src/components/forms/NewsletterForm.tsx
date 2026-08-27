@@ -23,7 +23,7 @@ import { newsletterSchema } from '@/lib/forms/schemas'
 type FormState = 'idle' | 'loading' | 'success' | 'error'
 
 type NewsletterFormProps = {
-  variant?: 'banner' | 'card'
+  variant?: 'banner' | 'card' | 'magazine'
 }
 
 export function NewsletterForm({ variant = 'banner' }: NewsletterFormProps) {
@@ -66,6 +66,44 @@ export function NewsletterForm({ variant = 'banner' }: NewsletterFormProps) {
       setState('error')
       setMessage(err instanceof Error ? err.message : 'Something went wrong')
     }
+  }
+
+  if (variant === 'magazine') {
+    return (
+      <FormScope className="mag-news__form">
+        <AnimatePresence mode="wait">
+          {step === 0 ? (
+            <motion.div
+              key="email"
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 8 }}
+              transition={{ duration: 0.2 }}
+              className="mag-news__row"
+            >
+              <FormInput
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email address"
+                className="mag-news__input"
+              />
+              <button type="button" onClick={goNext} className="mag-btn">
+                Subscribe
+              </button>
+            </motion.div>
+          ) : (
+            <motion.div key="confirm" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+              <NewsletterConfirmPanel email={email} onBack={() => setStep(0)} onConfirm={onSubmit} loading={state === 'loading'} />
+              <div className="mt-3">
+                <TurnstileWidget onToken={setTurnstileToken} onExpire={() => setTurnstileToken('')} />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <FormStatusMessage state={state} message={message} />
+      </FormScope>
+    )
   }
 
   if (variant === 'banner') {

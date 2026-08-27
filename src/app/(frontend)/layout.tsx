@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import './mobile-cards.css'
-import { baloo, inter } from './fonts'
+import './magazine.css'
+import { baloo, inter, playfair } from './fonts'
 import { PlausibleAnalytics } from '@/components/analytics/Plausible'
 import { OrganizationJsonLd } from '@/components/seo/OrganizationJsonLd'
 import { ClientEnhancements } from '@/components/layout/ClientEnhancements'
@@ -40,7 +41,7 @@ export const viewport: Viewport = {
 
 export default function FrontendLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${baloo.variable} ${inter.variable}`}>
+    <html lang="en" className={`${baloo.variable} ${inter.variable} ${playfair.variable}`}>
       <head>
         <link rel="dns-prefetch" href="https://plausible.io" />
         <link rel="preconnect" href="https://plausible.io" crossOrigin="anonymous" />

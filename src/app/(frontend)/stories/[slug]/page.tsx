@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 import { SiteNav } from '@/components/layout/SiteNav'
 import { SiteFooter } from '@/components/layout/SiteFooter'
 import { NewsletterBanner } from '@/components/layout/NewsletterBanner'
-import { StoryCard } from '@/components/cards/StoryCard'
+import { MagCard } from '@/components/magazine/MagCard'
 import { StorySidebar } from '@/components/story/StorySidebar'
 import { StoryShareBar } from '@/components/story/StoryShareBar'
 import { StoryReadTracker } from '@/components/analytics/StoryReadTracker'
@@ -16,6 +16,7 @@ import { getPayloadClient } from '@/lib/payload'
 import { mapStoryCard, resolveAuthor, resolveCategoryName, resolveMediaAlt, resolveMediaUrl } from '@/lib/cms/mappers'
 import { getStoryBySlug } from '@/lib/cms/stories'
 import { buildPageMetadata, resolveOgImage } from '@/lib/seo'
+import { byline, formatMagDate } from '@/lib/magazine'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -108,63 +109,66 @@ export default async function StoryPage({ params }: Props) {
       />
       <StoryReadTracker slug={slug} title={doc.title} />
       <PageWrapper>
-      <div className="page-head" style={{ paddingBottom: 0 }}>
-        <SiteNav variant="dark" activeLink="/stories" />
-      </div>
-
-      <section className="section" style={{ paddingTop: 42 }}>
-        <div className="wrap">
-          <header className="story-article-header">
-            <h1 className="story-article-title">{doc.title}</h1>
-
-            <div className="story-article-cover">
-              <Image
-                src={heroUrl}
-                alt={heroCaption || doc.title}
-                width={1100}
-                height={619}
-                priority
-                sizes="100vw"
-              />
+      <SiteNav activeLink="/stories" />
+      <main className="magazine">
+        <section className="mag-article-hero">
+          <Image
+            src={heroUrl}
+            alt={heroCaption || doc.title}
+            fill
+            priority
+            sizes="100vw"
+          />
+          <div className="mag-spread__shade" />
+          <div className="mag-wrap mag-article-hero__copy">
+            <p className="mag-breadcrumb">Home · Stories · {category}</p>
+            <h1>{doc.title}</h1>
+            <div className="mag-hero__by">
+              {author?.avatar ? <Image src={author.avatar} alt="" width={32} height={32} /> : null}
+              <span>{byline(author?.name, publishedDate || undefined)}</span>
             </div>
+          </div>
+        </section>
 
-            {heroCaption && <p className="story-article-caption">{heroCaption}</p>}
-
-            <div className="story-article-meta">
-              <span className="story-article-meta__topic">{category}</span>
-              {publishedDate && (
-                <>
-                  <span className="story-article-meta__sep" aria-hidden>
-                    ·
-                  </span>
-                  <time dateTime={doc.publishedAt as string}>{publishedDate}</time>
-                </>
-              )}
+        <section className="mag-article-body">
+          <div className="mag-wrap">
+            {heroCaption ? <p className="mag-meta" style={{ marginBottom: 24 }}>{heroCaption}</p> : null}
+            <div className="story-article-meta" style={{ marginBottom: 28 }}>
+              <span className="mag-chip">{category}</span>
               <StoryShareBar title={doc.title} text={doc.excerpt ?? undefined} />
             </div>
-          </header>
+            <div className="mag-article-layout">
+              <StorySidebar sections={sections} />
+              <AnimatedArticle className="story-body story-detail-body">
+                {doc.body ? <RichText data={doc.body} /> : <p className="mt-16">{doc.excerpt}</p>}
+              </AnimatedArticle>
+            </div>
+          </div>
+        </section>
 
-          <div className="two-col story-detail-layout" style={{ gridTemplateColumns: '210px 1fr', alignItems: 'flex-start', gap: 48 }}>
-            <StorySidebar sections={sections} />
-            <AnimatedArticle className="story-body story-detail-body">
-              {doc.body ? <RichText data={doc.body} /> : <p className="mt-16">{doc.excerpt}</p>}
-            </AnimatedArticle>
+        <section className="mag-section">
+          <div className="mag-wrap">
+            <div className="mag-section-head">
+              <h2>Related stories</h2>
+            </div>
+            <div className="mag-latest__grid">
+              {related.map((s) => (
+                <MagCard
+                  key={s.slug}
+                  item={{
+                    href: `/stories/${s.slug}`,
+                    image: s.image,
+                    category: s.category,
+                    title: s.title,
+                    excerpt: s.excerpt,
+                    byline: byline(s.author?.name, formatMagDate(s.publishedAt)),
+                  }}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
-
-      <section className="section on-paper">
-        <div className="wrap">
-          <div className="section-head">
-            <h2>Related Stories</h2>
-          </div>
-          <div className="card-grid post-grid story-related-grid scrollbar-hide">
-            {related.map((s) => (
-              <StoryCard key={s.slug} story={s} />
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
       <NewsletterBanner />
       <SiteFooter />
