@@ -29,14 +29,16 @@ export function MagHero({ slides }: { slides: MagHeroSlide[] }) {
   if (!slide) return null
 
   return (
-    <section className="mag-hero" aria-label="Featured solutions">
+    <section className="mag-hero-frame" aria-label="Featured solutions">
+      <div className="mag-wrap">
+        <div className="mag-hero">
       {safeSlides.map((item, i) => (
         <div key={item.href} className={`mag-hero__slide${i === index ? ' is-active' : ''}`}>
           <Image src={item.image} alt="" fill priority={i === 0} sizes="100vw" />
         </div>
       ))}
       <div className="mag-hero__shade" />
-      <div className="mag-wrap mag-hero__copy">
+      <div className="mag-hero__copy">
         <span className="mag-chip">{slide.category}</span>
         <h1 className="mag-title">
           <Link href={slide.href}>{slide.title}</Link>
@@ -78,6 +80,8 @@ export function MagHero({ slides }: { slides: MagHeroSlide[] }) {
           </div>
         </>
       ) : null}
+        </div>
+      </div>
     </section>
   )
 }

@@ -14,7 +14,7 @@ export function sectorLabel(sector?: Sector | string): string {
 }
 
 export function byline(name?: string, date?: string): string {
-  const who = name ? `By ${name}` : ''
+  const who = name || ''
   if (who && date) return `${who} · ${date}`
   return who || date || ''
 }
