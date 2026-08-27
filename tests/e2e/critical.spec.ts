@@ -74,7 +74,8 @@ test.describe('EcoDiaries critical paths', () => {
     await expect(page).toHaveURL(/newsletter=confirmed/)
   })
 
-  test('contributor application and story publish flow', { timeout: 120_000 }, async ({ page, request }) => {
+  test('contributor application and story publish flow', async ({ page, request }) => {
+    test.setTimeout(120_000)
     const email = `contributor-${Date.now()}@example.com`
     const storySlug = `e2e-story-${Date.now()}`
     const adminToken = await adminLogin()
