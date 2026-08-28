@@ -39,7 +39,7 @@ export function SolutionsAtlasHero({ projects }: SolutionsAtlasHeroProps) {
           />
         </div>
         {selected ? (
-          <div className="atlas-hero__peek atlas-hero__peek--below">
+          <div className="atlas-hero__peek">
             <AtlasPeekCard project={selected} onClose={() => setSelected(null)} />
           </div>
         ) : (
