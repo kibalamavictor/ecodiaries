@@ -6,6 +6,7 @@ import type { GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import type { AtlasProject } from '@/lib/solutions/types'
 import { SECTOR_COLORS, SECTOR_LABELS, projectsToGeoJSON } from '@/lib/solutions/types'
+import { distanceKm, nearestProjects } from '@/lib/solutions/coordinates'
 
 const MAP_STYLE = process.env.NEXT_PUBLIC_MAP_STYLE_URL || 'https://tiles.openfreemap.org/styles/liberty'
 
@@ -137,7 +138,14 @@ export function AtlasMap({
         SECTOR_COLORS.pollution,
         SECTOR_COLORS['climate-justice'],
       ],
-      'circle-radius': ['case', ['==', ['get', 'id'], hoveredId || ''], 11, ['==', ['get', 'id'], selectedId || ''], 12, 7],
+      'circle-radius': [
+        'case',
+        ['==', ['get', 'id'], hoveredId || ''],
+        14,
+        ['==', ['get', 'id'], selectedId || ''],
+        15,
+        11,
+      ],
       'circle-stroke-width': 2,
       'circle-stroke-color': '#ffffff',
     }),
@@ -206,37 +214,59 @@ export function AtlasMap({
   const handleClick = useCallback(
     (event: MapLayerMouseEvent) => {
       const map = mapRef.current?.getMap()
-      if (!map) return
-      const features = map.queryRenderedFeatures(event.point, {
-        layers: ['clusters', 'cluster-count', 'unclustered-point'],
-      })
-      const feature = features[0]
-      if (!feature) {
-        onSelect(null)
+      const click = { lat: event.lngLat.lat, lng: event.lngLat.lng }
+
+      if (map) {
+        try {
+          const box: [[number, number], [number, number]] = [
+            [event.point.x - 18, event.point.y - 18],
+            [event.point.x + 18, event.point.y + 18],
+          ]
+          const layers = cluster ? ['clusters', 'cluster-count', 'unclustered-point'] : ['unclustered-point']
+          const features = map.queryRenderedFeatures(box, { layers })
+          const feature = features[0]
+          if (feature) {
+            const layerId = feature.layer?.id
+            if (cluster && (feature.properties?.cluster || layerId === 'clusters' || layerId === 'cluster-count')) {
+              const clusterId = feature.properties?.cluster_id as number
+              const source = map.getSource('projects') as GeoJSONSource
+              const coords = (feature.geometry as GeoJSON.Point).coordinates
+              const currentZoom = map.getZoom()
+              void source
+                .getClusterExpansionZoom(clusterId)
+                .then((zoom) => {
+                  const nextZoom = Number.isFinite(zoom)
+                    ? Math.min(Math.max(zoom, currentZoom + 1.5), 12)
+                    : currentZoom + 2
+                  try {
+                    map.jumpTo({ center: [coords[0], coords[1]], zoom: nextZoom })
+                  } catch {
+                    /* software WebGL cannot always move the camera */
+                  }
+                })
+                .catch(() => undefined)
+              return
+            }
+            const id = feature.properties?.id as string
+            const project = projects.find((p) => p.id === id)
+            if (project) {
+              onSelect(project)
+              return
+            }
+          }
+        } catch {
+          /* queryRenderedFeatures can throw while the style is still loading */
+        }
+      }
+
+      const nearest = nearestProjects(projects, click, 1)[0]
+      if (nearest && distanceKm(click, nearest.coordinates) < 900) {
+        onSelect(nearest)
         return
       }
-      const layerId = feature.layer?.id
-      if (cluster && (feature.properties?.cluster || layerId === 'clusters' || layerId === 'cluster-count')) {
-        const clusterId = feature.properties?.cluster_id as number
-        const source = map.getSource('projects') as GeoJSONSource
-        const coords = (feature.geometry as GeoJSON.Point).coordinates
-        const currentZoom = map.getZoom()
-        void source
-          .getClusterExpansionZoom(clusterId)
-          .then((zoom) => {
-            const nextZoom = Number.isFinite(zoom) ? Math.min(Math.max(zoom, currentZoom + 1.5), 12) : currentZoom + 2
-            map.jumpTo({ center: [coords[0], coords[1]], zoom: nextZoom })
-          })
-          .catch(() => {
-            map.jumpTo({ center: [coords[0], coords[1]], zoom: Math.min(currentZoom + 2, 12) })
-          })
-        return
-      }
-      const id = feature.properties?.id as string
-      const project = projects.find((p) => p.id === id) ?? null
-      onSelect(project)
+      onSelect(null)
     },
-    [onSelect, projects],
+    [cluster, onSelect, projects],
   )
 
   const handleMoveEnd = useCallback(() => {
@@ -264,43 +294,48 @@ export function AtlasMap({
           onMouseMove={(e) => {
             const map = mapRef.current?.getMap()
             if (!map) return
-            const features = map.queryRenderedFeatures(e.point, { layers: ['unclustered-point'] })
-            onHover(features[0]?.properties?.id ?? null)
+            try {
+              const features = map.queryRenderedFeatures(e.point, { layers: ['unclustered-point'] })
+              onHover(features[0]?.properties?.id ?? null)
+            } catch {
+              onHover(null)
+            }
           }}
           onMoveEnd={handleMoveEnd}
-          interactiveLayerIds={
-            cluster ? ['clusters', 'cluster-count', 'unclustered-point'] : ['unclustered-point']
-          }
+          cursor="pointer"
         >
           <NavigationControl position="top-right" showCompass={false} />
           <Source
+            key={cluster ? 'clustered' : 'points'}
             id="projects"
             type="geojson"
             data={geojson}
-            cluster={cluster}
-            clusterMaxZoom={12}
-            clusterRadius={50}
+            {...(cluster ? { cluster: true, clusterMaxZoom: 12, clusterRadius: 50 } : {})}
           >
-            <Layer
-              id="clusters"
-              type="circle"
-              source="projects"
-              filter={['has', 'point_count'] as never}
-              paint={clusterLayer.paint as never}
-            />
-            <Layer
-              id="cluster-count"
-              type="symbol"
-              source="projects"
-              filter={['has', 'point_count'] as never}
-              layout={clusterCountLayer.layout as never}
-              paint={clusterCountLayer.paint as never}
-            />
+            {cluster ? (
+              <>
+                <Layer
+                  id="clusters"
+                  type="circle"
+                  source="projects"
+                  filter={['has', 'point_count'] as never}
+                  paint={clusterLayer.paint as never}
+                />
+                <Layer
+                  id="cluster-count"
+                  type="symbol"
+                  source="projects"
+                  filter={['has', 'point_count'] as never}
+                  layout={clusterCountLayer.layout as never}
+                  paint={clusterCountLayer.paint as never}
+                />
+              </>
+            ) : null}
             <Layer
               id="unclustered-point"
               type="circle"
               source="projects"
-              filter={['!', ['has', 'point_count']] as never}
+              filter={cluster ? (['!', ['has', 'point_count']] as never) : undefined}
               paint={unclusteredPaint as never}
             />
           </Source>

@@ -466,6 +466,16 @@
   width: min(340px, calc(100% - 32px));
 }
 
+.atlas-hero__peek--below {
+  position: static;
+  width: min(520px, 100%);
+  margin-top: 16px;
+}
+
+.atlas-hero__hint {
+  margin-top: 14px;
+}
+
 .atlas-hero__peek .atlas-peek {
   margin: 0;
   box-shadow: 0 18px 40px rgba(26, 26, 26, 0.16);
@@ -496,7 +506,8 @@
     min-height: 280px;
   }
 
-  .atlas-hero__peek {
+  .atlas-hero__peek,
+  .atlas-hero__peek--below {
     position: static;
     width: 100%;
     margin-top: 12px;

@@ -37,12 +37,14 @@ export function SolutionsAtlasHero({ projects }: SolutionsAtlasHeroProps) {
             cluster={false}
             autoFit={false}
           />
-          {selected ? (
-            <div className="atlas-hero__peek">
-              <AtlasPeekCard project={selected} onClose={() => setSelected(null)} />
-            </div>
-          ) : null}
         </div>
+        {selected ? (
+          <div className="atlas-hero__peek atlas-hero__peek--below">
+            <AtlasPeekCard project={selected} onClose={() => setSelected(null)} />
+          </div>
+        ) : (
+          <p className="mag-meta atlas-hero__hint">Click a point on the map to open a field story.</p>
+        )}
       </div>
     </section>
   )
