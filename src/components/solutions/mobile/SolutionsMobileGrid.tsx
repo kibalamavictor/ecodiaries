@@ -4,12 +4,11 @@ import { Suspense, useMemo } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { FilterPills } from '@/components/ui/FilterPills'
 import { AtlasViewToggle } from '@/components/solutions/atlas/AtlasViewToggle'
+import { AtlasProjectGrid } from '@/components/solutions/atlas/AtlasProjectGrid'
 import { SolutionsGridFundingTile } from '@/components/solutions/mobile/SolutionsGridFundingTile'
-import { SolutionsGridMobileCard } from '@/components/solutions/mobile/SolutionsGridMobileCard'
-import { SolutionsMobileStatStrip } from '@/components/solutions/mobile/SolutionsMobileStatStrip'
-import { SolutionsSpotlightCarousel } from '@/components/solutions/mobile/SolutionsSpotlightCarousel'
+import { MagCard } from '@/components/magazine/MagCard'
+import { atlasProjectToMagCard } from '@/lib/magazine'
 import { projectMatchesRegionFilter } from '@/lib/solutions/coordinates'
-import { pickSpotlightSolutions } from '@/lib/solutions/spotlight'
 import {
   SECTOR_FILTER_OPTIONS,
   type AtlasProject,
@@ -58,11 +57,10 @@ type GridItem =
   | { type: 'solution'; project: AtlasProject }
   | { type: 'funding' }
 
-function buildGridItems(projects: AtlasProject[], excludeIds: Set<string>): GridItem[] {
-  const list = excludeIds.size ? projects.filter((p) => !excludeIds.has(p.id)) : projects
+function buildGridItems(projects: AtlasProject[]): GridItem[] {
   const items: GridItem[] = []
 
-  list.forEach((project, index) => {
+  projects.forEach((project, index) => {
     items.push({ type: 'solution', project })
     if ((index + 1) % FUNDING_TILE_INTERVAL === 0) {
       items.push({ type: 'funding' })
@@ -85,10 +83,7 @@ export function SolutionsMobileGrid({ projects }: SolutionsMobileGridProps) {
     () => filterProjects(projects, sector, region, status, query),
     [projects, sector, region, status, query],
   )
-
-  const spotlightProjects = useMemo(() => pickSpotlightSolutions(filtered), [filtered])
-  const spotlightIds = useMemo(() => new Set(spotlightProjects.map((p) => p.id)), [spotlightProjects])
-  const gridItems = useMemo(() => buildGridItems(filtered, spotlightIds), [filtered, spotlightIds])
+  const gridItems = useMemo(() => buildGridItems(filtered), [filtered])
 
   function syncView(mode: 'atlas' | 'grid') {
     const params = new URLSearchParams(searchParams.toString())
@@ -99,14 +94,12 @@ export function SolutionsMobileGrid({ projects }: SolutionsMobileGridProps) {
   }
 
   return (
-    <section id="explore" className="solutions-mobile-grid">
-      <div className="solutions-mobile-grid__inner">
-        <header className="solutions-mobile-grid__head">
-          <p className="solutions-mobile-grid__eyebrow">Solutions Atlas</p>
-          <h2 className="solutions-mobile-grid__title">What&apos;s actually working, mapped</h2>
-        </header>
-
-        <SolutionsMobileStatStrip projects={projects} />
+    <section id="explore" className="mag-section solutions-mobile-grid">
+      <div className="mag-wrap">
+        <div className="mag-section-head">
+          <h2>Solutions atlas</h2>
+          <AtlasViewToggle view="grid" onChange={syncView} />
+        </div>
 
         <Suspense fallback={null}>
           <div className="solutions-mobile-grid__filters">
@@ -119,27 +112,34 @@ export function SolutionsMobileGrid({ projects }: SolutionsMobileGridProps) {
           </div>
         </Suspense>
 
-        <div className="solutions-mobile-grid__toolbar">
-          <p className="solutions-mobile-grid__count">
-            {filtered.length} project{filtered.length === 1 ? '' : 's'}
-          </p>
-          <AtlasViewToggle view="grid" onChange={syncView} />
-        </div>
-
-        {spotlightProjects.length ? <SolutionsSpotlightCarousel projects={spotlightProjects} /> : null}
+        <p className="atlas-filter-toolbar__count">
+          {filtered.length} project{filtered.length === 1 ? '' : 's'}
+        </p>
 
         {!gridItems.length ? (
-          <p className="solutions-mobile-grid__empty">No projects match these filters yet.</p>
-        ) : (
-          <div className="solutions-mobile-grid__cards">
+          <p className="atlas-grid-empty">No projects match these filters yet.</p>
+        ) : gridItems.some((item) => item.type === 'funding') ? (
+          <div className="atlas-grid atlas-grid--compact">
             {gridItems.map((item, index) =>
               item.type === 'funding' ? (
-                <SolutionsGridFundingTile key={`funding-${index}`} projectCount={projects.length} projects={projects} />
+                <SolutionsGridFundingTile
+                  key={`funding-${index}`}
+                  projectCount={projects.length}
+                  projects={projects}
+                />
               ) : (
-                <SolutionsGridMobileCard key={item.project.id} solution={item.project} />
+                <MagCard
+                  key={item.project.id}
+                  item={atlasProjectToMagCard(item.project)}
+                  size="sm"
+                  heading="h3"
+                  chip="below"
+                />
               ),
             )}
           </div>
+        ) : (
+          <AtlasProjectGrid projects={filtered} hoveredId={null} onHover={() => undefined} compact />
         )}
       </div>
     </section>

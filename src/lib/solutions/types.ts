@@ -103,12 +103,12 @@ export const FUNDING_FILTER_OPTIONS: { label: string; value: FundingStatus | 'al
 ]
 
 export const SECTOR_COLORS: Record<Sector, string> = {
-  agriculture: '#00AB45',
-  energy: '#B6F101',
-  water: '#1F7A53',
-  biodiversity: '#2E7D32',
+  agriculture: '#4A7C3F',
+  energy: '#0B3E1F',
+  water: '#2C6A62',
+  biodiversity: '#1F5C32',
   pollution: '#5C6457',
-  'climate-justice': '#7A1632',
+  'climate-justice': '#143D2A',
 }
 
 export const SECTOR_LABELS: Record<Sector, string> = {

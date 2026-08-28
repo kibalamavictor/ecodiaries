@@ -37,7 +37,7 @@ export function AtlasMapProjectPopup({ project, onClose }: AtlasMapProjectPopupP
               <Image src={project.coverImageUrl} alt="" fill className="object-cover" sizes="400px" />
             </div>
             <div className="atlas-map-popup__body">
-              <span className="atlas-org-label">{project.organization?.name || 'Field project'}</span>
+              <span className="mag-chip">{project.organization?.name || 'Field project'}</span>
               <h3 id="atlas-map-popup-title" className="atlas-map-popup__title">
                 {project.title}
               </h3>
@@ -48,7 +48,7 @@ export function AtlasMapProjectPopup({ project, onClose }: AtlasMapProjectPopupP
                   Back to map
                 </button>
                 <Link href={`/solutions/${project.slug}`} className="atlas-map-popup__continue">
-                  View portfolio →
+                  View solution →
                 </Link>
               </div>
             </div>

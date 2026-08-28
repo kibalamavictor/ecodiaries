@@ -5,8 +5,8 @@ a.solution-card {
   padding: 0;
   height: 100%;
   overflow: hidden;
-  border-radius: 16px;
-  border: 0.5px solid rgba(7, 20, 12, 0.1);
+  border-radius: 12px;
+  border: 0;
   background: #fff;
   color: inherit;
   text-decoration: none;
@@ -17,14 +17,13 @@ a.solution-card {
 }
 
 .solution-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(7, 20, 12, 0.08);
+  transform: none;
+  box-shadow: none;
 }
 
 .solution-card:hover .solution-card__title {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
+  color: #0b3e1f;
+  text-decoration: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -99,12 +98,12 @@ a.solution-card {
 
 .solution-card__title {
   margin: 0 0 8px;
-  font-family: var(--font-display, 'Sora', system-ui, sans-serif);
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.16;
-  letter-spacing: -0.01em;
-  color: #0e3a1d;
+  font-family: var(--font-serif), Marcellus, Georgia, serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0;
+  color: #1a1a1a;
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
@@ -162,11 +161,11 @@ a.solution-card {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-display, 'Sora', system-ui, sans-serif);
+  font-family: var(--font-nav), Montserrat, Inter, system-ui, sans-serif;
   font-size: 10.5px;
   font-weight: 600;
-  background: #f0e0e6;
-  color: #7d1f3f;
+  background: #0b3e1f;
+  color: #fff;
 }
 
 .solution-card__org-name {

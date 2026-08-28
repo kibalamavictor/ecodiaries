@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { CircleCheck } from 'lucide-react'
 import {
+  SECTOR_COLORS,
   SECTOR_LABELS,
   STATUS_LABELS,
   type AtlasProject,
@@ -17,21 +18,12 @@ type SolutionCardProps = {
 }
 
 const STATUS_DOT_COLORS: Record<SolutionStatus, string> = {
-  piloted: '#f6d211',
-  scaling: '#c2e812',
-  established: '#2fa84f',
+  piloted: '#8a8a8a',
+  scaling: '#0B3E1F',
+  established: '#1a1a1a',
 }
 
-const CARD_SECTOR_COLORS: Record<Sector, string> = {
-  energy: '#f6d211',
-  water: '#1f6f8b',
-  agriculture: '#4ba62b',
-  biodiversity: '#2fa84f',
-  pollution: '#7d1f3f',
-  'climate-justice': '#0e3a1d',
-}
-
-const FALLBACK_DOT = '#4ba62b'
+const FALLBACK_DOT = '#0B3E1F'
 
 const VERIFICATION_BADGE_LABELS: Partial<Record<VerificationTier, string>> = {
   self_reported: 'Self-reported',
@@ -41,7 +33,7 @@ const VERIFICATION_BADGE_LABELS: Partial<Record<VerificationTier, string>> = {
 
 function sectorColor(sector?: Sector): string {
   if (!sector) return FALLBACK_DOT
-  return CARD_SECTOR_COLORS[sector] ?? FALLBACK_DOT
+  return SECTOR_COLORS[sector] ?? FALLBACK_DOT
 }
 
 function statusDotColor(status: SolutionStatus): string {

@@ -1,6 +1,11 @@
 import { uniquifyEditorialImages } from '@/lib/unsplash-environment'
 import type { MagCardItem } from '@/components/magazine/MagCard'
-import { SECTOR_FILTER_OPTIONS, type Sector } from '@/lib/solutions/types'
+import {
+  SECTOR_FILTER_OPTIONS,
+  SECTOR_LABELS,
+  type AtlasProject,
+  type Sector,
+} from '@/lib/solutions/types'
 
 export function uniquifyMagCards(items: MagCardItem[]): MagCardItem[] {
   return uniquifyEditorialImages(
@@ -28,4 +33,15 @@ export function byline(name?: string, date?: string): string {
   const who = name || ''
   if (who && date) return `${who} · ${date}`
   return who || date || ''
+}
+
+export function atlasProjectToMagCard(project: AtlasProject): MagCardItem {
+  return {
+    href: `/solutions/${project.slug}`,
+    image: project.coverImageUrl,
+    category: project.sectors[0] ? SECTOR_LABELS[project.sectors[0]] : 'Solutions',
+    title: project.title,
+    excerpt: project.summary,
+    byline: [project.organization?.name, project.region].filter(Boolean).join(' · '),
+  }
 }

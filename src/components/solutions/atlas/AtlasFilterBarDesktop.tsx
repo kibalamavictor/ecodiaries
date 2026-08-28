@@ -35,7 +35,7 @@ export function AtlasFilterBarDesktop({
   const searchParams = useSearchParams()
 
   return (
-    <div className="mt-10 space-y-5">
+    <div className="atlas-filters">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <RegionCombobox
           variant="atlas"
@@ -49,7 +49,7 @@ export function AtlasFilterBarDesktop({
             router.replace(qs ? `/solutions?${qs}` : '/solutions', { scroll: false })
           }}
         />
-        <p className="text-sm font-semibold text-[#5C6457]">
+        <p className="atlas-filter-toolbar__count">
           {count} project{count === 1 ? '' : 's'}
           {sector !== 'all' ? ` · ${SECTOR_LABELS[sector]}` : ''}
           {status !== 'all' ? ` · ${stageFilters.find((s) => s.slug === status)?.label}` : ''}
@@ -58,7 +58,7 @@ export function AtlasFilterBarDesktop({
       </div>
 
       <div className="space-y-3 atlas-filter-group">
-        <p className="text-xs font-bold uppercase tracking-widest text-[#8A9182]">Stage</p>
+        <p className="atlas-filter-group__label">Stage</p>
         <Suspense fallback={null}>
           <FilterPills
             filters={stageFilters}
@@ -70,7 +70,7 @@ export function AtlasFilterBarDesktop({
       </div>
 
       <div className="space-y-3 atlas-filter-group">
-        <p className="text-xs font-bold uppercase tracking-widest text-[#8A9182]">Sector</p>
+        <p className="atlas-filter-group__label">Sector</p>
         <Suspense fallback={null}>
           <FilterPills
             filters={sectorFilters}

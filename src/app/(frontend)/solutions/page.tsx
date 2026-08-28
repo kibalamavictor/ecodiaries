@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic'
 import type { Metadata } from 'next'
+import { MagCtaBand } from '@/components/magazine/MagCtaBand'
 import { MagNewsletter } from '@/components/magazine/MagNewsletter'
 import { MagPageShell } from '@/components/magazine/MagPageShell'
 import { CredibilityStrip } from '@/components/solutions/CredibilityStrip'
-import { FundingCtaBand } from '@/components/solutions/FundingCtaBand'
 import { SolutionHero } from '@/components/solutions/SolutionHero'
 import { getAtlasProjects } from '@/lib/cms/solutions-page'
 import { environmentImageForKey } from '@/lib/unsplash-environment'
@@ -31,7 +31,13 @@ export default async function SolutionsPage({ searchParams }: Props) {
       <SolutionHero solutions={solutions} defaultQuery={q} />
       <CredibilityStrip solutions={solutions} />
       <SolutionsAtlasExplorer projects={solutions} />
-      <FundingCtaBand />
+      <MagCtaBand
+        eyebrow="For funders & partners"
+        title="Partner with us to scale what’s working"
+        lede="Field-documented, community-rooted solutions ready for support across Africa."
+        href="/contact?reason=partnership"
+        label="Start a conversation"
+      />
       <MagNewsletter image={newsletterImage} />
     </MagPageShell>
   )

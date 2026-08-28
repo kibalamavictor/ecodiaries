@@ -58,7 +58,7 @@ export function SolutionMobileCardBody({ title, metric, variant = 'grid' }: Solu
           <span className="solution-mobile-card__metric-value">{metric.value}</span>
           <span className="solution-mobile-card__metric-label">{metric.label}</span>
         </div>
-        <span className="solution-mobile-card__action">Portfolio →</span>
+        <span className="solution-mobile-card__action">View solution →</span>
       </div>
     </div>
   )

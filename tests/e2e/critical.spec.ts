@@ -18,7 +18,7 @@ test.describe('EcoDiaries critical paths', () => {
 
   test('stories archive loads', async ({ page }) => {
     await page.goto('/stories')
-    await expect(page.getByRole('heading', { name: 'Stories' })).toBeVisible()
+    await expect(page.locator('h1.sr-only')).toHaveText('Stories')
     await expect(page.getByRole('heading', { name: 'Trending now' })).toBeVisible()
   })
 
