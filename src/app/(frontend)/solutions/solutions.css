@@ -433,6 +433,76 @@
   background: #f4f4f4;
 }
 
+.atlas-map-shell--hero {
+  height: min(72vh, 620px);
+  min-height: 360px;
+}
+
+.atlas-hero.mag-section {
+  padding-top: 36px;
+  padding-bottom: 20px;
+}
+
+.atlas-hero__title {
+  font-size: clamp(28px, 3vw, 40px);
+  margin: 8px 0 12px;
+  max-width: 16ch;
+}
+
+.atlas-hero__lede {
+  max-width: 48ch;
+  margin-bottom: 22px;
+}
+
+.atlas-hero__stage {
+  position: relative;
+}
+
+.atlas-hero__peek {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 6;
+  width: min(340px, calc(100% - 32px));
+}
+
+.atlas-hero__peek .atlas-peek {
+  margin: 0;
+  box-shadow: 0 18px 40px rgba(26, 26, 26, 0.16);
+}
+
+.solutions-collections .mag-section {
+  padding-top: 48px;
+  padding-bottom: 20px;
+}
+
+.solutions-collections .mag-feature h3.mag-title {
+  font-size: clamp(28px, 3vw, 40px);
+  margin: 12px 0 10px;
+  line-height: 1.15;
+}
+
+.solutions-collections .mag-feature h3 a:hover {
+  color: var(--mag-accent, #0b3e1f);
+}
+
+.solutions-browse__filters {
+  margin: 0 0 28px;
+}
+
+@media (max-width: 767px) {
+  .atlas-map-shell--hero {
+    height: min(58vh, 460px);
+    min-height: 280px;
+  }
+
+  .atlas-hero__peek {
+    position: static;
+    width: 100%;
+    margin-top: 12px;
+  }
+}
+
 .atlas-map-shell .maplibregl-map {
   position: absolute;
   inset: 0;
@@ -463,11 +533,11 @@
   align-items: center;
   gap: 6px;
   font-family: var(--font-nav), Montserrat, Inter, system-ui, sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #666;
+  color: #1a1a1a;
 }
 
 .atlas-map-legend span {

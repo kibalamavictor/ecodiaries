@@ -27,7 +27,8 @@ export function TopicFilterModal({
   const reduce = useReducedMotion()
   const dialogRef = useRef<HTMLDivElement>(null)
   const path = basePath || pathname
-  const active = searchParams.get(paramKey) || 'all'
+  const alias = paramKey === 'sector' ? searchParams.get('category') : null
+  const active = searchParams.get(paramKey) || alias || 'all'
 
   useEffect(() => {
     if (!open) return
@@ -46,6 +47,7 @@ export function TopicFilterModal({
 
   function selectTopic(slug: string) {
     const params = new URLSearchParams(searchParams.toString())
+    if (paramKey === 'sector') params.delete('category')
     if (slug === 'all') params.delete(paramKey)
     else params.set(paramKey, slug)
     const qs = params.toString()

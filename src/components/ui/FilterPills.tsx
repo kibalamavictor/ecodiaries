@@ -15,12 +15,14 @@ type FilterPillsProps = {
 export function FilterPills({ filters, paramKey = 'category', basePath, modalTitle }: FilterPillsProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const active = searchParams.get(paramKey) || 'all'
+  const alias = paramKey === 'sector' ? searchParams.get('category') : null
+  const active = searchParams.get(paramKey) || alias || 'all'
   const path = basePath || pathname
   const [modalOpen, setModalOpen] = useState(false)
 
   function hrefFor(slug: string) {
     const params = new URLSearchParams(searchParams.toString())
+    if (paramKey === 'sector') params.delete('category')
     if (slug === 'all') params.delete(paramKey)
     else params.set(paramKey, slug)
     const qs = params.toString()

@@ -127,3 +127,39 @@ export function uniqueRegions(solutions: { region: string }[]): string[] {
 export function uniqueCountriesCount(solutions: { region: string }[]): number {
   return uniqueRegions(solutions).length
 }
+
+export function mostCommonRegion(projects: { region: string }[]): string {
+  const counts = new Map<string, number>()
+  for (const project of projects) {
+    const region = project.region?.trim()
+    if (!region) continue
+    counts.set(region, (counts.get(region) || 0) + 1)
+  }
+  return [...counts.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || 'East Africa'
+}
+
+export function distanceKm(
+  a: { lat: number; lng: number },
+  b: { lat: number; lng: number },
+): number {
+  const toRad = (deg: number) => (deg * Math.PI) / 180
+  const dLat = toRad(b.lat - a.lat)
+  const dLng = toRad(b.lng - a.lng)
+  const lat1 = toRad(a.lat)
+  const lat2 = toRad(b.lat)
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2
+  return 2 * 6371 * Math.asin(Math.min(1, Math.sqrt(h)))
+}
+
+export function nearestProjects<T extends { coordinates: { lat: number; lng: number } }>(
+  projects: T[],
+  origin: { lat: number; lng: number },
+  limit = 3,
+): T[] {
+  return [...projects]
+    .sort(
+      (a, b) =>
+        distanceKm(origin, a.coordinates) - distanceKm(origin, b.coordinates),
+    )
+    .slice(0, limit)
+}

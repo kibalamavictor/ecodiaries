@@ -37,7 +37,7 @@ export function SolutionHero({ solutions, defaultQuery }: SolutionHeroProps) {
           />
         </Suspense>
         <div className="mag-actions">
-          <Link href="#explore" className="mag-btn">
+          <Link href="#atlas" className="mag-btn">
             Explore the atlas
           </Link>
           <Link href="/changemakers" className="mag-tag">
