@@ -34,6 +34,8 @@ export function SolutionsAtlasHero({ projects }: SolutionsAtlasHeroProps) {
             onSelect={setSelected}
             onHover={setHoveredId}
             className="atlas-map-shell--hero"
+            cluster={false}
+            autoFit={false}
           />
           {selected ? (
             <div className="atlas-hero__peek">

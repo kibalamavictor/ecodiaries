@@ -100,6 +100,8 @@ type AtlasMapProps = {
   onHover: (projectId: string | null) => void
   onBoundsChange?: (bounds: { west: number; south: number; east: number; north: number }) => void
   className?: string
+  cluster?: boolean
+  autoFit?: boolean
 }
 
 export function AtlasMap({
@@ -111,6 +113,8 @@ export function AtlasMap({
   onHover,
   onBoundsChange,
   className,
+  cluster = true,
+  autoFit = true,
 }: AtlasMapProps) {
   const mapRef = useRef<MapRef>(null)
   const resizeObserverRef = useRef<ResizeObserver | null>(null)
@@ -142,38 +146,42 @@ export function AtlasMap({
 
   const fitToProjects = useCallback(() => {
     const map = mapRef.current?.getMap()
-    if (!map) return
+    if (!map || !autoFit) return
 
-    if (projects.length === 0) {
-      map.flyTo({ center: [20, 2], zoom: 2.8, duration: 800 })
-      return
+    try {
+      if (projects.length === 0) {
+        map.jumpTo({ center: [22, 3], zoom: 3.1 })
+        return
+      }
+
+      if (projects.length === 1) {
+        const p = projects[0]
+        map.jumpTo({ center: [p.coordinates.lng, p.coordinates.lat], zoom: 6 })
+        return
+      }
+
+      let minLng = Infinity
+      let maxLng = -Infinity
+      let minLat = Infinity
+      let maxLat = -Infinity
+      for (const p of projects) {
+        minLng = Math.min(minLng, p.coordinates.lng)
+        maxLng = Math.max(maxLng, p.coordinates.lng)
+        minLat = Math.min(minLat, p.coordinates.lat)
+        maxLat = Math.max(maxLat, p.coordinates.lat)
+      }
+
+      map.fitBounds(
+        [
+          [minLng, minLat],
+          [maxLng, maxLat],
+        ],
+        { padding: 80, maxZoom: 5.2, duration: 0 },
+      )
+    } catch {
+      // Software WebGL in some environments cannot animate the camera.
     }
-
-    if (projects.length === 1) {
-      const p = projects[0]
-      map.flyTo({ center: [p.coordinates.lng, p.coordinates.lat], zoom: 7, duration: 800 })
-      return
-    }
-
-    let minLng = Infinity
-    let maxLng = -Infinity
-    let minLat = Infinity
-    let maxLat = -Infinity
-    for (const p of projects) {
-      minLng = Math.min(minLng, p.coordinates.lng)
-      maxLng = Math.max(maxLng, p.coordinates.lng)
-      minLat = Math.min(minLat, p.coordinates.lat)
-      maxLat = Math.max(maxLat, p.coordinates.lat)
-    }
-
-    map.fitBounds(
-      [
-        [minLng, minLat],
-        [maxLng, maxLat],
-      ],
-      { padding: 80, maxZoom: 8, duration: 800 },
-    )
-  }, [projects])
+  }, [autoFit, projects])
 
   const handleLoad = useCallback(() => {
     const map = mapRef.current?.getMap()
@@ -208,13 +216,20 @@ export function AtlasMap({
         return
       }
       const layerId = feature.layer?.id
-      if (feature.properties?.cluster || layerId === 'clusters' || layerId === 'cluster-count') {
+      if (cluster && (feature.properties?.cluster || layerId === 'clusters' || layerId === 'cluster-count')) {
         const clusterId = feature.properties?.cluster_id as number
         const source = map.getSource('projects') as GeoJSONSource
         const coords = (feature.geometry as GeoJSON.Point).coordinates
-        void source.getClusterExpansionZoom(clusterId).then((zoom) => {
-          map.easeTo({ center: [coords[0], coords[1]], zoom: Math.max(zoom, map.getZoom() + 1.5) })
-        })
+        const currentZoom = map.getZoom()
+        void source
+          .getClusterExpansionZoom(clusterId)
+          .then((zoom) => {
+            const nextZoom = Number.isFinite(zoom) ? Math.min(Math.max(zoom, currentZoom + 1.5), 12) : currentZoom + 2
+            map.jumpTo({ center: [coords[0], coords[1]], zoom: nextZoom })
+          })
+          .catch(() => {
+            map.jumpTo({ center: [coords[0], coords[1]], zoom: Math.min(currentZoom + 2, 12) })
+          })
         return
       }
       const id = feature.properties?.id as string
@@ -241,7 +256,7 @@ export function AtlasMap({
       <div className={`atlas-map-shell ${className || ''}`}>
         <Map
           ref={mapRef}
-          initialViewState={{ longitude: 20, latitude: 2, zoom: 2.8 }}
+          initialViewState={{ longitude: 22, latitude: 3, zoom: 3.1 }}
           mapStyle={MAP_STYLE}
           style={{ width: '100%', height: '100%' }}
           onLoad={handleLoad}
@@ -253,10 +268,19 @@ export function AtlasMap({
             onHover(features[0]?.properties?.id ?? null)
           }}
           onMoveEnd={handleMoveEnd}
-          interactiveLayerIds={['clusters', 'cluster-count', 'unclustered-point']}
+          interactiveLayerIds={
+            cluster ? ['clusters', 'cluster-count', 'unclustered-point'] : ['unclustered-point']
+          }
         >
           <NavigationControl position="top-right" showCompass={false} />
-          <Source id="projects" type="geojson" data={geojson} cluster clusterMaxZoom={12} clusterRadius={50}>
+          <Source
+            id="projects"
+            type="geojson"
+            data={geojson}
+            cluster={cluster}
+            clusterMaxZoom={12}
+            clusterRadius={50}
+          >
             <Layer
               id="clusters"
               type="circle"
