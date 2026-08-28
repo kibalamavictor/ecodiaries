@@ -335,7 +335,7 @@ export function AtlasMap({
               id="unclustered-point"
               type="circle"
               source="projects"
-              filter={cluster ? (['!', ['has', 'point_count']] as never) : undefined}
+              filter={(cluster ? ['!', ['has', 'point_count']] : ['all']) as never}
               paint={unclusteredPaint as never}
             />
           </Source>
