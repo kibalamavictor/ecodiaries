@@ -140,24 +140,9 @@ export function AtlasMap({
     [hoveredId, selectedId],
   )
 
-  const handleLoad = useCallback(() => {
+  const fitToProjects = useCallback(() => {
     const map = mapRef.current?.getMap()
     if (!map) return
-    applyEcoMapTint(map)
-    map.resize()
-
-    resizeObserverRef.current?.disconnect()
-    const shell = map.getContainer().parentElement
-    if (!shell) return
-    resizeObserverRef.current = new ResizeObserver(() => map.resize())
-    resizeObserverRef.current.observe(shell)
-  }, [])
-
-  useEffect(() => () => resizeObserverRef.current?.disconnect(), [])
-
-  useEffect(() => {
-    const map = mapRef.current?.getMap()
-    if (!map || focusKey === undefined) return
 
     if (projects.length === 0) {
       map.flyTo({ center: [20, 2], zoom: 2.8, duration: 800 })
@@ -186,16 +171,36 @@ export function AtlasMap({
         [minLng, minLat],
         [maxLng, maxLat],
       ],
-      { padding: 48, maxZoom: 10, duration: 800 },
+      { padding: 72, maxZoom: 6.5, duration: 800 },
     )
-  }, [focusKey, projects])
+  }, [projects])
+
+  const handleLoad = useCallback(() => {
+    const map = mapRef.current?.getMap()
+    if (!map) return
+    applyEcoMapTint(map)
+    map.resize()
+    fitToProjects()
+
+    resizeObserverRef.current?.disconnect()
+    const shell = map.getContainer().parentElement
+    if (!shell) return
+    resizeObserverRef.current = new ResizeObserver(() => map.resize())
+    resizeObserverRef.current.observe(shell)
+  }, [fitToProjects])
+
+  useEffect(() => () => resizeObserverRef.current?.disconnect(), [])
+
+  useEffect(() => {
+    fitToProjects()
+  }, [fitToProjects, focusKey])
 
   const handleClick = useCallback(
     (event: MapLayerMouseEvent) => {
       const map = mapRef.current?.getMap()
       if (!map) return
       const features = map.queryRenderedFeatures(event.point, {
-        layers: ['clusters', 'unclustered-point'],
+        layers: ['clusters', 'cluster-count', 'unclustered-point'],
       })
       const feature = features[0]
       if (!feature) {
@@ -205,9 +210,10 @@ export function AtlasMap({
       if (feature.properties?.cluster) {
         const clusterId = feature.properties.cluster_id as number
         const source = map.getSource('projects') as GeoJSONSource
-        const zoom = Number(source.getClusterExpansionZoom(clusterId))
         const coords = (feature.geometry as GeoJSON.Point).coordinates
-        map.easeTo({ center: [coords[0], coords[1]], zoom })
+        void source.getClusterExpansionZoom(clusterId).then((zoom) => {
+          map.easeTo({ center: [coords[0], coords[1]], zoom: Math.max(zoom, map.getZoom() + 1.5) })
+        })
         return
       }
       const id = feature.properties?.id as string
@@ -246,7 +252,7 @@ export function AtlasMap({
             onHover(features[0]?.properties?.id ?? null)
           }}
           onMoveEnd={handleMoveEnd}
-          interactiveLayerIds={['clusters', 'unclustered-point']}
+          interactiveLayerIds={['clusters', 'cluster-count', 'unclustered-point']}
         >
           <NavigationControl position="top-right" showCompass={false} />
           <Source id="projects" type="geojson" data={geojson} cluster clusterMaxZoom={12} clusterRadius={50}>
