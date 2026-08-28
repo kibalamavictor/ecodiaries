@@ -502,6 +502,12 @@
   line-height: 1.08;
 }
 
+@media (max-width: 899px) {
+  .solutions-hero__intro--stacked .mag-page-intro__title {
+    max-width: none;
+  }
+}
+
 .solutions-hero__intro--stacked .mag-page-intro__lede {
   max-width: 34ch;
 }
@@ -695,6 +701,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #1a1a1a;
+  white-space: nowrap;
 }
 
 .atlas-map-legend span {
