@@ -262,8 +262,8 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(0,0,0,.7) 0%, rgba(0,0,0,.42) 38%, rgba(0,0,0,.12) 68%, rgba(0,0,0,.08) 100%),
-    linear-gradient(180deg, rgba(0,0,0,.06) 0%, rgba(0,0,0,.22) 100%);
+    linear-gradient(105deg, rgba(0,0,0,.82) 0%, rgba(0,0,0,.5) 32%, rgba(0,0,0,.16) 56%, rgba(0,0,0,.04) 78%),
+    linear-gradient(180deg, rgba(0,0,0,.04) 0%, rgba(0,0,0,.2) 100%);
 }
 .mag-hero__overlay {
   position: absolute;
@@ -290,6 +290,7 @@
   margin: 16px 0 20px;
   max-width: 14ch;
   color: #fff;
+  text-shadow: 0 10px 28px rgba(0,0,0,.28);
 }
 .mag-hero__copy h1 a { color: #fff; }
 .mag-spread__copy h2 a { color: #fff; }
@@ -440,9 +441,9 @@
 }
 .mag-hero-strip__next:hover { background: var(--mag-accent); color: #fff; border-color: var(--mag-accent); }
 .mag-hero-strip__track {
-  height: 2px;
-  background: #eee;
-  margin-top: 18px;
+  height: 3px;
+  background: #ececec;
+  margin-top: 20px;
   border-radius: 99px;
   overflow: hidden;
 }
