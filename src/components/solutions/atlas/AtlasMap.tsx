@@ -333,28 +333,25 @@ export function AtlasMap({
             {...(cluster ? { cluster: true, clusterMaxZoom: 12, clusterRadius: 50 } : {})}
           >
             {cluster ? (
-              <>
-                <Layer
-                  id="clusters"
-                  type="circle"
-                  source="projects"
-                  filter={['has', 'point_count'] as never}
-                  paint={clusterLayer.paint as never}
-                />
-                <Layer
-                  id="cluster-count"
-                  type="symbol"
-                  source="projects"
-                  filter={['has', 'point_count'] as never}
-                  layout={clusterCountLayer.layout as never}
-                  paint={clusterCountLayer.paint as never}
-                />
-              </>
+              <Layer
+                id="clusters"
+                type="circle"
+                filter={['has', 'point_count'] as never}
+                paint={clusterLayer.paint as never}
+              />
+            ) : null}
+            {cluster ? (
+              <Layer
+                id="cluster-count"
+                type="symbol"
+                filter={['has', 'point_count'] as never}
+                layout={clusterCountLayer.layout as never}
+                paint={clusterCountLayer.paint as never}
+              />
             ) : null}
             <Layer
               id="unclustered-point"
               type="circle"
-              source="projects"
               filter={(cluster ? ['!', ['has', 'point_count']] : ['has', 'id']) as never}
               paint={unclusteredPaint as never}
             />
