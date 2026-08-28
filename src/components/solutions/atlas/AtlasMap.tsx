@@ -1,66 +1,36 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Map, { Layer, NavigationControl, Source, type MapLayerMouseEvent, type MapRef } from 'react-map-gl/maplibre'
-import type { GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl'
+import type { GeoJSONSource, Map as MapLibreMap, StyleSpecification } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import type { AtlasProject } from '@/lib/solutions/types'
 import { SECTOR_COLORS, SECTOR_LABELS, projectsToGeoJSON } from '@/lib/solutions/types'
 import { distanceKm, nearestProjects } from '@/lib/solutions/coordinates'
+import {
+  ECO_MAP,
+  ECO_MAP_STYLE_URL,
+  loadEcoMapStyle,
+  tintEcoMapStyle,
+} from '@/lib/solutions/eco-map-style'
 
-const MAP_STYLE = process.env.NEXT_PUBLIC_MAP_STYLE_URL || 'https://tiles.openfreemap.org/styles/liberty'
-
-const BRAND_FOREST = '#0B3E1F'
-const PAPER = '#f3f1ea'
-const LAND = '#efece3'
-const WATER = '#1e4a3d'
-const PARK = '#d8e3cf'
-const ROAD = '#d9d4c8'
-const INK = '#3f3f3f'
+const AFRICA_BOUNDS: [[number, number], [number, number]] = [
+  [-17.8, -35.2],
+  [51.8, 37.8],
+]
 
 function applyEcoMapTint(map: MapLibreMap) {
   const style = map.getStyle()
   if (!style?.layers) return
-
-  for (const layer of style.layers) {
-    const id = layer.id.toLowerCase()
-    try {
-      if (layer.type === 'background') {
-        map.setPaintProperty(layer.id, 'background-color', PAPER)
+  const tinted = tintEcoMapStyle(style as StyleSpecification)
+  for (const layer of tinted.layers) {
+    if (!('paint' in layer) || !layer.paint) continue
+    for (const [key, value] of Object.entries(layer.paint)) {
+      try {
+        map.setPaintProperty(layer.id, key, value)
+      } catch {
+        // Layer may not support this paint property
       }
-      if (layer.type === 'fill') {
-        if (id.includes('water') || id.includes('ocean') || id.includes('river') || id.includes('lake')) {
-          map.setPaintProperty(layer.id, 'fill-color', WATER)
-          map.setPaintProperty(layer.id, 'fill-opacity', 0.92)
-        } else if (id.includes('park') || id.includes('wood') || id.includes('forest') || id.includes('grass')) {
-          map.setPaintProperty(layer.id, 'fill-color', PARK)
-        } else if (id.includes('land') || id.includes('landcover') || id.includes('landuse')) {
-          map.setPaintProperty(layer.id, 'fill-color', LAND)
-        } else if (id.includes('building')) {
-          map.setPaintProperty(layer.id, 'fill-color', '#e4dfd4')
-        }
-      }
-      if (layer.type === 'line') {
-        if (id.includes('water')) {
-          map.setPaintProperty(layer.id, 'line-color', WATER)
-        } else if (id.includes('boundary') || id.includes('admin') || id.includes('border')) {
-          map.setPaintProperty(layer.id, 'line-color', BRAND_FOREST)
-          map.setPaintProperty(layer.id, 'line-opacity', 0.28)
-        } else if (id.includes('road') || id.includes('highway') || id.includes('street') || id.includes('path')) {
-          map.setPaintProperty(layer.id, 'line-color', ROAD)
-        }
-      }
-      if (layer.type === 'symbol') {
-        if (id.includes('water')) {
-          map.setPaintProperty(layer.id, 'text-color', '#f7f7f4')
-          map.setPaintProperty(layer.id, 'text-halo-color', WATER)
-        } else {
-          map.setPaintProperty(layer.id, 'text-color', INK)
-          map.setPaintProperty(layer.id, 'text-halo-color', PAPER)
-        }
-      }
-    } catch {
-      // Layer may not support this paint property
     }
   }
 }
@@ -71,7 +41,7 @@ const clusterLayer = {
   source: 'projects',
   filter: ['has', 'point_count'],
   paint: {
-    'circle-color': BRAND_FOREST,
+    'circle-color': ECO_MAP.forest,
     'circle-radius': ['step', ['get', 'point_count'], 18, 5, 24, 15, 30],
     'circle-opacity': 0.96,
     'circle-stroke-width': 2,
@@ -100,9 +70,14 @@ type AtlasMapProps = {
   onSelect: (project: AtlasProject | null) => void
   onHover: (projectId: string | null) => void
   onBoundsChange?: (bounds: { west: number; south: number; east: number; north: number }) => void
+  onReady?: () => void
+  onError?: () => void
   className?: string
   cluster?: boolean
   autoFit?: boolean
+  continentView?: boolean
+  showLegend?: boolean
+  maxZoom?: number
 }
 
 export function AtlasMap({
@@ -113,13 +88,33 @@ export function AtlasMap({
   onSelect,
   onHover,
   onBoundsChange,
+  onReady,
+  onError,
   className,
   cluster = true,
   autoFit = true,
+  continentView = false,
+  showLegend = true,
+  maxZoom = 11,
 }: AtlasMapProps) {
   const mapRef = useRef<MapRef>(null)
   const resizeObserverRef = useRef<ResizeObserver | null>(null)
+  const [mapStyle, setMapStyle] = useState<StyleSpecification | string | null>(null)
   const geojson = useMemo(() => projectsToGeoJSON(projects), [projects])
+
+  useEffect(() => {
+    let cancelled = false
+    loadEcoMapStyle()
+      .then((style) => {
+        if (!cancelled) setMapStyle(style)
+      })
+      .catch(() => {
+        if (!cancelled) setMapStyle(ECO_MAP_STYLE_URL)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   const unclusteredPaint = useMemo(
     () => ({
@@ -152,11 +147,22 @@ export function AtlasMap({
     [hoveredId, selectedId],
   )
 
-  const fitToProjects = useCallback(() => {
+  const fitCamera = useCallback(() => {
     const map = mapRef.current?.getMap()
-    if (!map || !autoFit) return
+    if (!map) return
 
     try {
+      if (continentView) {
+        map.fitBounds(AFRICA_BOUNDS, {
+          padding: { top: 18, bottom: 28, left: 16, right: 16 },
+          duration: 0,
+          maxZoom: 4.35,
+        })
+        return
+      }
+
+      if (!autoFit) return
+
       if (projects.length === 0) {
         map.jumpTo({ center: [22, 3], zoom: 3.1 })
         return
@@ -189,27 +195,28 @@ export function AtlasMap({
     } catch {
       // Software WebGL in some environments cannot animate the camera.
     }
-  }, [autoFit, projects])
+  }, [autoFit, continentView, projects])
 
   const handleLoad = useCallback(() => {
     const map = mapRef.current?.getMap()
     if (!map) return
     applyEcoMapTint(map)
     map.resize()
-    fitToProjects()
+    fitCamera()
+    onReady?.()
 
     resizeObserverRef.current?.disconnect()
     const shell = map.getContainer().parentElement
     if (!shell) return
     resizeObserverRef.current = new ResizeObserver(() => map.resize())
     resizeObserverRef.current.observe(shell)
-  }, [fitToProjects])
+  }, [fitCamera, onReady])
 
   useEffect(() => () => resizeObserverRef.current?.disconnect(), [])
 
   useEffect(() => {
-    fitToProjects()
-  }, [fitToProjects, focusKey])
+    fitCamera()
+  }, [fitCamera, focusKey, mapStyle])
 
   const handleClick = useCallback(
     (event: MapLayerMouseEvent) => {
@@ -284,19 +291,25 @@ export function AtlasMap({
   return (
     <div className="atlas-map-block">
       <div className={`atlas-map-shell ${className || ''}`}>
+        {mapStyle ? (
         <Map
           ref={mapRef}
-          initialViewState={{ longitude: 22, latitude: 3, zoom: 3.1 }}
+          initialViewState={{ longitude: 18.5, latitude: 2.2, zoom: 3.15 }}
           minZoom={2.2}
-          maxZoom={7}
-          doubleClickZoom={false}
+          maxZoom={maxZoom}
+          doubleClickZoom
           dragRotate={false}
+          touchPitch={false}
           scrollZoom={false}
           cooperativeGestures
-          mapStyle={MAP_STYLE}
+          mapStyle={mapStyle}
           style={{ width: '100%', height: '100%' }}
           onLoad={handleLoad}
           onClick={handleClick}
+          onError={(event) => {
+            const message = event.error?.message || ''
+            if (/webgl|failed to initialize/i.test(message)) onError?.()
+          }}
           onMouseMove={(e) => {
             const map = mapRef.current?.getMap()
             if (!map) return
@@ -347,15 +360,18 @@ export function AtlasMap({
             />
           </Source>
         </Map>
+        ) : null}
       </div>
-      <ul className="atlas-map-legend" aria-label="Sectors">
-        {(Object.keys(SECTOR_LABELS) as Array<keyof typeof SECTOR_LABELS>).map((sector) => (
-          <li key={sector}>
-            <span style={{ background: SECTOR_COLORS[sector] }} />
-            {SECTOR_LABELS[sector]}
-          </li>
-        ))}
-      </ul>
+      {showLegend ? (
+        <ul className="atlas-map-legend" aria-label="Sectors">
+          {(Object.keys(SECTOR_LABELS) as Array<keyof typeof SECTOR_LABELS>).map((sector) => (
+            <li key={sector}>
+              <span style={{ background: SECTOR_COLORS[sector] }} />
+              {SECTOR_LABELS[sector]}
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </div>
   )
 }

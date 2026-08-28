@@ -416,7 +416,7 @@
   border-radius: 16px;
   box-shadow: none;
   border: 1px solid #ececec;
-  background: #efece3;
+  background: #1e4a3d;
 }
 
 .atlas-map-shell--desktop {
@@ -522,7 +522,8 @@
     min-height: 0;
   }
 
-  .solutions-hero .atlas-lite {
+  .solutions-hero .atlas-lite,
+  .solutions-hero .atlas-map-shell--hero {
     height: min(56vh, 520px);
     min-height: 400px;
   }
@@ -541,6 +542,23 @@
 
 .atlas-hero__stage {
   position: relative;
+}
+
+.atlas-hero__map {
+  position: relative;
+}
+
+.solutions-hero .atlas-map-block {
+  width: 100%;
+}
+
+.atlas-hero__pending {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  height: auto;
+  pointer-events: none;
+  border: none;
 }
 
 .atlas-hero__peek {
@@ -674,10 +692,6 @@
   z-index: 0;
 }
 
-.atlas-map-shell .maplibregl-canvas {
-  filter: saturate(0.82) contrast(1.04);
-}
-
 .atlas-map-legend {
   position: static;
   display: flex;
@@ -730,6 +744,13 @@
   font-size: 10px;
   background: rgba(255, 255, 255, 0.88);
   color: #666;
+}
+
+.atlas-map-shell .maplibregl-cooperative-gesture-screen {
+  background: rgba(11, 62, 31, 0.62);
+  color: #fff;
+  font-family: var(--font-nav), Montserrat, Inter, system-ui, sans-serif;
+  letter-spacing: 0.04em;
 }
 
 .mag-atlas-card.is-active {
