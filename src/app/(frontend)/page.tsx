@@ -89,8 +89,8 @@ export default async function HomePage() {
                     <h2 className="mag-title">
                       <Link href={featuredStory.href}>{featuredStory.title}</Link>
                     </h2>
+                    {featuredStory.byline ? <p className="mag-meta">{featuredStory.byline}</p> : null}
                     {featuredStory.excerpt ? <p className="mag-excerpt">{featuredStory.excerpt}</p> : null}
-                    {featuredStory.byline ? <p className="mag-meta" style={{ marginTop: 16 }}>{featuredStory.byline}</p> : null}
                   </div>
                   <Link href={featuredStory.href} className="mag-card__media mag-card--feature">
                     <Image src={featuredStory.image} alt="" fill sizes="(max-width: 980px) 100vw, 40vw" />
