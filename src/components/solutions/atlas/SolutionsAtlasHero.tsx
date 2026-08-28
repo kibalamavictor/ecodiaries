@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
+import { AtlasErrorBoundary } from '@/components/solutions/atlas/AtlasErrorBoundary'
 import { AtlasPeekCard } from '@/components/solutions/atlas/AtlasPeekCard'
 import type { AtlasProject } from '@/lib/solutions/types'
 
@@ -17,6 +18,17 @@ type SolutionsAtlasHeroProps = {
 export function SolutionsAtlasHero({ projects }: SolutionsAtlasHeroProps) {
   const [selected, setSelected] = useState<AtlasProject | null>(null)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const [mapReady, setMapReady] = useState(false)
+
+  useEffect(() => {
+    const boot = () => setMapReady(true)
+    if (typeof window.requestIdleCallback === 'function') {
+      const idle = window.requestIdleCallback(boot, { timeout: 1200 })
+      return () => window.cancelIdleCallback(idle)
+    }
+    const timer = window.setTimeout(boot, 200)
+    return () => window.clearTimeout(timer)
+  }, [])
 
   return (
     <section id="atlas" className="atlas-hero mag-section">
@@ -27,16 +39,30 @@ export function SolutionsAtlasHero({ projects }: SolutionsAtlasHeroProps) {
           Move across Africa, open a point, and read the field story behind it.
         </p>
         <div className="atlas-hero__stage">
-          <AtlasMap
-            projects={projects}
-            selectedId={selected?.id}
-            hoveredId={hoveredId}
-            onSelect={setSelected}
-            onHover={setHoveredId}
-            className="atlas-map-shell--hero"
-            cluster={false}
-            autoFit={false}
-          />
+          {mapReady ? (
+            <AtlasErrorBoundary
+              fallback={
+                <div className="atlas-map-shell atlas-map-shell--hero atlas-map-shell--pending">
+                  <p className="mag-meta" style={{ padding: 24 }}>
+                    The map could not load in this browser. Browse the collections below.
+                  </p>
+                </div>
+              }
+            >
+              <AtlasMap
+                projects={projects}
+                selectedId={selected?.id}
+                hoveredId={hoveredId}
+                onSelect={setSelected}
+                onHover={setHoveredId}
+                className="atlas-map-shell--hero"
+                cluster={false}
+                autoFit={false}
+              />
+            </AtlasErrorBoundary>
+          ) : (
+            <div className="atlas-map-shell atlas-map-shell--hero atlas-map-shell--pending" />
+          )}
         </div>
         {selected ? (
           <div className="atlas-hero__peek">

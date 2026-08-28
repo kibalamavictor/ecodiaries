@@ -290,6 +290,9 @@ export function AtlasMap({
           minZoom={2.2}
           maxZoom={7}
           doubleClickZoom={false}
+          dragRotate={false}
+          scrollZoom={false}
+          cooperativeGestures
           mapStyle={MAP_STYLE}
           style={{ width: '100%', height: '100%' }}
           onLoad={handleLoad}
