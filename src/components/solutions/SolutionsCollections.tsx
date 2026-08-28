@@ -70,7 +70,7 @@ export function SolutionsCollections({ projects, query, sector }: SolutionsColle
                 </p>
               </div>
               <Link href={`/solutions/${lead.slug}`} className="mag-card__media mag-card--feature">
-                <Image src={lead.coverImageUrl} alt="" fill sizes="(max-width: 980px) 100vw, 40vw" />
+                <Image src={lead.coverImageUrl || '/logo.svg'} alt="" fill sizes="(max-width: 980px) 100vw, 40vw" />
               </Link>
             </article>
             {featuredRest.length ? (

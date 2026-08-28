@@ -9,7 +9,10 @@ type ErrorPageProps = {
   reset: () => void
 }
 
-export default function ErrorPage({ reset }: ErrorPageProps) {
+export default function ErrorPage({ error, reset }: ErrorPageProps) {
+  if (typeof console !== 'undefined') {
+    console.error(error)
+  }
   return (
     <MagPageShell>
       <div className="mag-empty">

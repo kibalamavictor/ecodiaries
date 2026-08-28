@@ -438,6 +438,28 @@
   min-height: 280px;
 }
 
+.atlas-lite {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: min(56vh, 520px);
+  min-height: 280px;
+  border-radius: 16px;
+  border: 1px solid #ececec;
+  background: #1e4a3d;
+}
+
+.atlas-lite svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.atlas-lite__pin,
+.atlas-lite__hit {
+  cursor: pointer;
+}
+
 .atlas-hero.mag-section {
   padding-top: 36px;
   padding-bottom: 20px;

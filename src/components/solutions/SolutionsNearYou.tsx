@@ -1,6 +1,3 @@
-'use client'
-
-import { useMemo } from 'react'
 import { SolutionCardGrid } from '@/components/solutions/SolutionCardGrid'
 import { coordinatesForRegion, mostCommonRegion, nearestProjects } from '@/lib/solutions/coordinates'
 import type { AtlasProject } from '@/lib/solutions/types'
@@ -11,11 +8,7 @@ type SolutionsNearYouProps = {
 
 export function SolutionsNearYou({ projects }: SolutionsNearYouProps) {
   const fallbackRegion = mostCommonRegion(projects)
-  const nearby = useMemo(() => {
-    const point = coordinatesForRegion(fallbackRegion)
-    return nearestProjects(projects, point, 3)
-  }, [fallbackRegion, projects])
-
+  const nearby = nearestProjects(projects, coordinatesForRegion(fallbackRegion), 3)
   if (!nearby.length) return null
 
   return (
