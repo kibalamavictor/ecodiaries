@@ -287,6 +287,9 @@ export function AtlasMap({
         <Map
           ref={mapRef}
           initialViewState={{ longitude: 22, latitude: 3, zoom: 3.1 }}
+          minZoom={2.2}
+          maxZoom={7}
+          doubleClickZoom={false}
           mapStyle={MAP_STYLE}
           style={{ width: '100%', height: '100%' }}
           onLoad={handleLoad}
