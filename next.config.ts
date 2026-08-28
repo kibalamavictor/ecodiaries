@@ -19,6 +19,14 @@ const nextConfig: NextConfig = {
       { source: '/listen/:path*', destination: '/', permanent: true },
     ]
   },
+  async rewrites() {
+    return [
+      {
+        source: '/openfreemap/:path*',
+        destination: 'https://tiles.openfreemap.org/:path*',
+      },
+    ]
+  },
   experimental: {
     optimizePackageImports: [
       'framer-motion',

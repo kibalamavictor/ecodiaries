@@ -166,11 +166,8 @@ export function SolutionsAtlasHero({ projects }: SolutionsAtlasHeroProps) {
               maxZoom={11}
             />
           ) : null}
-          {showFallback ? (
+          {!ready ? (
             <SolutionsAtlasFallback projects={projects} selected={selected} onSelect={setSelected} />
-          ) : null}
-          {!ready && !showFallback ? (
-            <div className="atlas-lite atlas-map-shell--pending atlas-hero__pending" aria-hidden />
           ) : null}
           {selected ? (
             <div className="atlas-hero__peek">

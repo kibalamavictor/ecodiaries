@@ -9,8 +9,8 @@ import { SECTOR_COLORS, SECTOR_LABELS, projectsToGeoJSON } from '@/lib/solutions
 import { distanceKm, nearestProjects } from '@/lib/solutions/coordinates'
 import {
   ECO_MAP,
-  ECO_MAP_STYLE_URL,
   loadEcoMapStyle,
+  rewriteOpenFreeMapRequest,
   tintEcoMapStyle,
 } from '@/lib/solutions/eco-map-style'
 
@@ -99,6 +99,8 @@ export function AtlasMap({
 }: AtlasMapProps) {
   const mapRef = useRef<MapRef>(null)
   const resizeObserverRef = useRef<ResizeObserver | null>(null)
+  const onErrorRef = useRef(onError)
+  onErrorRef.current = onError
   const [mapStyle, setMapStyle] = useState<StyleSpecification | string | null>(null)
   const geojson = useMemo(() => projectsToGeoJSON(projects), [projects])
 
@@ -109,7 +111,7 @@ export function AtlasMap({
         if (!cancelled) setMapStyle(style)
       })
       .catch(() => {
-        if (!cancelled) setMapStyle(ECO_MAP_STYLE_URL)
+        if (!cancelled) onErrorRef.current?.()
       })
     return () => {
       cancelled = true
@@ -197,20 +199,33 @@ export function AtlasMap({
     }
   }, [autoFit, continentView, projects])
 
-  const handleLoad = useCallback(() => {
-    const map = mapRef.current?.getMap()
-    if (!map) return
-    applyEcoMapTint(map)
-    map.resize()
-    fitCamera()
-    onReady?.()
+  const handleLoad = useCallback(
+    (event: { target: MapLibreMap }) => {
+      const map = event.target
+      applyEcoMapTint(map)
+      map.resize()
+      fitCamera()
 
-    resizeObserverRef.current?.disconnect()
-    const shell = map.getContainer().parentElement
-    if (!shell) return
-    resizeObserverRef.current = new ResizeObserver(() => map.resize())
-    resizeObserverRef.current.observe(shell)
-  }, [fitCamera, onReady])
+      const reveal = () => {
+        try {
+          if (map.isSourceLoaded('openmaptiles')) onReady?.()
+        } catch {
+          onReady?.()
+        }
+      }
+
+      map.on('sourcedata', reveal)
+      map.once('idle', reveal)
+      window.setTimeout(reveal, 4000)
+
+      resizeObserverRef.current?.disconnect()
+      const shell = map.getContainer().parentElement
+      if (!shell) return
+      resizeObserverRef.current = new ResizeObserver(() => map.resize())
+      resizeObserverRef.current.observe(shell)
+    },
+    [fitCamera, onReady],
+  )
 
   useEffect(() => () => resizeObserverRef.current?.disconnect(), [])
 
@@ -303,6 +318,13 @@ export function AtlasMap({
           scrollZoom={false}
           cooperativeGestures
           mapStyle={mapStyle}
+          transformRequest={(url) => {
+            const rewritten = rewriteOpenFreeMapRequest(url)
+            if (rewritten.startsWith('/')) {
+              return { url: `${window.location.origin}${rewritten}` }
+            }
+            return { url: rewritten }
+          }}
           style={{ width: '100%', height: '100%' }}
           onLoad={handleLoad}
           onClick={handleClick}

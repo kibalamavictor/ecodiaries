@@ -117,15 +117,38 @@ export function tintEcoMapStyle(style: StyleSpecification): StyleSpecification {
   return { ...style, layers }
 }
 
+const OPENFREEMAP_ORIGIN = 'https://tiles.openfreemap.org'
+
+export function rewriteOpenFreeMapUrls(style: StyleSpecification, origin = '/openfreemap'): StyleSpecification {
+  const rewrite = (value: string) => value.split(OPENFREEMAP_ORIGIN).join(origin)
+  const next = structuredClone(style) as StyleSpecification
+  if (typeof next.glyphs === 'string') next.glyphs = rewrite(next.glyphs)
+  if (typeof next.sprite === 'string') next.sprite = rewrite(next.sprite)
+  const sources = next.sources || {}
+  for (const source of Object.values(sources)) {
+    if (!source || typeof source !== 'object') continue
+    if ('url' in source && typeof source.url === 'string') source.url = rewrite(source.url)
+    if ('tiles' in source && Array.isArray(source.tiles)) {
+      source.tiles = source.tiles.map((tile) => (typeof tile === 'string' ? rewrite(tile) : tile))
+    }
+  }
+  return next
+}
+
+export function rewriteOpenFreeMapRequest(url: string) {
+  if (!url.startsWith(OPENFREEMAP_ORIGIN)) return url
+  return `/openfreemap${url.slice(OPENFREEMAP_ORIGIN.length)}`
+}
+
 export async function loadEcoMapStyle(): Promise<StyleSpecification> {
   if (cached) return cached
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), 8000)
   try {
-    const response = await fetch(ECO_MAP_STYLE_URL, { signal: controller.signal })
+    const response = await fetch('/api/map-style', { signal: controller.signal, cache: 'no-store' })
     if (!response.ok) throw new Error(`Map style ${response.status}`)
     const style = (await response.json()) as StyleSpecification
-    cached = tintEcoMapStyle(style)
+    cached = style
     return cached
   } finally {
     clearTimeout(timer)

@@ -416,7 +416,7 @@
   border-radius: 16px;
   box-shadow: none;
   border: 1px solid #ececec;
-  background: #1e4a3d;
+  background: #e4ead8;
 }
 
 .atlas-map-shell--desktop {
@@ -546,6 +546,14 @@
 
 .atlas-hero__map {
   position: relative;
+}
+
+.atlas-hero__map > .atlas-lite {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  height: 100%;
+  min-height: 0;
 }
 
 .solutions-hero .atlas-map-block {
