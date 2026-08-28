@@ -171,7 +171,7 @@ export function AtlasMap({
         [minLng, minLat],
         [maxLng, maxLat],
       ],
-      { padding: 72, maxZoom: 6.5, duration: 800 },
+      { padding: 80, maxZoom: 8, duration: 800 },
     )
   }, [projects])
 
@@ -207,8 +207,9 @@ export function AtlasMap({
         onSelect(null)
         return
       }
-      if (feature.properties?.cluster) {
-        const clusterId = feature.properties.cluster_id as number
+      const layerId = feature.layer?.id
+      if (feature.properties?.cluster || layerId === 'clusters' || layerId === 'cluster-count') {
+        const clusterId = feature.properties?.cluster_id as number
         const source = map.getSource('projects') as GeoJSONSource
         const coords = (feature.geometry as GeoJSON.Point).coordinates
         void source.getClusterExpansionZoom(clusterId).then((zoom) => {
