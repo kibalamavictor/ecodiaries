@@ -491,8 +491,8 @@
 .solutions-hero__intro--stacked {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 12px 0 0;
+  justify-content: flex-start;
+  padding: 18px 0 0;
   max-width: none;
 }
 
@@ -508,21 +508,17 @@
 
 @media (min-width: 900px) {
   .solutions-hero__grid {
-    grid-template-columns: minmax(240px, 0.78fr) minmax(0, 1.62fr);
-    min-height: min(64vh, 580px);
+    grid-template-columns: minmax(240px, 0.58fr) minmax(0, 1.85fr);
+    align-items: start;
   }
 
   .solutions-hero .atlas-hero__stage {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
     min-height: 0;
   }
 
   .solutions-hero .atlas-lite {
-    flex: 1 1 auto;
-    height: auto;
-    min-height: 440px;
+    height: min(56vh, 520px);
+    min-height: 400px;
   }
 }
 
