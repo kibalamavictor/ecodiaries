@@ -438,6 +438,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
+  z-index: 0;
 }
 
 .atlas-map-shell .maplibregl-canvas {
@@ -445,20 +446,16 @@
 }
 
 .atlas-map-legend {
-  position: absolute;
-  left: 14px;
-  bottom: 14px;
-  z-index: 2;
+  position: static;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 12px;
-  max-width: min(100% - 28px, 420px);
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid #ececec;
+  gap: 8px 14px;
+  max-width: none;
+  margin: 12px 0 0;
+  padding: 0;
+  border: none;
+  background: transparent;
   list-style: none;
-  margin: 0;
 }
 
 .atlas-map-legend li {
@@ -703,7 +700,7 @@
 @media (min-width: 768px) {
   .atlas-explorer-desktop__split {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-    align-items: stretch;
+    align-items: start;
   }
 
   .atlas-explorer-desktop__list {

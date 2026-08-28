@@ -85,7 +85,7 @@ const clusterCountLayer = {
   filter: ['has', 'point_count'],
   layout: {
     'text-field': '{point_count_abbreviated}',
-    'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+    'text-font': ['Noto Sans Bold'],
     'text-size': 13,
   },
   paint: { 'text-color': '#ffffff' },
@@ -230,49 +230,51 @@ export function AtlasMap({
   }, [onBoundsChange])
 
   return (
-    <div className={`atlas-map-shell ${className || ''}`}>
-      <Map
-        ref={mapRef}
-        initialViewState={{ longitude: 20, latitude: 2, zoom: 2.8 }}
-        mapStyle={MAP_STYLE}
-        style={{ width: '100%', height: '100%' }}
-        onLoad={handleLoad}
-        onClick={handleClick}
-        onMouseMove={(e) => {
-          const map = mapRef.current?.getMap()
-          if (!map) return
-          const features = map.queryRenderedFeatures(e.point, { layers: ['unclustered-point'] })
-          onHover(features[0]?.properties?.id ?? null)
-        }}
-        onMoveEnd={handleMoveEnd}
-        interactiveLayerIds={['clusters', 'unclustered-point']}
-      >
-        <NavigationControl position="top-right" showCompass={false} />
-        <Source id="projects" type="geojson" data={geojson} cluster clusterMaxZoom={12} clusterRadius={50}>
-          <Layer
-            id="clusters"
-            type="circle"
-            source="projects"
-            filter={['has', 'point_count'] as never}
-            paint={clusterLayer.paint as never}
-          />
-          <Layer
-            id="cluster-count"
-            type="symbol"
-            source="projects"
-            filter={['has', 'point_count'] as never}
-            layout={clusterCountLayer.layout as never}
-            paint={clusterCountLayer.paint as never}
-          />
-          <Layer
-            id="unclustered-point"
-            type="circle"
-            source="projects"
-            filter={['!', ['has', 'point_count']] as never}
-            paint={unclusteredPaint as never}
-          />
-        </Source>
-      </Map>
+    <div className="atlas-map-block">
+      <div className={`atlas-map-shell ${className || ''}`}>
+        <Map
+          ref={mapRef}
+          initialViewState={{ longitude: 20, latitude: 2, zoom: 2.8 }}
+          mapStyle={MAP_STYLE}
+          style={{ width: '100%', height: '100%' }}
+          onLoad={handleLoad}
+          onClick={handleClick}
+          onMouseMove={(e) => {
+            const map = mapRef.current?.getMap()
+            if (!map) return
+            const features = map.queryRenderedFeatures(e.point, { layers: ['unclustered-point'] })
+            onHover(features[0]?.properties?.id ?? null)
+          }}
+          onMoveEnd={handleMoveEnd}
+          interactiveLayerIds={['clusters', 'unclustered-point']}
+        >
+          <NavigationControl position="top-right" showCompass={false} />
+          <Source id="projects" type="geojson" data={geojson} cluster clusterMaxZoom={12} clusterRadius={50}>
+            <Layer
+              id="clusters"
+              type="circle"
+              source="projects"
+              filter={['has', 'point_count'] as never}
+              paint={clusterLayer.paint as never}
+            />
+            <Layer
+              id="cluster-count"
+              type="symbol"
+              source="projects"
+              filter={['has', 'point_count'] as never}
+              layout={clusterCountLayer.layout as never}
+              paint={clusterCountLayer.paint as never}
+            />
+            <Layer
+              id="unclustered-point"
+              type="circle"
+              source="projects"
+              filter={['!', ['has', 'point_count']] as never}
+              paint={unclusteredPaint as never}
+            />
+          </Source>
+        </Map>
+      </div>
       <ul className="atlas-map-legend" aria-label="Sectors">
         {(Object.keys(SECTOR_LABELS) as Array<keyof typeof SECTOR_LABELS>).map((sector) => (
           <li key={sector}>
