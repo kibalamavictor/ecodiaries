@@ -295,6 +295,7 @@ export function AtlasMap({
             const map = mapRef.current?.getMap()
             if (!map) return
             try {
+              if (!map.getLayer('unclustered-point')) return
               const features = map.queryRenderedFeatures(e.point, { layers: ['unclustered-point'] })
               onHover(features[0]?.properties?.id ?? null)
             } catch {
@@ -335,7 +336,7 @@ export function AtlasMap({
               id="unclustered-point"
               type="circle"
               source="projects"
-              filter={(cluster ? ['!', ['has', 'point_count']] : ['all']) as never}
+              filter={(cluster ? ['!', ['has', 'point_count']] : ['has', 'id']) as never}
               paint={unclusteredPaint as never}
             />
           </Source>
