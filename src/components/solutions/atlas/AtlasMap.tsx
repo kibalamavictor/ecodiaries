@@ -156,7 +156,7 @@ export function AtlasMap({
         map.fitBounds(AFRICA_BOUNDS, {
           padding: { top: 18, bottom: 28, left: 16, right: 16 },
           duration: 0,
-          maxZoom: 4.35,
+          maxZoom: 4.55,
         })
         return
       }

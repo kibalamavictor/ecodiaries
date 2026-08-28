@@ -159,7 +159,7 @@ export function SolutionsAtlasHero({ projects }: SolutionsAtlasHeroProps) {
               onReady={() => setReady(true)}
               onError={() => setFailed(true)}
               className="atlas-map-shell--hero"
-              cluster={false}
+              cluster
               autoFit={false}
               continentView
               showLegend={false}

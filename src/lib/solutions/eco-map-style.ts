@@ -82,6 +82,9 @@ export function tintEcoMapStyle(style: StyleSpecification): StyleSpecification {
     if (next.type === 'line') {
       if (id.includes('water')) {
         setPaint(next, 'line-color', ECO_MAP.river)
+        if (id.includes('river') || id.includes('waterway')) {
+          setPaint(next, 'line-width', ['interpolate', ['exponential', 1.2], ['zoom'], 4, 0.7, 8, 1.1, 14, 3, 20, 6])
+        }
       } else if (id.includes('boundary') || id.includes('admin') || id.includes('border')) {
         setPaint(next, 'line-color', ECO_MAP.forest)
         setPaint(next, 'line-opacity', 0.35)
@@ -93,6 +96,12 @@ export function tintEcoMapStyle(style: StyleSpecification): StyleSpecification {
     }
 
     if (next.type === 'symbol') {
+      if (id.includes('label_city') || id.includes('label_city_capital')) {
+        next.minzoom = 2
+      }
+      if (id.includes('label_town')) {
+        next.minzoom = 5
+      }
       if (id.includes('water')) {
         setPaint(next, 'text-color', ECO_MAP.halo)
         setPaint(next, 'text-halo-color', ECO_MAP.water)
