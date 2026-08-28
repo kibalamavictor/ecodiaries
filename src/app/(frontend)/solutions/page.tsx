@@ -26,9 +26,11 @@ export default async function SolutionsPage({ searchParams }: Props) {
 
   return (
     <MagPageShell>
-      <SolutionHero />
       <div className="mag-wrap solutions-hero">
-        <SolutionsAtlasHero projects={solutions} />
+        <div className="solutions-hero__grid">
+          <SolutionHero stacked />
+          <SolutionsAtlasHero projects={solutions} />
+        </div>
         <CredibilityStrip solutions={solutions} />
         <SolutionsToolbar defaultQuery={q} />
       </div>

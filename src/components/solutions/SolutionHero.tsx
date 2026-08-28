@@ -1,10 +1,14 @@
 type SolutionHeroProps = {
   title?: string
+  stacked?: boolean
 }
 
-export function SolutionHero({ title = 'Climate solutions across Africa' }: SolutionHeroProps) {
+export function SolutionHero({
+  title = 'Climate solutions across Africa',
+  stacked = false,
+}: SolutionHeroProps) {
   return (
-    <header className="solutions-hero__intro mag-wrap">
+    <header className={stacked ? 'solutions-hero__intro solutions-hero__intro--stacked' : 'solutions-hero__intro mag-wrap'}>
       <p className="mag-news__eyebrow">Solutions atlas</p>
       <h1 className="mag-title mag-page-intro__title">{title}</h1>
       <p className="mag-excerpt mag-page-intro__lede">
