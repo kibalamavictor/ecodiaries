@@ -524,7 +524,7 @@
   grid-template-columns: 1fr 1.25fr 1fr;
   gap: 28px 22px;
   align-items: start;
-  margin-bottom: 48px;
+  margin-bottom: 56px;
 }
 .mag-allpost__col {
   display: flex;
@@ -1260,6 +1260,7 @@ a.mag-tag:hover {
   .mag-hero-frame,
   .mag-hero-strip,
   .mag-section,
+  .mag-archive,
   .mag-spread,
   .mag-article-hero,
   .mag-single,
