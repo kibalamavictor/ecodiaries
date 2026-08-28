@@ -5,6 +5,7 @@ import { SiteNav } from '@/components/layout/SiteNav'
 import { SiteFooter } from '@/components/layout/SiteFooter'
 import { MagCard, type MagCardItem } from '@/components/magazine/MagCard'
 import { MagHero } from '@/components/magazine/MagHero'
+import { MagHeroStrip } from '@/components/magazine/MagHeroStrip'
 import { MagNewsletter } from '@/components/magazine/MagNewsletter'
 import { MagSpread, MagTrending } from '@/components/magazine/MagTrending'
 import { getHomepagePageData } from '@/lib/cms/homepage'
@@ -22,13 +23,16 @@ export const metadata: Metadata = {
 export const revalidate = 300
 
 function fromSolution(project: AtlasProject): MagCardItem {
+  const authorName = project.organization?.name || 'EcoDiaries'
   return {
     href: `/solutions/${project.slug}`,
     image: project.coverImageUrl,
     category: sectorLabel(project.sectors[0]),
     title: project.title,
     excerpt: project.summary,
-    byline: [project.region, formatMagDate(project.publishedAt)].filter(Boolean).join(' · '),
+    byline: byline(authorName, formatMagDate(project.publishedAt)),
+    authorName,
+    avatar: project.organization?.logoUrl,
   }
 }
 
@@ -40,6 +44,8 @@ function fromStory(story: StoryPreview): MagCardItem {
     title: story.title,
     excerpt: story.excerpt,
     byline: byline(story.author?.name, formatMagDate(story.publishedAt)),
+    authorName: story.author?.name,
+    avatar: story.author?.avatar,
   }
 }
 
@@ -53,9 +59,11 @@ export default async function HomePage() {
   const solutionCards = mixedCards.filter((card) => solutionHrefs.has(card.href))
   const storyCards = mixedCards.filter((card) => !solutionHrefs.has(card.href))
 
-  const heroSlides = (solutionCards.length ? solutionCards : storyCards).slice(0, 4)
-
-  const strip = (solutionCards.length ? solutionCards : storyCards).slice(0, 6)
+  const heroSource = solutionCards.length ? solutionCards : storyCards
+  const heroSlides = heroSource.slice(0, 4)
+  const heroHrefs = new Set(heroSlides.map((item) => item.href))
+  const stripSource = mixedCards.filter((item) => !heroHrefs.has(item.href))
+  const strip = (stripSource.length ? stripSource : mixedCards).slice(0, 7)
   const featuredStory = storyCards[0]
   const storyGrid = storyCards.slice(1, 4)
   const trending = (storyCards.length ? storyCards : solutionCards).slice(0, 4)
@@ -69,16 +77,7 @@ export default async function HomePage() {
       <SiteNav />
       <main className="magazine">
         <MagHero slides={heroSlides} />
-
-        {strip.length > 0 ? (
-          <section className="mag-strip" aria-label="Solutions">
-            <div className="mag-wrap mag-strip__row">
-              {strip.map((item) => (
-                <MagCard key={item.href} item={item} size="sm" heading="h3" />
-              ))}
-            </div>
-          </section>
-        ) : null}
+        <MagHeroStrip items={strip} label="More from EcoDiaries" />
 
         <section className="mag-section">
           <div className="mag-wrap mag-split">

@@ -8,6 +8,8 @@ export type MagCardItem = {
   title: string
   excerpt?: string
   byline?: string
+  authorName?: string
+  avatar?: string
 }
 
 type MagCardProps = {
