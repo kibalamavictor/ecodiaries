@@ -11,7 +11,7 @@ export function CredibilityStrip({ solutions }: CredibilityStripProps) {
   const countries = uniqueCountriesCount(solutions)
 
   return (
-    <div className="mag-wrap">
+    <div className="solutions-metrics">
       <div className="mag-stat-row">
         <div>
           <p className="num">{solutions.length}</p>
@@ -26,7 +26,7 @@ export function CredibilityStrip({ solutions }: CredibilityStripProps) {
           <p className="label">Field-reported</p>
         </div>
       </div>
-      <p className="mag-center" style={{ marginTop: 18 }}>
+      <p className="solutions-metrics__note">
         <Link href="/contact" className="mag-link">
           Verification methodology →
         </Link>

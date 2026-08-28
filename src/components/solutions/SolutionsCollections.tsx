@@ -1,18 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Suspense } from 'react'
 import { MagCard } from '@/components/magazine/MagCard'
 import { SolutionCardGrid } from '@/components/solutions/SolutionCardGrid'
 import { SolutionsNearYou } from '@/components/solutions/SolutionsNearYou'
-import { FilterPills } from '@/components/ui/FilterPills'
 import { atlasProjectToMagCard } from '@/lib/magazine'
 import { pickSpotlightSolutions } from '@/lib/solutions/spotlight'
-import { SECTOR_FILTER_OPTIONS, type AtlasProject, type Sector } from '@/lib/solutions/types'
-
-const sectorFilters = SECTOR_FILTER_OPTIONS.map((option) => ({
-  label: option.label,
-  slug: option.value,
-}))
+import type { AtlasProject, Sector } from '@/lib/solutions/types'
 
 type SolutionsCollectionsProps = {
   projects: AtlasProject[]
@@ -112,16 +105,6 @@ export function SolutionsCollections({ projects, query, sector }: SolutionsColle
               {query ? ` · “${query}”` : ''}
             </p>
           </div>
-          <Suspense fallback={null}>
-            <div className="solutions-browse__filters">
-              <FilterPills
-                filters={sectorFilters}
-                paramKey="sector"
-                basePath="/solutions"
-                modalTitle="Filter by sector"
-              />
-            </div>
-          </Suspense>
           {filtered.length ? (
             <SolutionCardGrid projects={filtered} />
           ) : (

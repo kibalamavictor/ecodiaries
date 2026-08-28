@@ -4,7 +4,9 @@ import { MagNewsletter } from '@/components/magazine/MagNewsletter'
 import { MagPageShell } from '@/components/magazine/MagPageShell'
 import { CredibilityStrip } from '@/components/solutions/CredibilityStrip'
 import { SolutionHero } from '@/components/solutions/SolutionHero'
-import { SolutionsAtlasExplorer } from '@/components/solutions/SolutionsAtlasExplorer'
+import { SolutionsAtlasHero } from '@/components/solutions/atlas/SolutionsAtlasHero'
+import { SolutionsCollections } from '@/components/solutions/SolutionsCollections'
+import { SolutionsToolbar } from '@/components/solutions/SolutionsToolbar'
 import { getAtlasProjects } from '@/lib/cms/solutions-page'
 import { environmentImageForKey } from '@/lib/unsplash-environment'
 
@@ -24,9 +26,13 @@ export default async function SolutionsPage({ searchParams }: Props) {
 
   return (
     <MagPageShell>
-      <SolutionHero solutions={solutions} defaultQuery={q} />
-      <CredibilityStrip solutions={solutions} />
-      <SolutionsAtlasExplorer projects={solutions} query={q} sector={activeSector} />
+      <SolutionHero />
+      <div className="mag-wrap solutions-hero">
+        <SolutionsAtlasHero projects={solutions} />
+        <CredibilityStrip solutions={solutions} />
+        <SolutionsToolbar defaultQuery={q} />
+      </div>
+      <SolutionsCollections projects={solutions} query={q} sector={activeSector} />
       <MagCtaBand
         eyebrow="For funders & partners"
         title="Partner with us to scale what’s working"
