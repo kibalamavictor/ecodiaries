@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { CommunityExploreNav } from '@/components/community/CommunityExploreNav'
 import { FeaturedContributors } from '@/components/contributors/FeaturedContributors'
-import { ContributorsApplyLink } from '@/components/contributors/ContributorsApplyLink'
 import { MagCtaBand } from '@/components/magazine/MagCtaBand'
 import { MagNewsletter } from '@/components/magazine/MagNewsletter'
 import { MagPageIntro } from '@/components/magazine/MagPageIntro'
@@ -38,14 +38,7 @@ export default async function CommunityPage() {
           title="The people and projects behind every story"
           lede="EcoDiaries is built by a growing network of contributors, partner organisations, and community-led projects across the continent."
         >
-          <nav className="mag-tag-row" aria-label="Explore community">
-            <Link href="/contributors" className="mag-tag">Contributors</Link>
-            <Link href="/opportunities" className="mag-tag">Opportunities</Link>
-            <Link href="/solutions" className="mag-tag">Solutions</Link>
-            <Link href="/about" className="mag-tag">About</Link>
-            <Link href="/contact" className="mag-tag">Contact</Link>
-            <ContributorsApplyLink className="mag-tag">Apply</ContributorsApplyLink>
-          </nav>
+          <CommunityExploreNav />
         </MagPageIntro>
       </div>
 
