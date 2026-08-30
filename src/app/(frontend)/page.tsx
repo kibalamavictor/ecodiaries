@@ -11,7 +11,7 @@ import { MagMobileFeed } from '@/components/magazine/MagMobileFeed'
 import { MagSpread, MagTrending } from '@/components/magazine/MagTrending'
 import { getHomepagePageData } from '@/lib/cms/homepage'
 import { byline, formatMagDate, sectorLabel, uniquifyMagCards } from '@/lib/magazine'
-import { environmentImageForKey } from '@/lib/unsplash-environment'
+import { environmentImageForKey, HERO_NATURE_IMAGE } from '@/lib/unsplash-environment'
 import type { AtlasProject } from '@/lib/solutions/types'
 import type { StoryPreview } from '@/lib/types'
 
@@ -61,7 +61,9 @@ export default async function HomePage() {
   const storyCards = mixedCards.filter((card) => !solutionHrefs.has(card.href))
 
   const heroSource = solutionCards.length ? solutionCards : storyCards
-  const heroSlides = heroSource.slice(0, 4)
+  const heroSlides = heroSource.slice(0, 4).map((item, index) =>
+    index === 0 ? { ...item, image: HERO_NATURE_IMAGE } : item,
+  )
   const heroHrefs = new Set(heroSlides.map((item) => item.href))
   const stripSource = mixedCards.filter((item) => !heroHrefs.has(item.href))
   const strip = (stripSource.length ? stripSource : mixedCards).slice(0, 7)

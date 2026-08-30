@@ -74,6 +74,9 @@ export function unsplashEnvironmentUrl(photoId: string, width = 1600): string {
   return `https://images.unsplash.com/photo-${photoId}?auto=format&fit=crop&w=${width}&q=80`
 }
 
+/** Sunlit forest still for the homepage hero opening frame — local so it never reads as a black panel. */
+export const HERO_NATURE_IMAGE = '/images/hero-nature.jpg'
+
 export function environmentImageForKey(key: string, width = 1600): string {
   const index = hashKey(key) % UNIQUE_PHOTO_IDS.length
   return unsplashEnvironmentUrl(UNIQUE_PHOTO_IDS[index]!, width)

@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { HERO_NATURE_IMAGE } from '@/lib/unsplash-environment'
 
 export type MagHeroSlide = {
   href: string
@@ -28,6 +29,7 @@ function HeroAvatar({ src, name }: { src?: string; name?: string }) {
 export function MagHero({ slides }: { slides: MagHeroSlide[] }) {
   const [index, setIndex] = useState(0)
   const [outgoing, setOutgoing] = useState<number | null>(null)
+  const [broken, setBroken] = useState<Record<number, boolean>>({})
   const safeSlides = slides.length ? slides : []
 
   function goTo(next: number) {
@@ -59,17 +61,19 @@ export function MagHero({ slides }: { slides: MagHeroSlide[] }) {
         <div className="mag-hero">
           {safeSlides.map((item, i) => {
             const isActive = i === index
-            const shouldPaint = isActive || i === outgoing
+            const shouldPaint = isActive || i === outgoing || i === 0
+            const src = broken[i] ? HERO_NATURE_IMAGE : item.image
             return (
               <div key={item.href} className={`mag-hero__slide${isActive ? ' is-active' : ''}`}>
                 {shouldPaint ? (
                   <Image
-                    src={item.image}
-                    alt=""
+                    src={src}
+                    alt={i === 0 ? 'Sunlit forest canopy' : ''}
                     fill
                     priority={i === 0}
                     quality={75}
                     sizes="(max-width: 980px) 100vw, 1180px"
+                    onError={() => setBroken((prev) => (prev[i] ? prev : { ...prev, [i]: true }))}
                   />
                 ) : null}
               </div>
@@ -103,7 +107,14 @@ export function MagHero({ slides }: { slides: MagHeroSlide[] }) {
                     aria-selected={i === index}
                     onClick={() => goTo(i)}
                   >
-                    <Image src={item.image} alt="" width={64} height={64} quality={60} />
+                    <Image
+                      src={broken[i] ? HERO_NATURE_IMAGE : item.image}
+                      alt=""
+                      width={64}
+                      height={64}
+                      quality={60}
+                      onError={() => setBroken((prev) => (prev[i] ? prev : { ...prev, [i]: true }))}
+                    />
                   </button>
                 ))}
               </div>
