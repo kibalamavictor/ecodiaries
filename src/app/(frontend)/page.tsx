@@ -92,8 +92,10 @@ export default async function HomePage() {
                     {featuredStory.byline ? <p className="mag-meta">{featuredStory.byline}</p> : null}
                     {featuredStory.excerpt ? <p className="mag-excerpt">{featuredStory.excerpt}</p> : null}
                   </div>
-                  <Link href={featuredStory.href} className="mag-card__media mag-card--feature">
-                    <Image src={featuredStory.image} alt="" fill sizes="(max-width: 980px) 100vw, 40vw" />
+                  <Link href={featuredStory.href} className="mag-feature__media">
+                    <span className="mag-feature__media-frame">
+                      <Image src={featuredStory.image} alt="" fill sizes="(max-width: 980px) 100vw, 40vw" />
+                    </span>
                   </Link>
                 </article>
               ) : null}
