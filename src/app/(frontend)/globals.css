@@ -121,6 +121,10 @@ body{
   text-rendering: optimizeLegibility;
   line-height: 1.7;
 }
+
+@media (max-width: 639px) {
+  body { touch-action: pan-y pinch-zoom; }
+}
 img{ max-width:100%; display:block; }
 img[data-nimg="fill"]{ max-width:none; }
 a{ color: inherit; text-decoration: none; }

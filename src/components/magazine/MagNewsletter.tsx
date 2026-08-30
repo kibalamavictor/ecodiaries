@@ -3,11 +3,12 @@ import { NewsletterForm } from '@/components/forms/NewsletterForm'
 
 type MagNewsletterProps = {
   image: string
+  anchor?: boolean
 }
 
-export function MagNewsletter({ image }: MagNewsletterProps) {
+export function MagNewsletter({ image, anchor = true }: MagNewsletterProps) {
   return (
-    <section className="mag-section" id="subscribe">
+    <section className="mag-section" id={anchor ? 'subscribe' : undefined}>
       <div className="mag-wrap mag-news">
         <div>
           <p className="mag-news__eyebrow">Make your inbox happier</p>

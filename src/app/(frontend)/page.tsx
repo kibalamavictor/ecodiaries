@@ -7,6 +7,7 @@ import { MagCard, type MagCardItem } from '@/components/magazine/MagCard'
 import { MagHero } from '@/components/magazine/MagHero'
 import { MagHeroStrip } from '@/components/magazine/MagHeroStrip'
 import { MagNewsletter } from '@/components/magazine/MagNewsletter'
+import { MagMobileFeed } from '@/components/magazine/MagMobileFeed'
 import { MagSpread, MagTrending } from '@/components/magazine/MagTrending'
 import { getHomepagePageData } from '@/lib/cms/homepage'
 import { byline, formatMagDate, sectorLabel, uniquifyMagCards } from '@/lib/magazine'
@@ -77,6 +78,7 @@ export default async function HomePage() {
       <SiteNav />
       <main className="magazine">
         <MagHero slides={heroSlides} />
+        <div className="magazine-desktop">
         <MagHeroStrip items={strip} label="More from EcoDiaries" />
 
         <section className="mag-section">
@@ -148,6 +150,13 @@ export default async function HomePage() {
             </div>
           </section>
         ) : null}
+        </div>
+        <MagMobileFeed
+          latest={latest}
+          solutions={inspiration}
+          more={strip}
+          newsletterImage={newsletterImage}
+        />
       </main>
       <SiteFooter />
     </>

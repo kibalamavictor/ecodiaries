@@ -1004,7 +1004,8 @@
   color: var(--mag-ink);
   background: #fff;
 }
-a.mag-tag:hover {
+a.mag-tag:hover,
+.mag-tag--active {
   background: var(--mag-ink);
   border-color: var(--mag-ink);
   color: #fff;
