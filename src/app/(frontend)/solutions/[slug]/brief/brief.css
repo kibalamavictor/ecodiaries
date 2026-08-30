@@ -1,0 +1,16 @@
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .brief-page {
+    max-width: none;
+    padding: 0;
+    color: #000;
+  }
+
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+}

@@ -1,0 +1,23 @@
+@tailwind utilities;
+
+.eco-forms-tailwind {
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --muted: 210 20% 96%;
+  --muted-foreground: 215 14% 47%;
+  --border: 214 20% 90%;
+  --input: 214 20% 90%;
+  --ring: 84 97% 44%;
+}
+
+.eco-forms-tailwind .bg-muted {
+  background-color: hsl(var(--muted));
+}
+
+.eco-forms-tailwind .text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+
+.eco-forms-tailwind .border-border {
+  border-color: hsl(var(--border));
+}

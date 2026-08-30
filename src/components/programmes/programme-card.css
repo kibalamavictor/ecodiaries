@@ -1,0 +1,217 @@
+article.programme-grid-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 0.5px solid rgba(7, 20, 12, 0.1);
+  background: #fff;
+  color: #0e3a1d;
+  box-shadow: none;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.programme-grid-card__main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+}
+
+.programme-grid-card__main:hover .programme-grid-card__title {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.programme-grid-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(7, 20, 12, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .programme-grid-card {
+    transition: none;
+  }
+
+  .programme-grid-card:hover {
+    transform: none;
+  }
+}
+
+.programme-grid-card__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #e9ece5;
+}
+
+.programme-grid-card__image {
+  object-fit: cover;
+  object-position: center;
+}
+
+.programme-grid-card__type {
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.93);
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  color: #0e3a1d;
+}
+
+.programme-grid-card__status {
+  position: absolute;
+  z-index: 1;
+  bottom: 10px;
+  left: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.programme-grid-card__status-dot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 999px;
+}
+
+.programme-grid-card__status.is-open {
+  background: rgba(7, 20, 12, 0.62);
+  color: #fff;
+}
+
+.programme-grid-card__status.is-open .programme-grid-card__status-dot {
+  background: #2fa84f;
+}
+
+.programme-grid-card__status.is-closed {
+  background: rgba(7, 20, 12, 0.62);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.programme-grid-card__status.is-closed .programme-grid-card__status-dot {
+  background: #b4535a;
+}
+
+.programme-grid-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  padding: 14px 14px 0;
+}
+
+.programme-grid-card__title {
+  margin: 0 0 8px;
+  font-family: var(--font-display, 'Sora', system-ui, sans-serif);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+  color: #0e3a1d;
+}
+
+.programme-grid-card__description {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #5a6b5e;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.programme-grid-card__footer {
+  padding: 0 14px 14px;
+}
+
+.programme-grid-card__divider {
+  height: 1px;
+  margin: 0 0 11px;
+  border: 0;
+  background: #e9ece5;
+}
+
+.programme-grid-card__footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: 0;
+}
+
+.programme-grid-card__footer-row:has(.programme-grid-card__closes) {
+  justify-content: space-between;
+}
+
+.programme-grid-card__closes {
+  display: inline-flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #f3f5ef;
+  padding: 4px 9px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #5a6b5e;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.programme-grid-card__apply {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  border-radius: 999px;
+  padding: 5px 12px;
+  background: #b6f101;
+  color: #0c1400;
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.programme-grid-card__apply:hover {
+  filter: brightness(1.05);
+}
+
+.programme-grid-card__apply--disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+  background: #e7f1e9;
+  color: #0e3a1d;
+  font-weight: 600;
+}
+
+.programme-grid-card__apply--disabled:hover {
+  background: #e7f1e9;
+}

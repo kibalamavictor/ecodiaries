@@ -1,0 +1,222 @@
+@tailwind utilities;
+
+.changemakers-tailwind {
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --muted: 210 20% 96%;
+  --muted-foreground: 215 14% 47%;
+  --border: 214 20% 90%;
+  --input: 214 20% 90%;
+  --ring: 84 97% 44%;
+  --primary: 84 97% 66%;
+  --primary-foreground: 120 100% 5%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+}
+
+.changemakers-tailwind .bg-muted {
+  background-color: hsl(var(--muted));
+}
+
+.changemakers-tailwind .text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+
+.changemakers-tailwind .border-border {
+  border-color: hsl(var(--border));
+}
+
+/* —— Listing hero —— */
+.changemakers-hero {
+  padding-bottom: 20px !important;
+}
+
+.changemakers-hero__wrap {
+  margin-top: 1rem !important;
+}
+
+.changemakers-hero__title {
+  margin-top: 0.5rem !important;
+  font-size: clamp(1.35rem, 4.8vw, 2rem) !important;
+  line-height: 1.12;
+  max-width: 18rem;
+}
+
+.changemakers-hero__lede {
+  margin-top: 6px !important;
+  font-size: 9pt !important;
+  line-height: 1.45 !important;
+  max-width: 20rem;
+}
+
+.changemakers-list-section {
+  padding: 14px 0 40px;
+}
+
+.changemakers-grid__count {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.changemakers-grid__empty {
+  margin: 32px 0;
+  text-align: center;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.changemakers-grid__cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+  align-items: stretch;
+}
+
+.changemaker-card {
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+  .changemakers-grid__cards {
+    gap: 16px;
+  }
+}
+
+/* —— Cards (contributor pattern, compact) —— */
+.changemaker-card__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.changemaker-card__logo {
+  position: relative;
+  aspect-ratio: 1;
+  width: 100%;
+  max-width: 160px;
+  overflow: hidden;
+  border: 1px solid hsl(var(--border));
+  border-radius: 999px;
+  background: hsl(var(--muted));
+}
+
+.changemaker-card--compact .changemaker-card__logo {
+  max-width: 88px;
+}
+
+.changemaker-card__initials {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  background: var(--green, #2fa84f);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.changemaker-card--compact .changemaker-card__initials {
+  font-size: 1rem;
+}
+
+.changemaker-card__name {
+  margin: 12px 0 0;
+  width: 100%;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--forest-black, #0e3a1d);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.changemaker-card--compact .changemaker-card__name {
+  margin-top: 8px;
+  min-height: 2.5em;
+  max-width: 100%;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.changemaker-card__pill {
+  display: inline-flex;
+  margin-top: 4px;
+  border-radius: 999px;
+  background: rgba(194, 232, 18, 0.1);
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--forest-black, #0e3a1d);
+}
+
+.changemaker-card--compact .changemaker-card__pill {
+  max-width: 100%;
+  padding: 2px 7px;
+  font-size: 9px;
+}
+
+.changemaker-card__meta {
+  margin: 6px 0 0;
+  width: 100%;
+  font-size: 14px;
+  line-height: 1.35;
+  color: #525252;
+}
+
+.changemaker-card--compact .changemaker-card__meta {
+  margin-top: 4px;
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.changemaker-card__summary {
+  display: -webkit-box;
+  width: 100%;
+  margin: 6px 0 0;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.35;
+  color: #737373;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.changemaker-card--compact .changemaker-card__summary {
+  margin-top: 4px;
+  font-size: 10px;
+  line-height: 1.35;
+  -webkit-line-clamp: 2;
+}
+
+.changemakers-grid__more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.changemakers-grid__more-btn {
+  min-height: 44px;
+  border: 1.5px solid #dce3d4;
+  border-radius: 999px;
+  background: #fff;
+  padding: 10px 28px;
+  font-family: var(--font-display, 'Sora', system-ui, sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  color: #0e3a1d;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.changemakers-grid__more-btn:hover {
+  border-color: #0e3a1d;
+  background: #f3f7e8;
+}

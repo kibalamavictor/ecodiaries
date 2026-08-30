@@ -1,0 +1,112 @@
+@media (max-width: 767px) {
+  .community-page {
+    background: var(--paper, #f8f9f4);
+  }
+
+  .community-mobile-hero.hero-horizon.mobile-page-hero {
+    padding-bottom: 12px;
+  }
+
+  .community-mobile-hero .mobile-hero-inner {
+    padding: 12px 0 4px;
+  }
+
+  .community-mobile-hero h1 {
+    font-size: clamp(20px, 5.4vw, 24px);
+    max-width: 280px;
+  }
+
+  .community-mobile-page__nav-wrap {
+    padding: 20px 16px 12px;
+    background: var(--paper, #f8f9f4);
+  }
+
+  .community-mobile-nav.filter-row {
+    margin: 0 -4px;
+  }
+
+  .community-mobile-nav .filter-pill {
+    flex-shrink: 0;
+  }
+
+  .community-mobile-page__body {
+    padding: 8px 16px 24px;
+  }
+
+  .community-mobile-section + .community-mobile-section {
+    margin-top: 4px;
+  }
+
+  .community-mobile-section--paper {
+    background: var(--paper-soft, #f0f2ea);
+  }
+
+  .community-mobile-section__cta {
+    margin-top: 16px;
+    text-align: center;
+  }
+
+  .community-mobile-section__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid var(--forest-black, #0e3a1d);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--forest-black, #0e3a1d);
+    text-decoration: none;
+  }
+
+  .community-mobile-opportunities__intro {
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--line, #dce3d4);
+  }
+
+  .community-mobile-opportunities__eyebrow {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green, #2fa84f);
+  }
+
+  .community-mobile-opportunities__title {
+    margin: 8px 0 0;
+    font-family: var(--font-display, 'Sora', system-ui, sans-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--forest-black, #0c1400);
+  }
+
+  .community-mobile-opportunities__lede {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--ink-soft, #5a6b5e);
+  }
+
+  .community-mobile-opportunities .opportunities-featured {
+    margin-top: 0;
+  }
+
+  .community-mobile-opportunities__cta {
+    margin-top: 20px;
+    width: fit-content;
+    background: var(--color-lime);
+    color: var(--color-primary-dark);
+  }
+
+  .community-mobile-opportunities__cta:hover {
+    background: var(--lime-soft);
+    color: var(--color-primary-dark);
+  }
+
+  .community-page .funding-cta-section {
+    padding: 16px;
+  }
+}
