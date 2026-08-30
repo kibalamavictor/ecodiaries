@@ -21,22 +21,6 @@ export function MagAllPosts({ items, trending, empty, query }: MagAllPostsProps)
   return (
     <section className="mag-archive">
       <h1 className="sr-only">Stories</h1>
-      <div className="magazine-mobile-archive">
-        <div className="site-container">
-          <Suspense fallback={null}>
-            <MobileBrowseBar />
-          </Suspense>
-          {items.length > 0 ? (
-            <div className="article-card-grid">
-              {items.map((item) => (
-                <ArticleCard key={item.href} item={item} layout="grid" />
-              ))}
-            </div>
-          ) : (
-            <p className="mag-excerpt">{empty || 'No stories found. Try a different search or category.'}</p>
-          )}
-        </div>
-      </div>
       <div className="mag-wrap magazine-desktop-archive">
         {query ? (
           <p className="mag-meta mag-archive__query">
@@ -78,6 +62,22 @@ export function MagAllPosts({ items, trending, empty, query }: MagAllPostsProps)
             ) : null}
           </div>
           {trending.length > 0 ? <MagTrending items={trending} /> : null}
+        </div>
+      </div>
+      <div className="magazine-mobile-archive">
+        <div className="site-container">
+          <Suspense fallback={null}>
+            <MobileBrowseBar />
+          </Suspense>
+          {items.length > 0 ? (
+            <div className="article-card-grid">
+              {items.map((item) => (
+                <ArticleCard key={`mobile-${item.href}`} item={item} layout="grid" />
+              ))}
+            </div>
+          ) : (
+            <p className="mag-excerpt">{empty || 'No stories found. Try a different search or category.'}</p>
+          )}
         </div>
       </div>
     </section>

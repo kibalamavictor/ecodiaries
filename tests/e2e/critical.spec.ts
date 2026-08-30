@@ -132,12 +132,16 @@ test.describe('EcoDiaries critical paths', () => {
 
   test('search returns seeded story', async ({ page }) => {
     await page.goto('/stories?q=Northern+Uganda')
-    await expect(page.getByText(/Northern Uganda/i).first()).toBeVisible({ timeout: 10000 })
+    await expect(
+      page.getByRole('heading', { name: /Northern Uganda/i }).filter({ visible: true }).first(),
+    ).toBeVisible({ timeout: 10000 })
   })
 
   test('category filter on stories', async ({ page }) => {
     await page.goto('/stories?category=water')
-    await expect(page.getByText(/Northern Uganda/i).first()).toBeVisible({ timeout: 10000 })
+    await expect(
+      page.getByRole('heading', { name: /Northern Uganda/i }).filter({ visible: true }).first(),
+    ).toBeVisible({ timeout: 10000 })
   })
 
   test('category filter on solutions', async ({ page }) => {
