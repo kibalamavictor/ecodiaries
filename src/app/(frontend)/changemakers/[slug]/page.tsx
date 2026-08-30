@@ -3,9 +3,11 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { ChangemakerImpactBand } from '@/components/changemakers/ChangemakerImpactBand'
 import { ChangemakerProfileHeader } from '@/components/changemakers/ChangemakerProfileHeader'
+import { MagCarouselRow } from '@/components/magazine/MagCarouselRow'
 import { MagPageShell } from '@/components/magazine/MagPageShell'
 import { SolutionCard } from '@/components/solutions/SolutionCard'
 import { getChangemakerBySlug } from '@/lib/cms/organizations'
+import { atlasProjectToMagCard } from '@/lib/magazine'
 import { SECTOR_LABELS } from '@/lib/solutions/types'
 import { buildPageMetadata } from '@/lib/seo'
 
@@ -51,14 +53,23 @@ export default async function ChangemakerProfilePage({ params }: Props) {
           ) : null}
 
           <div>
-            <div className="mag-section-head">
-              <h2>Project portfolio</h2>
+            <div className="magazine-desktop">
+              <div className="mag-section-head">
+                <h2>Project portfolio</h2>
+              </div>
+              <div className="mag-latest__grid" style={{ marginTop: 8 }}>
+                {org.projects.map((project) => (
+                  <SolutionCard key={project.id} solution={project} />
+                ))}
+              </div>
             </div>
-            <div className="mag-latest__grid" style={{ marginTop: 8 }}>
-              {org.projects.map((project) => (
-                <SolutionCard key={project.id} solution={project} />
-              ))}
-            </div>
+            <MagCarouselRow
+              title="Project portfolio"
+              href="/solutions"
+              items={org.projects.map(atlasProjectToMagCard)}
+              seeMoreLabel="See all solutions"
+              seeMoreSubtitle="Open the atlas"
+            />
           </div>
 
           {org.team.length ? (

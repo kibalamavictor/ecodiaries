@@ -105,8 +105,9 @@ export default async function StoryPage({ params }: Props) {
             imageAlt={heroCaption || doc.title}
             byline={byline(author?.name, publishedDate)}
             avatar={author?.avatar}
-            sidebarTitle="Latest Post"
+            sidebarTitle="More stories"
             sidebarItems={related}
+            archiveHref="/stories"
           >
             {heroCaption ? <p className="mag-meta" style={{ marginBottom: 24 }}>{heroCaption}</p> : null}
             <div className="story-article-meta" style={{ marginBottom: 28 }}>

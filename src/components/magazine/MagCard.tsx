@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export type MagCardItem = {
+  id?: string
   href: string
   image: string
   category: string

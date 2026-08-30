@@ -57,8 +57,9 @@ export default async function SolutionDetailPage({ params }: Props) {
         imageAlt={project.title}
         byline={byline(project.organization?.name || project.region, formatMagDate(project.publishedAt))}
         avatar={project.organization?.logoUrl}
-        sidebarTitle="Latest Post"
+        sidebarTitle="More solutions"
         sidebarItems={sidebarItems}
+        archiveHref="/solutions"
       >
         <MagSolutionArticle project={project} />
       </MagSinglePost>

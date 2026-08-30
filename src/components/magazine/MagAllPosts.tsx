@@ -1,8 +1,6 @@
-import { Suspense } from 'react'
-import { ArticleCard } from '@/components/magazine/ArticleCard'
+import { MagArchiveMobile } from '@/components/magazine/MagArchiveMobile'
 import { MagCard, type MagCardItem } from '@/components/magazine/MagCard'
 import { MagTrending } from '@/components/magazine/MagTrending'
-import { MobileBrowseBar } from '@/components/magazine/MobileBrowseBar'
 
 type MagAllPostsProps = {
   items: MagCardItem[]
@@ -64,22 +62,10 @@ export function MagAllPosts({ items, trending, empty, query }: MagAllPostsProps)
           {trending.length > 0 ? <MagTrending items={trending} /> : null}
         </div>
       </div>
-      <div className="magazine-mobile-archive">
-        <div className="site-container">
-          <Suspense fallback={null}>
-            <MobileBrowseBar />
-          </Suspense>
-          {items.length > 0 ? (
-            <div className="article-card-grid">
-              {items.map((item) => (
-                <ArticleCard key={`mobile-${item.href}`} item={item} layout="grid" />
-              ))}
-            </div>
-          ) : (
-            <p className="mag-excerpt">{empty || 'No stories found. Try a different search or category.'}</p>
-          )}
-        </div>
-      </div>
+      <MagArchiveMobile
+        items={items}
+        empty={empty || 'No stories found. Try a different search or category.'}
+      />
     </section>
   )
 }

@@ -1,5 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { MagCarouselRow } from '@/components/magazine/MagCarouselRow'
+import type { MagCardItem } from '@/components/magazine/MagCard'
 import { OpportunityApplyAction } from '@/components/programmes/OpportunityApplyAction'
 import { hasExternalApplication } from '@/lib/programmes/application'
 import { formatProgrammeDateRange } from '@/lib/programmes/dates'
@@ -10,9 +12,10 @@ import { OPPORTUNITY_TYPE_LABELS, type Programme } from '@/lib/programmes/types'
 
 type ProgrammeDetailProps = {
   programme: Programme
+  related?: MagCardItem[]
 }
 
-export function ProgrammeDetail({ programme }: ProgrammeDetailProps) {
+export function ProgrammeDetail({ programme, related = [] }: ProgrammeDetailProps) {
   const isOpen = !isProgrammeClosed(programme)
   const image = getProgrammeImageUrl(programme.slug, 1600, 900)
   const dateRange = formatProgrammeDateRange(programme.applicationOpenDate, programme.applicationCloseDate)
@@ -92,6 +95,13 @@ export function ProgrammeDetail({ programme }: ProgrammeDetailProps) {
           </aside>
         </div>
       </section>
+      <MagCarouselRow
+        title="More opportunities"
+        href={OPPORTUNITIES_PATH}
+        items={related}
+        seeMoreLabel="See all opportunities"
+        seeMoreSubtitle="Programmes, grants, and fellowships"
+      />
     </>
   )
 }

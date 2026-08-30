@@ -1,13 +1,17 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
+import { MagArchiveMobile } from '@/components/magazine/MagArchiveMobile'
 import { MagNewsletter } from '@/components/magazine/MagNewsletter'
 import { MagPageShell } from '@/components/magazine/MagPageShell'
 import { ProgrammeHero } from '@/components/programmes/ProgrammeHero'
 import { ProgrammesPageGrid } from '@/components/programmes/ProgrammesPageGrid'
 import { ProgrammesPageHowItWorks } from '@/components/programmes/ProgrammesPageHowItWorks'
 import { getProgrammesForPage } from '@/lib/cms/programmes-page'
+import { PROGRAMME_TYPE_FILTERS } from '@/lib/programmes/filters'
+import { prepareProgrammesList } from '@/lib/programmes/list'
 import { OPPORTUNITIES_PATH } from '@/lib/programmes/routes'
 import { getProgrammeImageUrl } from '@/lib/programmes/images'
+import { programmeToMagCard } from '@/lib/magazine'
 import { buildPageMetadata } from '@/lib/seo'
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -25,18 +29,34 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function OpportunitiesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>
+  searchParams: Promise<{ q?: string; type?: string; age?: string }>
 }) {
-  const { q } = await searchParams
+  const { q, type, age } = await searchParams
   const programmes = await getProgrammesForPage()
   const newsletterImage = getProgrammeImageUrl(programmes[0]?.slug || 'opportunities', 900, 700)
+  const visible = prepareProgrammesList(programmes, type || 'all', age || 'all', q)
 
   return (
     <MagPageShell>
       <ProgrammeHero defaultQuery={q} />
-      <Suspense fallback={<div className="py-16 text-center text-neutral-600">Loading opportunities…</div>}>
-        <ProgrammesPageGrid programmes={programmes} />
-      </Suspense>
+      <div className="magazine-desktop">
+        <Suspense fallback={<div className="py-16 text-center text-neutral-600">Loading opportunities…</div>}>
+          <ProgrammesPageGrid programmes={programmes} />
+        </Suspense>
+      </div>
+      <MagArchiveMobile
+        items={visible.map(programmeToMagCard)}
+        empty="No opportunities match these filters yet."
+        browse={{
+          basePath: OPPORTUNITIES_PATH,
+          paramKey: 'type',
+          topics: PROGRAMME_TYPE_FILTERS,
+          placeholder: 'Search programmes, grants, fellowships…',
+          emptyLabel: 'Search opportunities or filter by type',
+          searchAriaLabel: 'Search opportunities',
+          dialogLabel: 'Search and filter opportunities',
+        }}
+      />
       <ProgrammesPageHowItWorks />
       <MagNewsletter image={newsletterImage} />
     </MagPageShell>

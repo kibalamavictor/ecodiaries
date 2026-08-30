@@ -15,15 +15,17 @@ export function ProgrammeHero({ defaultQuery }: ProgrammeHeroProps) {
   return (
     <div className="mag-section" style={{ paddingTop: 12, paddingBottom: 8 }}>
       <MagPageIntro eyebrow="Opportunities" title="Ways to learn, publish, and grow" lede={HERO_LEAD}>
-        <Suspense fallback={null}>
-          <HeroSearch
-            style={{ maxWidth: 520 }}
-            action={OPPORTUNITIES_PATH}
-            defaultValue={defaultQuery}
-            placeholder={SEARCH_PLACEHOLDER}
-            preserveParams
-          />
-        </Suspense>
+        <div className="magazine-desktop">
+          <Suspense fallback={null}>
+            <HeroSearch
+              style={{ maxWidth: 520 }}
+              action={OPPORTUNITIES_PATH}
+              defaultValue={defaultQuery}
+              placeholder={SEARCH_PLACEHOLDER}
+              preserveParams
+            />
+          </Suspense>
+        </div>
         <div className="mag-actions">
           <Link href="#opportunities" className="mag-btn">
             Browse opportunities

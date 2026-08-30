@@ -5,9 +5,16 @@ import { ContributorsApplyScroll } from '@/components/contributors/ContributorsA
 import { ContributorCtaBanner } from '@/components/contributors/ContributorCtaBanner'
 import { ContributorHero } from '@/components/contributors/ContributorHero'
 import { ContributorsPageGrid } from '@/components/contributors/ContributorsPageGrid'
+import { MagArchiveMobile } from '@/components/magazine/MagArchiveMobile'
 import { MagNewsletter } from '@/components/magazine/MagNewsletter'
 import { MagPageShell } from '@/components/magazine/MagPageShell'
 import { getContributorsForPage } from '@/lib/cms/contributors-page'
+import { contributorToMagCard } from '@/lib/magazine'
+import {
+  CATEGORY_QUERY_MAP,
+  CONTRIBUTOR_FILTER_OPTIONS,
+  QUERY_FROM_CATEGORY,
+} from '@/lib/contributors/types'
 
 export const metadata: Metadata = {
   title: 'Contributors',
@@ -15,17 +22,48 @@ export const metadata: Metadata = {
     'Browse EcoDiaries contributors — writers, photographers, filmmakers, researchers, and poets — or apply to join.',
 }
 
-export default async function ContributorsPage() {
+const CONTRIBUTOR_TOPICS = CONTRIBUTOR_FILTER_OPTIONS.map((option) => ({
+  label: option.label,
+  slug: option.value === 'all' ? 'all' : QUERY_FROM_CATEGORY[option.value],
+}))
+
+type Props = { searchParams: Promise<{ category?: string; q?: string }> }
+
+export default async function ContributorsPage({ searchParams }: Props) {
+  const { category, q } = await searchParams
   const contributors = await getContributorsForPage()
   const newsletterImage = contributors.find((c) => c.avatarUrl)?.avatarUrl || 'https://picsum.photos/seed/eco-voices/900/700'
+  const active = CATEGORY_QUERY_MAP[category || 'all'] ?? 'all'
+  const query = q?.trim().toLowerCase() || ''
+  const visible = contributors.filter((contributor) => {
+    if (active !== 'all' && !contributor.categories.includes(active)) return false
+    if (!query) return true
+    return [contributor.name, contributor.bio, contributor.primaryRole, contributor.region]
+      .some((value) => value?.toLowerCase().includes(query))
+  })
 
   return (
     <MagPageShell>
       <ContributorsApplyScroll />
       <ContributorHero />
-      <Suspense fallback={<div className="py-16 text-center text-neutral-600">Loading contributors…</div>}>
-        <ContributorsPageGrid contributors={contributors} />
-      </Suspense>
+      <div className="magazine-desktop">
+        <Suspense fallback={<div className="py-16 text-center text-neutral-600">Loading contributors…</div>}>
+          <ContributorsPageGrid contributors={contributors} />
+        </Suspense>
+      </div>
+      <MagArchiveMobile
+        items={visible.map(contributorToMagCard)}
+        empty="No contributors in this category yet."
+        browse={{
+          basePath: '/contributors',
+          paramKey: 'category',
+          topics: CONTRIBUTOR_TOPICS,
+          placeholder: 'Search contributors by name, role, or place…',
+          emptyLabel: 'Search contributors or filter by role',
+          searchAriaLabel: 'Search contributors',
+          dialogLabel: 'Search and filter contributors',
+        }}
+      />
       <ContributorCtaBanner contributors={contributors} />
       <section className="mag-section" id="apply">
         <div className="mag-wrap mag-two">

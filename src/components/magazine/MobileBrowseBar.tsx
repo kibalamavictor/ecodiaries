@@ -3,7 +3,12 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState, type FormEvent } from 'react'
 
-const STORY_TOPICS = [
+export type BrowseTopic = {
+  label: string
+  slug: string
+}
+
+const STORY_TOPICS: BrowseTopic[] = [
   { label: 'All', slug: 'all' },
   { label: 'Climate', slug: 'climate-change' },
   { label: 'Water', slug: 'water' },
@@ -12,15 +17,42 @@ const STORY_TOPICS = [
   { label: 'Agriculture', slug: 'agriculture' },
   { label: 'Energy', slug: 'renewable-energy' },
   { label: 'Opinion', slug: 'opinion' },
-] as const
+]
 
-export function MobileBrowseBar() {
+export type MobileBrowseBarProps = {
+  basePath?: string
+  paramKey?: string
+  aliasParams?: string[]
+  topics?: readonly BrowseTopic[]
+  placeholder?: string
+  emptyLabel?: string
+  searchAriaLabel?: string
+  dialogLabel?: string
+  clearParams?: string[]
+}
+
+export function MobileBrowseBar({
+  basePath = '/stories',
+  paramKey = 'category',
+  aliasParams = [],
+  topics = STORY_TOPICS,
+  placeholder = 'Search stories, topics, or places…',
+  emptyLabel = 'Search stories or filter by topic',
+  searchAriaLabel = 'Search stories',
+  dialogLabel = 'Search and filter stories',
+  clearParams = ['page'],
+}: MobileBrowseBarProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const query = searchParams.get('q') || ''
-  const category = searchParams.get('category') || 'all'
+  const selected =
+    searchParams.get(paramKey) || aliasParams.map((key) => searchParams.get(key)).find(Boolean) || 'all'
   const [open, setOpen] = useState(false)
   const [draft, setDraft] = useState(query)
+
+  useEffect(() => {
+    setDraft(query)
+  }, [query])
 
   useEffect(() => {
     if (!open) return
@@ -31,39 +63,43 @@ export function MobileBrowseBar() {
     }
   }, [open])
 
-  const topicLabel = STORY_TOPICS.find((topic) => topic.slug === category)?.label
-  const summary = [query && `“${query}”`, category !== 'all' && topicLabel].filter(Boolean).join(' · ')
+  const topicLabel = topics.find((topic) => topic.slug === selected)?.label
+  const summary = [query && `“${query}”`, selected !== 'all' && topicLabel].filter(Boolean).join(' · ')
 
-  function onSearch(event: FormEvent) {
-    event.preventDefault()
+  function pushParams(mutate: (params: URLSearchParams) => void) {
     const params = new URLSearchParams(searchParams.toString())
-    const next = draft.trim()
-    if (next) params.set('q', next)
-    else params.delete('q')
+    for (const key of clearParams) params.delete(key)
+    mutate(params)
     const qs = params.toString()
-    router.push(qs ? `/stories?${qs}` : '/stories')
+    router.push(qs ? `${basePath}?${qs}` : basePath)
     setOpen(false)
   }
 
+  function onSearch(event: FormEvent) {
+    event.preventDefault()
+    pushParams((params) => {
+      const next = draft.trim()
+      if (next) params.set('q', next)
+      else params.delete('q')
+    })
+  }
+
   function selectTopic(slug: string) {
-    const params = new URLSearchParams(searchParams.toString())
-    if (slug === 'all') params.delete('category')
-    else params.set('category', slug)
-    const qs = params.toString()
-    router.push(qs ? `/stories?${qs}` : '/stories')
-    setOpen(false)
+    pushParams((params) => {
+      for (const key of aliasParams) params.delete(key)
+      if (slug === 'all') params.delete(paramKey)
+      else params.set(paramKey, slug)
+    })
   }
 
   return (
     <>
       <button type="button" className="mobile-browse-bar" onClick={() => setOpen(true)}>
-        <span>
-          {summary ? <strong>{summary}</strong> : 'Search stories or filter by topic'}
-        </span>
+        <span>{summary ? <strong>{summary}</strong> : emptyLabel}</span>
         <span aria-hidden>⌕</span>
       </button>
       {open ? (
-        <div className="mobile-browse-sheet" role="dialog" aria-label="Search and filter stories">
+        <div className="mobile-browse-sheet" role="dialog" aria-label={dialogLabel}>
           <button type="button" className="mag-link" onClick={() => setOpen(false)}>
             Close
           </button>
@@ -72,8 +108,8 @@ export function MobileBrowseBar() {
               type="search"
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
-              placeholder="Search stories, topics, or places…"
-              aria-label="Search stories"
+              placeholder={placeholder}
+              aria-label={searchAriaLabel}
               autoFocus
             />
             <button type="submit" className="mag-btn">
@@ -81,11 +117,11 @@ export function MobileBrowseBar() {
             </button>
           </form>
           <div className="mobile-browse-sheet__topics">
-            {STORY_TOPICS.map((topic) => (
+            {topics.map((topic) => (
               <button
                 key={topic.slug}
                 type="button"
-                className={`mag-tag${category === topic.slug ? ' mag-tag--active' : ''}`}
+                className={`mag-tag${selected === topic.slug ? ' mag-tag--active' : ''}`}
                 onClick={() => selectTopic(topic.slug)}
               >
                 {topic.label}

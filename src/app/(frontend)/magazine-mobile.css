@@ -15,14 +15,15 @@
 @media (max-width: 639px) {
   /*
     Card width (documented once, reused by .article-card--carousel and see-more):
-    gutter 16px × 2 + gap 8px + peek ~20vw so the next card is 15–25% visible.
-    card = 100vw - 32px - 8px - peek
+    left gutter 16px + gap 8px + peek ~20vw so the next card is 15–25% visible.
+    leftover after the first card = peek (the next card shows through).
+    card = 100vw - gutter - gap - peek
   */
   :root {
     --carousel-gutter: 16px;
     --carousel-gap: 8px;
-    --carousel-peek: clamp(64px, 22vw, 96px);
-    --carousel-card-width: calc(100vw - (var(--carousel-gutter) * 2) - var(--carousel-gap) - var(--carousel-peek));
+    --carousel-peek: clamp(64px, 20vw, 88px);
+    --carousel-card-width: calc(100vw - var(--carousel-gutter) - var(--carousel-gap) - var(--carousel-peek));
     --mag-nav-h: 72px;
   }
 
@@ -279,8 +280,30 @@
   .magazine-mobile,
   .magazine-mobile .mag-hero-frame,
   .magazine-mobile .mag-section,
-  .mag-carousel {
+  .mag-carousel,
+  .mag-hero-frame,
+  .mag-hero-strip,
+  .mag-section,
+  .mag-archive,
+  .mag-spread,
+  .mag-article-hero,
+  .mag-single,
+  .mag-page-intro,
+  .mag-cta-band,
+  .mag-media {
     animation: none;
+  }
+
+  .mag-section {
+    padding: 28px 0;
+  }
+
+  .mag-single__side {
+    display: none;
+  }
+
+  .mag-single {
+    grid-template-columns: 1fr;
   }
 
   .mobile-browse-bar {

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { MagCard } from '@/components/magazine/MagCard'
+import { MagCarouselRow } from '@/components/magazine/MagCarouselRow'
 import { MagMedia } from '@/components/magazine/MagMedia'
 import { MagNewsletter } from '@/components/magazine/MagNewsletter'
 import { MagPageIntro } from '@/components/magazine/MagPageIntro'
@@ -8,6 +9,7 @@ import { MagPageShell } from '@/components/magazine/MagPageShell'
 import { getProgrammes } from '@/lib/cms/community'
 import { OPPORTUNITIES_PATH, opportunityDetailPath } from '@/lib/programmes/routes'
 import { getProgrammeImageUrl } from '@/lib/programmes/images'
+import { programmeToMagCard } from '@/lib/magazine'
 import { getSiteSettings } from '@/lib/cms/site-settings'
 import { getAboutPageVideos } from '@/lib/about/about-page-media'
 import { ABOUT_HERO_HEADLINE, ABOUT_INTRO_PARAGRAPHS } from '@/lib/about/about-page-content'
@@ -91,26 +93,35 @@ export default async function AboutPage() {
       </section>
 
       <section className="mag-section">
-        <div className="mag-wrap">
-          <div className="mag-section-head">
-            <h2>Six ways to get involved</h2>
-            <Link href={OPPORTUNITIES_PATH} className="mag-link">View all opportunities →</Link>
-          </div>
-          <div className="mag-latest__grid">
-            {programmes.map((programme) => (
-              <MagCard
-                key={programme.slug}
-                item={{
-                  href: opportunityDetailPath(programme.slug),
-                  image: getProgrammeImageUrl(programme.slug),
-                  category: programme.eyebrow || 'Opportunity',
-                  title: programme.title,
-                  excerpt: programme.description,
-                }}
-              />
-            ))}
+        <div className="magazine-desktop">
+          <div className="mag-wrap">
+            <div className="mag-section-head">
+              <h2>Six ways to get involved</h2>
+              <Link href={OPPORTUNITIES_PATH} className="mag-link">View all opportunities →</Link>
+            </div>
+            <div className="mag-latest__grid">
+              {programmes.map((programme) => (
+                <MagCard
+                  key={programme.slug}
+                  item={{
+                    href: opportunityDetailPath(programme.slug),
+                    image: getProgrammeImageUrl(programme.slug),
+                    category: programme.eyebrow || 'Opportunity',
+                    title: programme.title,
+                    excerpt: programme.description,
+                  }}
+                />
+              ))}
+            </div>
           </div>
         </div>
+        <MagCarouselRow
+          title="Six ways to get involved"
+          href={OPPORTUNITIES_PATH}
+          items={programmes.map(programmeToMagCard)}
+          seeMoreLabel="See all opportunities"
+          seeMoreSubtitle="Programmes, grants, and fellowships"
+        />
       </section>
 
       <MagNewsletter image={newsletterImage} />

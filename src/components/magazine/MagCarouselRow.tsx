@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { ArticleCard } from '@/components/magazine/ArticleCard'
 import { MagSeeMoreCard } from '@/components/magazine/MagSeeMoreCard'
 import type { MagCardItem } from '@/components/magazine/MagCard'
+import { magCardKey } from '@/lib/magazine'
 
 const MOBILE_ROW_LIMIT = 4
 
@@ -26,7 +27,7 @@ export function MagCarouselRow({
   const collage = visible.map((item) => item.image).filter(Boolean)
 
   return (
-    <section className="mag-carousel" aria-label={title}>
+    <section className="mag-carousel magazine-mobile" aria-label={title}>
       <div className="site-container mag-carousel__head">
         <Link href={href} className="mag-carousel__title">
           {title}
@@ -38,7 +39,7 @@ export function MagCarouselRow({
       <div className="carousel-track-shell">
         <div className="carousel-track">
           {visible.map((item) => (
-            <div key={item.href} className="carousel-track__item">
+            <div key={magCardKey(item)} className="carousel-track__item">
               <ArticleCard item={item} layout="carousel" />
             </div>
           ))}

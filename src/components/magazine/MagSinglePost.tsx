@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { MagCard, type MagCardItem } from '@/components/magazine/MagCard'
+import { MagCarouselRow } from '@/components/magazine/MagCarouselRow'
 import { MagNewsletter } from '@/components/magazine/MagNewsletter'
 import { environmentImageForKey } from '@/lib/unsplash-environment'
 
@@ -16,6 +17,7 @@ export type MagSinglePostProps = {
   children: ReactNode
   sidebarTitle?: string
   sidebarItems: MagCardItem[]
+  archiveHref?: string
 }
 
 export function MagSinglePost({
@@ -29,6 +31,7 @@ export function MagSinglePost({
   children,
   sidebarTitle = 'Latest Post',
   sidebarItems,
+  archiveHref,
 }: MagSinglePostProps) {
   const featured = sidebarItems[0]
   const rest = sidebarItems.slice(1, 4)
@@ -58,7 +61,7 @@ export function MagSinglePost({
           <div className="mag-single__body story-body story-detail-body">{children}</div>
         </article>
 
-        <aside className="mag-single__side">
+        <aside className="mag-single__side magazine-desktop">
           <h2 className="mag-single__side-title">{sidebarTitle}</h2>
           {featured ? <MagCard item={featured} heading="h3" /> : null}
           {rest.length > 0 ? (
@@ -80,6 +83,15 @@ export function MagSinglePost({
           ) : null}
         </aside>
       </div>
+      {sidebarItems.length ? (
+        <MagCarouselRow
+          title={sidebarTitle}
+          href={archiveHref || `/${sidebarItems[0].href.split('/').filter(Boolean)[0] || ''}`}
+          items={sidebarItems}
+          seeMoreLabel="See more"
+          seeMoreSubtitle="Browse the archive"
+        />
+      ) : null}
       <MagNewsletter image={image || featured?.image || environmentImageForKey('single-newsletter')} />
     </>
   )

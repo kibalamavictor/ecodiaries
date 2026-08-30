@@ -146,7 +146,9 @@ test.describe('EcoDiaries critical paths', () => {
 
   test('category filter on solutions', async ({ page }) => {
     await page.goto('/solutions?category=water')
-    await expect(page.getByRole('heading', { name: /Cooperative Well/i }).first()).toBeVisible({
+    await expect(
+      page.getByRole('heading', { name: /Cooperative Well/i }).filter({ visible: true }).first(),
+    ).toBeVisible({
       timeout: 10000,
     })
   })

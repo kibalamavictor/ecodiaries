@@ -5,6 +5,7 @@ import { MagPageShell } from '@/components/magazine/MagPageShell'
 import { CredibilityStrip } from '@/components/solutions/CredibilityStrip'
 import { SolutionHero } from '@/components/solutions/SolutionHero'
 import { SolutionsAtlasHero } from '@/components/solutions/atlas/SolutionsAtlasHero'
+import { MagSolutionsMobileFeed } from '@/components/magazine/MagSolutionsMobileFeed'
 import { SolutionsCollections } from '@/components/solutions/SolutionsCollections'
 import { SolutionsToolbar } from '@/components/solutions/SolutionsToolbar'
 import { getAtlasProjects } from '@/lib/cms/solutions-page'
@@ -32,9 +33,14 @@ export default async function SolutionsPage({ searchParams }: Props) {
           <SolutionsAtlasHero projects={solutions} />
         </div>
         <CredibilityStrip solutions={solutions} />
-        <SolutionsToolbar defaultQuery={q} />
+        <div className="magazine-desktop">
+          <SolutionsToolbar defaultQuery={q} />
+        </div>
       </div>
-      <SolutionsCollections projects={solutions} query={q} sector={activeSector} />
+      <div className="magazine-desktop">
+        <SolutionsCollections projects={solutions} query={q} sector={activeSector} />
+      </div>
+      <MagSolutionsMobileFeed projects={solutions} query={q} sector={activeSector} />
       <MagCtaBand
         eyebrow="For funders & partners"
         title="Partner with us to scale what’s working"
