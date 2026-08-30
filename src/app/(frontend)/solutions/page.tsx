@@ -11,6 +11,8 @@ import { SolutionsToolbar } from '@/components/solutions/SolutionsToolbar'
 import { getAtlasProjects } from '@/lib/cms/solutions-page'
 import { environmentImageForKey } from '@/lib/unsplash-environment'
 
+export const revalidate = 300
+
 export const metadata: Metadata = {
   title: 'Solutions',
   description:

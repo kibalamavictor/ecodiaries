@@ -16,7 +16,7 @@ export function MagNewsletter({ image, anchor = true }: MagNewsletterProps) {
           <NewsletterForm variant="magazine" />
         </div>
         <div className="mag-news__media">
-          <Image src={image} alt="" fill sizes="(max-width: 980px) 100vw, 50vw" />
+          <Image src={image} alt="" fill quality={70} sizes="(max-width: 980px) 100vw, 50vw" />
         </div>
       </div>
     </section>

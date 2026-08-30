@@ -68,7 +68,7 @@ export function MagSinglePost({
             <ul className="mag-side-list">
               {rest.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="mag-side-item">
+                  <Link href={item.href} prefetch={false} className="mag-side-item">
                     <span className="mag-side-item__media">
                       <Image src={item.image} alt="" fill sizes="88px" />
                     </span>

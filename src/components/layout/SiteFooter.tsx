@@ -8,7 +8,7 @@ export function SiteFooter() {
       <div className="mag-wrap">
         <div className="mag-footer__top">
           <div className="mag-footer__brand">
-            <Link href="/" className="mag-brand">
+            <Link href="/" prefetch={false} className="mag-brand">
               <BrandMark /> EcoDiaries
             </Link>
             <p>
@@ -19,21 +19,21 @@ export function SiteFooter() {
           <div>
             <h4>Main pages</h4>
             <ul>
-              <li><Link href="/">Home</Link></li>
-              <li><Link href="/solutions">Solutions</Link></li>
-              <li><Link href="/stories">Stories</Link></li>
-              <li><Link href="/community">Community</Link></li>
-              <li><Link href="/about">About</Link></li>
+              <li><Link href="/" prefetch={false}>Home</Link></li>
+              <li><Link href="/solutions" prefetch={false}>Solutions</Link></li>
+              <li><Link href="/stories" prefetch={false}>Stories</Link></li>
+              <li><Link href="/community" prefetch={false}>Community</Link></li>
+              <li><Link href="/about" prefetch={false}>About</Link></li>
             </ul>
           </div>
           <div>
             <h4>Topics</h4>
             <ul>
-              <li><Link href="/stories?category=climate-change">Climate Change</Link></li>
-              <li><Link href="/stories?category=water">Water</Link></li>
-              <li><Link href="/stories?category=agriculture">Agriculture</Link></li>
-              <li><Link href="/stories?category=biodiversity">Biodiversity</Link></li>
-              <li><Link href="/solutions">Solutions atlas</Link></li>
+              <li><Link href="/stories?category=climate-change" prefetch={false}>Climate Change</Link></li>
+              <li><Link href="/stories?category=water" prefetch={false}>Water</Link></li>
+              <li><Link href="/stories?category=agriculture" prefetch={false}>Agriculture</Link></li>
+              <li><Link href="/stories?category=biodiversity" prefetch={false}>Biodiversity</Link></li>
+              <li><Link href="/solutions" prefetch={false}>Solutions atlas</Link></li>
             </ul>
           </div>
           <div>
@@ -43,18 +43,18 @@ export function SiteFooter() {
               <li><a href="https://x.com/ecodiaries__" target="_blank" rel="noopener noreferrer">Twitter</a></li>
               <li><a href="https://www.linkedin.com/company/ecodiaries" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
               <li><ContributorsApplyLink>Become a contributor</ContributorsApplyLink></li>
-              <li><Link href="/contact">Contact</Link></li>
+              <li><Link href="/contact" prefetch={false}>Contact</Link></li>
             </ul>
           </div>
         </div>
         <div className="mag-footer__bottom">
           <span>© 2026 EcoDiaries, a project by the Climate Cardinals Chapter of KIU. All rights reserved.</span>
           <span>
-            <Link href="/privacy">Privacy Policy</Link>
+            <Link href="/privacy" prefetch={false}>Privacy Policy</Link>
             {' · '}
-            <Link href="/terms">Terms</Link>
+            <Link href="/terms" prefetch={false}>Terms</Link>
             {' · '}
-            <Link href="/cookies">Cookies</Link>
+            <Link href="/cookies" prefetch={false}>Cookies</Link>
           </span>
         </div>
       </div>

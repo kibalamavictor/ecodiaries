@@ -9,6 +9,8 @@ import { getChangemakers } from '@/lib/cms/organizations'
 import { ORG_TYPE_FILTER_OPTIONS, filterChangemakersByType } from '@/lib/changemakers/filters'
 import { changemakerToMagCard } from '@/lib/magazine'
 
+export const revalidate = 300
+
 export const metadata: Metadata = {
   title: 'Changemakers',
   description: 'Organisations and changemakers behind fundable climate projects across Africa.',

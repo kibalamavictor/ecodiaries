@@ -2,10 +2,11 @@ import type { Metadata } from 'next'
 import { MagAllPosts } from '@/components/magazine/MagAllPosts'
 import { MagNewsletter } from '@/components/magazine/MagNewsletter'
 import { MagPageShell } from '@/components/magazine/MagPageShell'
-import { PageWrapper } from '@/components/motion/PageWrapper'
 import { getLatestStories } from '@/lib/cms/stories'
 import { byline, formatMagDate, uniquifyMagCards } from '@/lib/magazine'
 import { environmentImageForKey } from '@/lib/unsplash-environment'
+
+export const revalidate = 300
 
 export const metadata: Metadata = {
   title: 'Stories',
@@ -31,15 +32,13 @@ export default async function StoriesPage({ searchParams }: Props) {
   )
 
   return (
-    <PageWrapper>
-      <MagPageShell>
-        <MagAllPosts
-          items={cards}
-          trending={cards.slice(0, 4)}
-          query={q}
-        />
-        <MagNewsletter image={stories[0]?.image || environmentImageForKey('stories-newsletter')} />
-      </MagPageShell>
-    </PageWrapper>
+    <MagPageShell>
+      <MagAllPosts
+        items={cards}
+        trending={cards.slice(0, 4)}
+        query={q}
+      />
+      <MagNewsletter image={stories[0]?.image || environmentImageForKey('stories-newsletter')} />
+    </MagPageShell>
   )
 }

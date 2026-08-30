@@ -19,6 +19,8 @@ import {
 import { featuredProgrammes } from '@/lib/programmes/list'
 import { getProgrammeImageUrl } from '@/lib/programmes/images'
 
+export const revalidate = 300
+
 export const metadata: Metadata = {
   title: 'Community',
   description: 'The people and projects behind every EcoDiaries story — contributors, partners, and community-led projects.',

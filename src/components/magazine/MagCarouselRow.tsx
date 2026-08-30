@@ -29,7 +29,7 @@ export function MagCarouselRow({
   return (
     <section className="mag-carousel magazine-mobile" aria-label={title}>
       <div className="site-container mag-carousel__head">
-        <Link href={href} className="mag-carousel__title">
+        <Link href={href} prefetch={false} className="mag-carousel__title">
           {title}
           <span className="mag-carousel__title-cue" aria-hidden>
             ›

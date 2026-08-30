@@ -19,12 +19,13 @@ export function ArticleCard({
   const meta = item.byline || item.category
 
   return (
-    <Link href={item.href} className={`article-card article-card--${layout}`}>
+    <Link href={item.href} prefetch={false} className={`article-card article-card--${layout}`}>
       <span className="article-card__media">
         <Image
           src={image}
           alt=""
           fill
+          quality={70}
           sizes={layout === 'grid' ? '(max-width: 639px) 45vw, 33vw' : '(max-width: 639px) 70vw, 33vw'}
         />
       </span>

@@ -15,7 +15,7 @@ export function MagCtaBand({ eyebrow, title, lede, href, label }: MagCtaBandProp
         {eyebrow ? <p className="mag-news__eyebrow mag-cta-band__eyebrow">{eyebrow}</p> : null}
         <h2>{title}</h2>
         {lede ? <p>{lede}</p> : null}
-        <Link href={href} className="mag-btn mag-cta-band__btn">
+        <Link href={href} prefetch={false} className="mag-btn mag-cta-band__btn">
           {label}
         </Link>
       </div>

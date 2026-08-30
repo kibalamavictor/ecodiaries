@@ -14,6 +14,8 @@ import { getProgrammeImageUrl } from '@/lib/programmes/images'
 import { programmeToMagCard } from '@/lib/magazine'
 import { buildPageMetadata } from '@/lib/seo'
 
+export const revalidate = 300
+
 export async function generateMetadata(): Promise<Metadata> {
   const programmes = await getProgrammesForPage()
   const names = programmes.map((p) => p.title).slice(0, 3).join(', ')

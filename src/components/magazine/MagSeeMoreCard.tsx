@@ -12,13 +12,13 @@ export function MagSeeMoreCard({ href, label, subtitle, images = [] }: MagSeeMor
   const collage = images.filter(Boolean).slice(0, 2)
 
   return (
-    <Link href={href} className="article-card article-card--more">
+    <Link href={href} prefetch={false} className="article-card article-card--more">
       <span className="article-card__media" aria-hidden>
         {collage.length ? (
           <span className={`article-card__collage${collage.length === 1 ? ' article-card__collage--single' : ''}`}>
             {collage.map((src) => (
               <span key={src} className="article-card__collage-cell">
-                <Image src={src} alt="" fill sizes="35vw" />
+                <Image src={src} alt="" fill quality={60} sizes="35vw" />
               </span>
             ))}
           </span>

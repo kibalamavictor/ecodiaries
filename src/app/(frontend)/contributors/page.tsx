@@ -16,6 +16,8 @@ import {
   QUERY_FROM_CATEGORY,
 } from '@/lib/contributors/types'
 
+export const revalidate = 300
+
 export const metadata: Metadata = {
   title: 'Contributors',
   description:

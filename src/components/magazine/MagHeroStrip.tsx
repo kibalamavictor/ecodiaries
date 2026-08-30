@@ -46,9 +46,9 @@ export function MagHeroStrip({
       <div className="mag-wrap mag-hero-strip__frame">
         <div className="mag-hero-strip__row" ref={scrollerRef} onScroll={sync}>
           {items.map((item) => (
-            <Link key={item.href} href={item.href} className="mag-hero-strip__item">
+            <Link key={item.href} href={item.href} prefetch={false} className="mag-hero-strip__item">
               <span className="mag-hero-strip__media">
-                <Image src={item.image} alt="" fill sizes="88px" />
+                <Image src={item.image} alt="" fill quality={60} sizes="88px" />
               </span>
               <span className="mag-hero-strip__copy">
                 <span className="mag-title mag-hero-strip__title">{item.title}</span>

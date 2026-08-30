@@ -14,6 +14,8 @@ import { getSiteSettings } from '@/lib/cms/site-settings'
 import { getAboutPageVideos } from '@/lib/about/about-page-media'
 import { ABOUT_HERO_HEADLINE, ABOUT_INTRO_PARAGRAPHS } from '@/lib/about/about-page-content'
 
+export const revalidate = 300
+
 export const metadata: Metadata = {
   title: 'About',
   description: 'EcoDiaries is a climate storytelling platform documenting stories of environmental action, resilience, and innovation across Africa.',

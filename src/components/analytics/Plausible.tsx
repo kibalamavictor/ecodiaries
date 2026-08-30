@@ -9,7 +9,7 @@ export function PlausibleAnalytics() {
       defer
       data-domain={domain}
       src="https://plausible.io/js/script.tagged-events.js"
-      strategy="afterInteractive"
+      strategy="lazyOnload"
     />
   )
 }

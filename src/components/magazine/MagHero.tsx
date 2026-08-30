@@ -27,11 +27,24 @@ function HeroAvatar({ src, name }: { src?: string; name?: string }) {
 
 export function MagHero({ slides }: { slides: MagHeroSlide[] }) {
   const [index, setIndex] = useState(0)
+  const [outgoing, setOutgoing] = useState<number | null>(null)
   const safeSlides = slides.length ? slides : []
+
+  function goTo(next: number) {
+    setOutgoing(index)
+    setIndex(next)
+  }
+
+  useEffect(() => {
+    if (outgoing === null) return
+    const timer = window.setTimeout(() => setOutgoing(null), 700)
+    return () => window.clearTimeout(timer)
+  }, [outgoing])
 
   useEffect(() => {
     if (safeSlides.length < 2) return
     const timer = window.setInterval(() => {
+      setOutgoing(index)
       setIndex((current) => (current + 1) % safeSlides.length)
     }, 6500)
     return () => window.clearInterval(timer)
@@ -44,23 +57,32 @@ export function MagHero({ slides }: { slides: MagHeroSlide[] }) {
     <section className="mag-hero-frame" aria-label="Featured">
       <div className="mag-wrap">
         <div className="mag-hero">
-          {safeSlides.map((item, i) => (
-            <div key={item.href} className={`mag-hero__slide${i === index ? ' is-active' : ''}`}>
-              <Image
-                src={item.image}
-                alt=""
-                fill
-                priority={i === 0}
-                sizes="(max-width: 980px) 100vw, 1180px"
-              />
-            </div>
-          ))}
+          {safeSlides.map((item, i) => {
+            const isActive = i === index
+            const shouldPaint = isActive || i === outgoing
+            return (
+              <div key={item.href} className={`mag-hero__slide${isActive ? ' is-active' : ''}`}>
+                {shouldPaint ? (
+                  <Image
+                    src={item.image}
+                    alt=""
+                    fill
+                    priority={i === 0}
+                    quality={75}
+                    sizes="(max-width: 980px) 100vw, 1180px"
+                  />
+                ) : null}
+              </div>
+            )
+          })}
           <div className="mag-hero__shade" />
           <div className="mag-hero__overlay">
             <div className="mag-hero__copy">
               <span className="mag-chip">{slide.category}</span>
               <h1 className="mag-title">
-                <Link href={slide.href}>{slide.title}</Link>
+                <Link href={slide.href} prefetch={false}>
+                  {slide.title}
+                </Link>
               </h1>
               {slide.byline ? (
                 <div className="mag-hero__by">
@@ -79,9 +101,9 @@ export function MagHero({ slides }: { slides: MagHeroSlide[] }) {
                     className={`mag-hero__thumb${i === index ? ' is-active' : ''}`}
                     aria-label={`Show ${item.title}`}
                     aria-selected={i === index}
-                    onClick={() => setIndex(i)}
+                    onClick={() => goTo(i)}
                   >
-                    <Image src={item.image} alt="" width={64} height={64} />
+                    <Image src={item.image} alt="" width={64} height={64} quality={60} />
                   </button>
                 ))}
               </div>
@@ -96,7 +118,7 @@ export function MagHero({ slides }: { slides: MagHeroSlide[] }) {
                   className={`mag-hero__dot${i === index ? ' is-active' : ''}`}
                   aria-label={`Show ${item.title}`}
                   aria-selected={i === index}
-                  onClick={() => setIndex(i)}
+                  onClick={() => goTo(i)}
                 />
               ))}
             </div>

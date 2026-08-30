@@ -9,7 +9,7 @@ export function MagTrending({ items }: { items: MagCardItem[] }) {
       <ol>
         {items.map((item, index) => (
           <li key={item.href}>
-            <Link href={item.href} className="mag-trend">
+            <Link href={item.href} prefetch={false} className="mag-trend">
               <span className="mag-trend__num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
               <span>
                 <h3 className="mag-title">{item.title}</h3>
@@ -26,12 +26,14 @@ export function MagTrending({ items }: { items: MagCardItem[] }) {
 export function MagSpread({ item }: { item: MagCardItem }) {
   return (
     <section className="mag-spread">
-      <Image src={item.image} alt="" fill sizes="100vw" />
+      <Image src={item.image} alt="" fill quality={75} sizes="100vw" />
       <div className="mag-spread__shade" />
       <div className="mag-spread__copy">
         <span className="mag-chip">{item.category}</span>
         <h2>
-          <Link href={item.href}>{item.title}</Link>
+          <Link href={item.href} prefetch={false}>
+            {item.title}
+          </Link>
         </h2>
         {item.byline ? <p className="mag-meta" style={{ color: 'rgba(255,255,255,.85)' }}>{item.byline}</p> : null}
       </div>

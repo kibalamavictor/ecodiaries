@@ -46,6 +46,10 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: '8mb',
     },
+    staleTimes: {
+      dynamic: 30,
+      static: 180,
+    },
   },
   env: {
     NEXT_PUBLIC_STUDIO_BLOB_UPLOAD: process.env.BLOB_READ_WRITE_TOKEN ? 'true' : '',
@@ -69,6 +73,10 @@ const nextConfig: NextConfig = {
         source: '/_next/static/:path*',
         headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
       },
+      {
+        source: '/_next/image',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000, stale-while-revalidate=86400' }],
+      },
     ]
   },
   serverExternalPackages: [
@@ -82,7 +90,7 @@ const nextConfig: NextConfig = {
   ],
   images: {
     formats: ['image/avif', 'image/webp'],
-    minimumCacheTTL: 86400,
+    minimumCacheTTL: 2592000,
     deviceSizes: [384, 640, 750, 828, 1080, 1200],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
     remotePatterns: [

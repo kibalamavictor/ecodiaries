@@ -89,12 +89,14 @@ export default async function HomePage() {
                   <div>
                     <span className="mag-chip">{featuredStory.category}</span>
                     <h2 className="mag-title">
-                      <Link href={featuredStory.href}>{featuredStory.title}</Link>
+                      <Link href={featuredStory.href} prefetch={false}>
+                        {featuredStory.title}
+                      </Link>
                     </h2>
                     {featuredStory.byline ? <p className="mag-meta">{featuredStory.byline}</p> : null}
                     {featuredStory.excerpt ? <p className="mag-excerpt">{featuredStory.excerpt}</p> : null}
                   </div>
-                  <Link href={featuredStory.href} className="mag-feature__media">
+                  <Link href={featuredStory.href} prefetch={false} className="mag-feature__media">
                     <span className="mag-feature__media-frame">
                       <Image src={featuredStory.image} alt="" fill sizes="(max-width: 980px) 100vw, 40vw" />
                     </span>
@@ -122,7 +124,9 @@ export default async function HomePage() {
             <div className="mag-wrap">
               <div className="mag-section-head">
                 <h2>On the ground</h2>
-                <Link href="/solutions" className="mag-link">View more →</Link>
+                <Link href="/solutions" prefetch={false} className="mag-link">
+                  View more →
+                </Link>
               </div>
               <div className="mag-inspire__grid">
                 {inspiration.map((item, index) => (
@@ -145,7 +149,9 @@ export default async function HomePage() {
                 ))}
               </div>
               <div className="mag-center">
-                <Link href="/stories" className="mag-btn">View all</Link>
+                <Link href="/stories" prefetch={false} className="mag-btn">
+                  View all
+                </Link>
               </div>
             </div>
           </section>
