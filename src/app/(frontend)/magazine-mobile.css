@@ -308,6 +308,7 @@
   }
 
   .mobile-browse-sheet {
+    display: block;
     position: fixed;
     inset: var(--mag-nav-h) 0 0 0;
     z-index: 86;
