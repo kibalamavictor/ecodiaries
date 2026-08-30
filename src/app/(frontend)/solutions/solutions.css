@@ -416,7 +416,7 @@
   border-radius: 16px;
   box-shadow: none;
   border: 1px solid #ececec;
-  background: #e4ead8;
+  background: #1e4a3d;
 }
 
 .atlas-map-shell--desktop {
@@ -523,9 +523,11 @@
   }
 
   .solutions-hero .atlas-lite,
-  .solutions-hero .atlas-map-shell--hero {
+  .solutions-hero .atlas-map-shell--hero,
+  .solutions-hero .atlas-map-shell--pending {
     height: min(56vh, 520px);
     min-height: 400px;
+    background: #1e4a3d;
   }
 }
 

@@ -55,9 +55,9 @@ export function MagSolutionsMobileFeed({ projects, query, sector }: MagSolutions
             aliasParams={['category']}
             topics={SECTOR_TOPICS}
             placeholder="Search solutions, sectors, or places…"
-            emptyLabel="Search solutions or filter by sector"
-            searchAriaLabel="Search solutions"
-            dialogLabel="Search and filter solutions"
+            emptyLabel="Filter by sector"
+            dialogLabel="Filter solutions by sector"
+            showSearch={false}
           />
         </Suspense>
       </div>

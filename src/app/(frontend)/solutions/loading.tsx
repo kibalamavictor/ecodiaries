@@ -6,7 +6,7 @@ export default function SolutionsLoading() {
           <p className="mag-news__eyebrow">Solutions atlas</p>
           <h1 className="mag-title mag-page-intro__title">Climate solutions across Africa</h1>
         </header>
-        <div className="atlas-lite atlas-map-shell--pending" aria-hidden />
+        <div className="atlas-map-shell atlas-map-shell--hero atlas-map-shell--pending" aria-hidden />
       </div>
     </div>
   )

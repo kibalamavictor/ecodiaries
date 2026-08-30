@@ -36,7 +36,7 @@ export default async function SolutionsPage({ searchParams }: Props) {
         </div>
         <CredibilityStrip solutions={solutions} />
         <div className="magazine-desktop">
-          <SolutionsToolbar defaultQuery={q} />
+          <SolutionsToolbar />
         </div>
       </div>
       <div className="magazine-desktop">

@@ -1,5 +1,4 @@
 import { Suspense } from 'react'
-import { HeroSearch } from '@/components/forms/HeroSearch'
 import { FilterPills } from '@/components/ui/FilterPills'
 import { SECTOR_FILTER_OPTIONS } from '@/lib/solutions/types'
 
@@ -8,22 +7,9 @@ const sectorFilters = SECTOR_FILTER_OPTIONS.map((option) => ({
   slug: option.value,
 }))
 
-type SolutionsToolbarProps = {
-  defaultQuery?: string
-}
-
-export function SolutionsToolbar({ defaultQuery }: SolutionsToolbarProps) {
+export function SolutionsToolbar() {
   return (
     <div className="solutions-toolbar">
-      <Suspense fallback={null}>
-        <HeroSearch
-          className="hero-search solutions-toolbar__search"
-          action="/solutions"
-          defaultValue={defaultQuery}
-          placeholder="Search solutions, sectors, or places…"
-          preserveParams
-        />
-      </Suspense>
       <Suspense fallback={null}>
         <div className="solutions-toolbar__filters">
           <FilterPills

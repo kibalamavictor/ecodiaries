@@ -205,18 +205,7 @@ export function AtlasMap({
       applyEcoMapTint(map)
       map.resize()
       fitCamera()
-
-      const reveal = () => {
-        try {
-          if (map.isSourceLoaded('openmaptiles')) onReady?.()
-        } catch {
-          onReady?.()
-        }
-      }
-
-      map.on('sourcedata', reveal)
-      map.once('idle', reveal)
-      window.setTimeout(reveal, 4000)
+      onReady?.()
 
       resizeObserverRef.current?.disconnect()
       const shell = map.getContainer().parentElement

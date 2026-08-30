@@ -29,6 +29,7 @@ export type MobileBrowseBarProps = {
   searchAriaLabel?: string
   dialogLabel?: string
   clearParams?: string[]
+  showSearch?: boolean
 }
 
 export function MobileBrowseBar({
@@ -41,6 +42,7 @@ export function MobileBrowseBar({
   searchAriaLabel = 'Search stories',
   dialogLabel = 'Search and filter stories',
   clearParams = ['page'],
+  showSearch = true,
 }: MobileBrowseBarProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -96,26 +98,28 @@ export function MobileBrowseBar({
     <>
       <button type="button" className="mobile-browse-bar" onClick={() => setOpen(true)}>
         <span>{summary ? <strong>{summary}</strong> : emptyLabel}</span>
-        <span aria-hidden>⌕</span>
+        <span aria-hidden>{showSearch ? '⌕' : '›'}</span>
       </button>
       {open ? (
         <div className="mobile-browse-sheet" role="dialog" aria-label={dialogLabel}>
           <button type="button" className="mag-link" onClick={() => setOpen(false)}>
             Close
           </button>
-          <form onSubmit={onSearch}>
-            <input
-              type="search"
-              value={draft}
-              onChange={(event) => setDraft(event.target.value)}
-              placeholder={placeholder}
-              aria-label={searchAriaLabel}
-              autoFocus
-            />
-            <button type="submit" className="mag-btn">
-              Search
-            </button>
-          </form>
+          {showSearch ? (
+            <form onSubmit={onSearch}>
+              <input
+                type="search"
+                value={draft}
+                onChange={(event) => setDraft(event.target.value)}
+                placeholder={placeholder}
+                aria-label={searchAriaLabel}
+                autoFocus
+              />
+              <button type="submit" className="mag-btn">
+                Search
+              </button>
+            </form>
+          ) : null}
           <div className="mobile-browse-sheet__topics">
             {topics.map((topic) => (
               <button
