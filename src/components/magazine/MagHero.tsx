@@ -68,7 +68,7 @@ export function MagHero({ slides }: { slides: MagHeroSlide[] }) {
                 {shouldPaint ? (
                   <Image
                     src={src}
-                    alt={i === 0 ? 'Sunlit forest canopy' : ''}
+                    alt={i === 0 ? 'Sunlit green hills and valley' : ''}
                     fill
                     priority={i === 0}
                     quality={75}
