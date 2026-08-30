@@ -490,6 +490,8 @@
   display: block;
   min-width: 0;
   width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 .mag-feature__media-frame {
   position: relative;
@@ -499,8 +501,9 @@
   contain: paint;
   border-radius: var(--mag-radius);
   background: #f3f3f3;
+  width: 100%;
+  max-width: 100%;
   aspect-ratio: 16 / 10;
-  min-height: 260px;
 }
 .mag-trending {
   position: relative;
@@ -508,8 +511,10 @@
   min-width: 0;
   background: var(--mag-bg);
 }
-.mag-trending ol {
+.mag-trending ol,
+.mag-trending li {
   list-style: none;
+  list-style-type: none;
   margin: 0;
   padding: 0;
 }

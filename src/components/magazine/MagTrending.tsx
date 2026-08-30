@@ -10,7 +10,7 @@ export function MagTrending({ items }: { items: MagCardItem[] }) {
         {items.map((item, index) => (
           <li key={item.href}>
             <Link href={item.href} className="mag-trend">
-              <span className="mag-trend__num">{String(index + 1).padStart(2, '0')}</span>
+              <span className="mag-trend__num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
               <span>
                 <h3 className="mag-title">{item.title}</h3>
                 {item.byline ? <p className="mag-meta">{item.byline}</p> : null}
